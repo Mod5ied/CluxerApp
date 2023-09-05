@@ -1,0 +1,329 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500;600;700;800;900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;500;700;800;900&display=swap');
+@tailwind components;
+@tailwind utilities;
+@tailwind base;
+
+/* * {
+	font-family: "Nunito", sans-serif;
+	outline: 1px solid green;
+} */
+
+#homepage-main {
+	/* background-image: url("./assets/slide1.jpg"); */
+	/* background-repeat: no-repeat;
+	background-size: cover; */
+	font-family: 'Roboto Slab', serif;
+}
+#numbers-section {
+	background-image: url("./assets/slide1.jpg");
+	background-repeat: no-repeat;
+	background-clip: border-box;
+	background-size: cover;
+	font-family: 'Roboto Slab', serif;
+}
+#numbers-sec {
+	background: linear-gradient(rgba(15, 15, 112, 0.304), rgba(15, 15, 112, 0.296));
+}
+
+#build-section {
+	background-image: url("./assets/slide1.jpg");
+	background-repeat: no-repeat;
+	background-clip: border-box;
+	background-size: cover;
+}
+#build-sec {
+	background: linear-gradient(rgba(15, 15, 112, 0.304), rgba(15, 15, 112, 0.296));
+}
+
+#hue {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+}
+
+#hue::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(rgba(15, 15, 112, 0.304), rgba(15, 15, 112, 0.296));
+	z-index: 1;
+}
+
+
+#slide1,
+#slide2 {
+	position: relative;
+	z-index: 2;
+}
+
+#hue-mid {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	background-image: url("./assets/slide1.jpg");
+	background-size: cover;
+}
+
+#hue-mid::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(rgba(15, 15, 112, 0.304), rgba(15, 15, 112, 0.296));
+	z-index: 1;
+}
+
+.actions-cards {
+	@apply w-[80px] h-[90px] flex flex-col justify-center items-center text-gray-600 border rounded-sm;
+}
+.actions-cards p {
+	@apply text-xs font-medium text-center text-blue-400 cursor-pointer;
+}
+
+.actions-cards:hover {
+	@apply transition-all delay-100 ease-in-out bg-[#007bff1a] shadow;
+}
+
+.accounts-section {
+	@apply px-4 text-xs;
+}
+.accounts-section p {
+	@apply font-semibold text-gray-800;
+}
+
+.accounts-btn:hover {
+	@apply bg-[#1e40afab] transition-all duration-200;
+}
+
+/* sidebar style */
+.sidebar_links {
+	@apply flex flex-row items-center justify-start w-full gap-2 p-2 text-sm text-gray-700 ease-in-out rounded hover:bg-slate-200 hover:duration-200;
+}
+.sidebar-links_drop {
+	@apply flex flex-col gap-1;
+}
+.sidebar-links_drop button {
+	@apply py-2 text-center rounded-md hover:bg-slate-100;
+}
+.sidebar-links_drop button p {
+	@apply w-[50%] ml-[23%] text-left text-xs text-gray-500 font-semibold;
+}
+
+.sidebar_arrDown {
+	@apply relative p-1 ml-auto duration-200 rounded-md hover:bg-slate-400;
+}
+.metric_cards {
+	@apply w-[90%] md:w-[280px] h-[180px] p-4 rounded-md shadow-lg relative bottom-12 flex flex-col gap-2 justify-between py-6;
+}
+.metric_btn {
+	@apply w-[8rem] h-[2.5rem] rounded-md font-semibold text-blue-600 shadow-lg bg-white hover:bg-slate-50;
+}
+
+.card_header {
+	@apply text-lg font-semibold text-gray-700;
+}
+.metric_numbs {
+	@apply text-3xl font-bold;
+}
+
+/* Add Staff */
+
+#staff-signup_formSection {
+	@apply flex flex-col w-full h-full gap-2 md:flex-row;
+}
+#staff_form_main {
+	@apply flex flex-col gap-10 bg-white shadow-md w-[90%] md:w-[60%] md:h-[460px] py-2 md:px-5 rounded m-auto mt-5;
+}
+.staff-input_section span {
+	@apply w-full px-3 md:px-0;
+}
+
+/* sign-in form. */
+
+#signin_form_main {
+	@apply flex flex-col justify-between bg-white shadow-md w-[90%] md:w-[36%] h-[450px] py-4 px-5 md:px-8 rounded m-auto;
+}
+#signup_form_main {
+	@apply flex flex-col bg-white shadow-md w-[90%] md:w-[36%] h-[690px] py-2 px-5 md:px-10 rounded m-auto;
+}
+#reduce_form_main {
+	@apply flex flex-col gap-6 bg-white shadow-md w-[90%] md:w-[45%] h-[420px] py-2 px-5 md:px-10 rounded m-auto;
+}
+#deposit_form_main {
+	@apply flex flex-col gap-10 bg-white shadow-md w-[90%] md:w-[45%] h-[350px] py-2 px-5 md:px-10 rounded m-auto mt-5;
+}
+
+.reduce_btn {
+	@apply px-4 py-2 text-gray-100 duration-200 border rounded-lg hover:bg-blue-700;
+}
+#reset_form_main {
+	@apply flex flex-col gap-4 justify-between bg-white shadow-md w-[90%] md:w-[36%] h-[310px] py-10 px-5 md:px-12 rounded m-auto;
+}
+#form_error_status {
+	@apply bg-red-400 p-3 text-sm font-semibold text-gray-800 text-center rounded-md w-[55%] m-auto;
+}
+#signin_form_section {
+	@apply flex flex-col gap-4 h-[90%];
+}
+#signup_form_section {
+	@apply flex flex-col gap-4 h-[80%];
+}
+
+#input_section {
+	@apply flex flex-col gap-4;
+}
+.input_span {
+	@apply flex flex-col;
+}
+.input_span_input {
+	@apply px-4 py-2 border rounded-md bg-gray-50 hover:border-gray-200 focus:ring-2 focus:ring-amber-400 focus:outline-none;
+}
+#signin_submit_section {
+	@apply flex flex-col justify-start gap-4;
+}
+#signup_submit_section {
+	@apply flex flex-col;
+}
+.signin_submit_btn {
+	@apply w-[80%] p-2 text-center shadow-md bg-amber-400 text-gray-800 font-semibold rounded-lg hover:bg-amber-500;
+}
+
+/* reduce funds, et.al */
+.reduce_Drop {
+	@apply w-full px-2 py-1 text-left hover:bg-blue-700 hover:text-gray-200;
+}
+.reduce_submit_btn {
+	@apply p-2 text-sm text-white duration-200 bg-blue-600 border-none rounded-md shadow hover:bg-blue-400;
+}
+
+/* payment methods */
+.method_cards {
+	@apply w-full md:w-[280px] h-[220px] rounded-md p-4 bg-white flex flex-col gap-2 shadow;
+}
+.method_cards-section {
+	@apply flex flex-col gap-2;
+}
+.method_cards-section button {
+	@apply py-2 px-1 rounded-lg w-[50%] text-sm text-gray-50 font-medium bg-blue-800 hover:bg-blue-600 duration-200;
+}
+.method_cards section h3 {
+	@apply py-2 text-lg font-medium text-gray-600 border-b;
+}
+
+/* USER-ROLE STYLES */
+.sidebar-links {
+	@apply flex flex-row items-center justify-start w-full gap-3 px-8 py-2 text-sm font-semibold text-gray-100 duration-200 ease-in-out rounded hover:text-gray-500;
+}
+.sidebar-links-center {
+	@apply flex flex-row items-center justify-center w-full gap-3 px-8 py-2 text-sm font-semibold text-gray-100 duration-200 rounded hover:text-gray-500;
+}
+/* metrics */
+.dash_cards {
+	@apply h-[100px] w-full md:w-[440px] p-3 rounded-md shadow-md bg-stone-900;
+}
+.dash_cards h3 {
+	@apply text-sm font-semibold text-gray-100;
+}
+.dash_cards p {
+	@apply font-bold text-yellow-400;
+}
+.dash_cards button {
+	@apply px-3 py-1 mt-2 text-xs font-bold text-blue-700 bg-gray-400 border-none rounded-md shadow-gray-200;
+}
+.dash_cards_ref {
+	@apply w-full h-[250px] md:w-full flex flex-col justify-start p-3 rounded-md shadow-md bg-stone-900;
+}
+.dash_cards_ref h3,
+p {
+	@apply text-gray-100;
+}
+.dash_cards_ref input {
+	@apply px-4 py-2 text-yellow-400 rounded-l-md w-[89%] border-none shadow-gray-100 bg-stone-700;
+}
+/* deposit styles. */
+#deposit_form {
+	@apply h-[340px] w-full md:w-[680px] bg-stone-900 rounded-md shadow-md p-5 flex flex-col justify-around gap-6;
+}
+#deposit_form span {
+	@apply flex flex-col gap-2;
+}
+#deposit_form span label {
+	@apply text-sm text-gray-200;
+}
+.deposit_form_input {
+	@apply w-full px-4 py-2 rounded-md bg-stone-200;
+}
+#btn {
+	@apply px-3 py-2 w-[55%] md:w-[30%] bg-red-600 hover:bg-red-500 duration-200 text-center text-sm text-gray-100 font-bold rounded-md;
+}
+/* withdraw styles. */
+#withdraw_form {
+	@apply flex flex-col w-full gap-4 p-5 rounded-md shadow-md bg-stone-900 md:gap-6;
+}
+#withdraw_form span {
+	@apply flex flex-col justify-between gap-2 md:flex-row md:gap-0 md:items-center;
+}
+#withdraw_form span label {
+	@apply text-sm text-gray-200;
+}
+.withdraw_form_input {
+	@apply w-full md:w-[80%] py-2 px-4 rounded-md text-stone-100 bg-stone-800 border border-stone-200 focus:border-blue-600;
+}
+#withdraw_btn {
+	@apply px-3 py-2 w-[100px] ml-auto bg-gray-500 duration-200 text-sm font-bold rounded-md hover:bg-gray-400;
+}
+/* invest styles. */
+.invest_cards {
+	@apply flex flex-col justify-around bg-stone-900 rounded-md w-full md:w-[45%] h-[320px];
+}
+/* account-setting styles. */
+#account_form {
+	@apply w-full md:w-[68%] py-5 px-8 rounded-md shadow-md bg-white flex flex-col gap-6;
+}
+#account_form h3 {
+	@apply text-xl font-semibold text-slate-900;
+}
+#account_form span {
+	@apply flex flex-col gap-2;
+}
+#account_form span label {
+	@apply text-sm text-gray-800;
+}
+.account_form_input {
+	@apply w-full md:w-[80%] py-2 px-4 bg-white rounded-md border border-gray-400 hover:border-blue-500 focus:border-blue-600;
+}
+#account_btn {
+	@apply px-4 py-2 w-[50%] md:w-[28%] bg-blue-600 hover:bg-blue-500 duration-200 text-sm text-center text-gray-100 font-bold rounded-md;
+}
+#account_btn_drop {
+	@apply px-4 py-2 w-[50%] md:w-[28%] bg-red-600 hover:bg-red-500 duration-200 text-sm text-gray-100 font-bold rounded-md;
+}
+/* security styles. */
+.security_form {
+	@apply w-[49%] py-5 px-8 rounded-md shadow-md bg-stone-900 flex flex-col gap-6;
+}
+.security_form span {
+	@apply flex flex-row items-center justify-between text-gray-300;
+}
+.security_form_input {
+	@apply w-full md:w-[75%] py-2 px-4 text-gray-100 bg-stone-900 rounded-md border border-gray-400 hover:border-blue-500 focus:border-blue-600;
+}
+.security_btn {
+	@apply px-4 py-2 w-[28%] bg-stone-500 hover:bg-stone-600 duration-200 text-sm text-gray-100 font-bold rounded-md;
+}
+.security_btn2 {
+	@apply px-4 py-2 w-[20%] bg-stone-200 hover:bg-stone-600 duration-200 text-sm text-blue-100 font-bold rounded-md;
+}
