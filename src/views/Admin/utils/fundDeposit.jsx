@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import { depositToWallet, execFundDeposit } from "../../../services/user-services/deposits";
+import { ReactSVG } from "react-svg";
+import { useSpring, animated } from "react-spring";
+import successSV from "../../../assets/success.svg";
+import { execFundDeposit } from "../../../services/user-services/deposits";
 
 function fundDeposit() {
 	const [username, setUsername] = useState("");
@@ -18,7 +21,7 @@ function fundDeposit() {
 			setTimeout(() => {
 				setUsername("");
 				setSubjectAmount("")
-			}, 3000);
+			}, 300);
 			setTimeout(() => {
 				setShowAnimatedDiv(true);
 			}, 3000);
@@ -30,13 +33,22 @@ function fundDeposit() {
 		}
 	};
 
+	const successMessageStyles = useSpring({
+		from: { transform: "translateX(-100%)" },
+		to: async (next) => {
+			await next({ transform: "translateX(0)" });
+			// await delay(4000);
+			await next({ transform: "translateX(-100%)" });
+		},
+	});
+
 	return (
 		<div className="bg-transparent flex flex-col gap-4 p-2 absolute md:h-[70%] w-full md:w-[80%] top-20">
 			{showAnimatedDiv && (
 				<animated.div
 					style={successMessageStyles}
 					id="success"
-					className="w-[330px] absolute flex flex-row gap-3 items-center bg-green-500 text-stone-50 px-5 py-3 ml-4 rounded-md"
+					className="w-[330px] absolute flex flex-row gap-3 items-center bg-green-500 text-stone-50 px-5 py-3 ml-4 md:ml-8 rounded-md"
 				>
 					<ReactSVG src={successSV} />
 					Profit added successfully!
@@ -58,13 +70,13 @@ function fundDeposit() {
 					<div id="input_section">
 						<span className="input_span">
 							<label htmlFor="username">Enter Username</label>
-							<input className="input_span_input" type="text" placeholder="Username" onChange={handleUsernameChange} />
+							<input className="input_span_input" type="text" value={username} placeholder="Username" onChange={handleUsernameChange} />
 						</span>
 					</div>
 					<div id="input_section">
 						<span className="input_span">
 							<label htmlFor="username">Enter Subject</label>
-							<input className="input_span_input" type="number" placeholder="Amount" onChange={handleSubjectAmountChange} />
+							<input className="input_span_input" type="number" value={subjectAmount} placeholder="Amount" onChange={handleSubjectAmountChange} />
 						</span>
 					</div>
 				</section>

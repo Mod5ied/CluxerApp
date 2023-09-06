@@ -15,15 +15,15 @@ import { ReactSVG } from "react-svg";
 import { useRecoilState } from "recoil";
 import { isMobile } from "react-device-detect";
 
-// import { fetchWalletData } from "../../../services/user-services/account";
-
 function userDashboard() {
 	const [stateGuest, setStateGuest] = useRecoilState(usersState);
 
 	const [width, setWidth] = useState(isMobile ? "0%" : "16%");
 	const isClicked = useRef(false);
 	const sidebarRef = useRef(null);
+	const [users, setUsers] = useState([]);
 	const [userData, setUserData] = useState({});
+	const [userBonus, setUserBonus] = useState({});
 	const [userWallet, setUserWallet] = useState({});
 	const [userProfits, setUserProfits] = useState({});
 
@@ -54,16 +54,24 @@ function userDashboard() {
 		sidebarElement.addEventListener("mouseover", handleMouseOver);
 		sidebarElement.addEventListener("mouseout", handleMouseOut);
 		const userWalletData = localStorage.getItem("userWallet");
-		const userRecord = localStorage.getItem("userRecord");
 		const userProfits = localStorage.getItem("userProfits");
+		const userRecord = localStorage.getItem("userRecord");
+		const userRecords = localStorage.getItem("userRecords");
+		const userBonus = localStorage.getItem("userBonus");
 
-		if (userWalletData && userRecord) {
+
+		if (userRecord) {
 			const parsedUserWalletData = JSON.parse(userWalletData);
 			const parsedUserRecord = JSON.parse(userRecord);
+			const parsedUserRecords = JSON.parse(userRecords);
 			const parsedUserProfits = JSON.parse(userProfits);
+			const parsedUserBonus = JSON.parse(userBonus)
+
 			setUserWallet(parsedUserWalletData);
 			setUserProfits(parsedUserProfits);
+			setUserBonus(parsedUserBonus);
 			setUserData(parsedUserRecord);
+			setUsers(parsedUserRecords);
 		}
 		return () => {
 			sidebarElement.removeEventListener("mouseover", handleMouseOver);
@@ -95,12 +103,12 @@ function userDashboard() {
 					<ReactSVG onClick={handleClick} id="hamburger-icon" src={menu} />
 					<span className="flex items-center">
 						<Avatar />
-						<h3 className="text-sm font-bold text-gray-600 md:mr-10 md:text-xl"> ${userWallet.amount} </h3>
+						<h3 className="text-sm font-bold text-gray-600 md:mr-10 md:text-xl"> ${userWallet?.amount || 0} </h3>
 					</span>
 				</header>
 				<main className="relative w-full bg-gray-100 top-20 md:top-24">
 					{stateGuest.accountPage && <Account userAccount={userData} />}
-					{stateGuest.dashboard && <Metrics userAccount={userData} userProfits={userProfits} userWallet={userWallet} width={width} />}
+					{stateGuest.dashboard && <Metrics userAccount={userData} userBonus={userBonus} userProfits={userProfits} userWallet={userWallet} width={width} />}
 					{stateGuest.referralsPage && <Referrals />}
 					{stateGuest.withdrawPage && <Withdraw />}
 					{stateGuest.securityPage && <Security userAccount={userData} />}

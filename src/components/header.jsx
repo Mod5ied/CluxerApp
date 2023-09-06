@@ -42,8 +42,8 @@ function header({ setSignal, signal }) {
 			{isMobile && <ReactSVG id="options" src={options} onClick={() => setIsMobileVisible(!isMobileVisible)} />}
 
 			{!isMobileVisible && (
-				<section className="w-full md:w-[200px] absolute md:relative top-11 bg-white left-0 h-full cursor-pointer">
-					<span className="flex flex-row justify-center items-center gap-6 p-2 h-full text-gray-600">
+				<section className="w-full md:w-[200px] absolute md:relative  bg-white left-0 h-full cursor-pointer">
+					<span className="flex flex-row items-center justify-center h-full gap-6 p-2 text-gray-600">
 						{/* click to show messages */}
 						{mailState ? (
 							<ReactSVG onClick={handleClick.bind(this, "messages")} src={mail} />
@@ -55,13 +55,13 @@ function header({ setSignal, signal }) {
 						<ReactSVG onClick={handleClick.bind(this, "quick_actions")} src={stacks} />
 
 						{/* click to show avatar */}
-						<ReactSVG onClick={handleClick.bind(this, "avatar")} src={avatar} className="mb-1 w-6 h-6" />
+						<ReactSVG onClick={handleClick.bind(this, "avatar")} src={avatar} className="w-6 h-6 mb-1" />
 					</span>
 					{/* <span id="actions"> */}
 					<span>
 						{activeAction === "messages" ? <Notifier /> : null}
 						{activeAction === "quick_actions" ? <QuickActions /> : null}
-						{activeAction === "avatar" ? <Accounts /> : null}
+						{activeAction === "avatar" ? <Accounts  /> : null}
 					</span>
 				</section>
 			)}

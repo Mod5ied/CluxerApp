@@ -5,8 +5,8 @@ import { execAddProfit } from "../../../services/user-services/account";
 import { ReactSVG } from "react-svg";
 
 function addProfit() {
-	const [username, setUsername] = useState("");
 	const [profit, setProfit] = useState(0);
+	const [username, setUsername] = useState("");
 	const [showAnimatedDiv, setShowAnimatedDiv] = useState(false);
 
 	const handleSubmit = async (e) => {
@@ -14,17 +14,17 @@ function addProfit() {
 		try {
 			const data = { username, amount: profit };
 			await execAddProfit(data);
-	
+
 			setTimeout(() => {
 				setUsername("");
 				setProfit("");
-			}, 3000);
+			}, 500);
 			setTimeout(() => {
 				setShowAnimatedDiv(true);
-			}, 3000);
+			}, 2000);
 			setTimeout(() => {
 				setShowAnimatedDiv(false);
-			}, 4000);
+			}, 3000);
 		} catch (error) {
 			console.error("Error adding to profits: ", error);
 		}
@@ -45,7 +45,7 @@ function addProfit() {
 				<animated.div
 					style={successMessageStyles}
 					id="success"
-					className="w-[330px] absolute flex flex-row gap-3 items-center bg-green-500 text-stone-50 px-5 py-3 ml-4 rounded-md"
+					className="w-[330px] absolute flex flex-row gap-3 items-center bg-green-500 text-stone-50 px-5 py-3 ml-4 md:ml-14 rounded-md"
 				>
 					<ReactSVG src={successSV} />
 					Profit added successfully!
@@ -68,14 +68,14 @@ function addProfit() {
 					<div id="input_section">
 						<span className="input_span">
 							<label htmlFor="username">Enter Username</label>
-							<input className="input_span_input" type="text" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
+							<input className="input_span_input" type="text" value={username} placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
 						</span>
 					</div>
 
 					<div id="input_section">
 						<span className="input_span">
 							<label htmlFor="username">Enter Profit e.g(Amount deposited + Percent profit)</label>
-							<input className="input_span_input" type="number" placeholder="Earn" onChange={(e) => setProfit(e.target.value)} />
+							<input className="input_span_input" type="number" value={profit} placeholder="Earn" onChange={(e) => setProfit(e.target.value)} />
 						</span>
 					</div>
 				</section>

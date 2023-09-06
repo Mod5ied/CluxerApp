@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { animated, useSpring, useTransition } from "react-spring";
 import { adminState, useToggleState } from "../services/state/state";
 import { isMobile } from "react-device-detect";
+import { execSignOut } from "../services/auth-services/auth";
 
 function sidebar({ signal, setSignal }) {
 	const [dropDown, setDropdown] = useState(false);
@@ -65,22 +66,9 @@ function sidebar({ signal, setSignal }) {
 
 	//todo: abstract this form this component.
 	const handleLogout = () => {
+		execSignOut();
 		navigate("/signin");
-		// const auth = getAuth();
-		// signOut(auth)
-		// 	.then(() => {
-		// 		// Sign-out successful.
-		// 		navigate("/login"); // redirect the user to login page after sign out
-		// 	})
-		// 	.catch((error) => {
-		// 		// An error happened.
-		// 		console.error(error);
-		// 	});
 	};
-
-	// useEffect(() => {
-	// 	console.log(signal);
-	// }, [signal]);
 
 	return (
 		<animated.div style={props} className={`fixed left-0 z-30 flex flex-col gap-8 overflow-hidden bg-white items-center border-r border-gray-300 h-screen justify-center`}>
@@ -97,14 +85,14 @@ function sidebar({ signal, setSignal }) {
 					<nav>
 						<img src={Logo} alt="Cluxter-logo" className="w-full h-full" />
 					</nav>
-					{!isMobile && isExpanded && <ReactSVG onClick={handleExpand} src={hamburg} className="m-auto text-lg p-2 rounded duration-200 hover:bg-slate-100" />}
+					{!isMobile && isExpanded && <ReactSVG onClick={handleExpand} src={hamburg} className="p-2 m-auto text-lg duration-200 rounded hover:bg-slate-100" />}
 					{isMobile && isExpanded && (
-						<ReactSVG onClick={() => setSignal(!signal)} src={close} className="m-auto text-lg p-2 rounded duration-200 hover:bg-slate-100" />
+						<ReactSVG onClick={() => setSignal(!signal)} src={close} className="p-2 m-auto text-lg duration-200 rounded hover:bg-slate-100" />
 					)}
 				</section>
 			)}
 
-			<section className="w-full h-full flex flex-col gap-2 items-center">
+			<section className="flex flex-col items-center w-full h-full gap-2">
 				<section
 					onClick={() => toggleAdminState("dashboard")}
 					className={`flex flex-row justify-center items-center cursor-pointer ${
@@ -120,11 +108,11 @@ function sidebar({ signal, setSignal }) {
 					)}
 				</section>
 
-				<section className="h-3/4 w-full flex flex-col gap-3 justify-around items-center">
+				<section className="flex flex-col items-center justify-around w-full gap-3 h-3/4">
 					{isExpanded && <h3 className="text-sm text-center font-medium border-b border-gray-200 w-[90%] py-2">COMPONENTS</h3>}
 
 					<nav className="h-[90%] w-[90%] flex flex-col gap-2 items-center text-gray-600">
-						<div className="flex flex-col gap-2 w-full">
+						<div className="flex flex-col w-full gap-2">
 							<button
 								className={`${dropState.depoDrop ? "bg-slate-200 sidebar_links" : "sidebar_links"} sidebar_links`}
 								title="Deposit"
@@ -133,8 +121,8 @@ function sidebar({ signal, setSignal }) {
 								<ReactSVG src={deposit} className={`${!isExpanded && "m-auto"}`} />
 								{isExpanded && (
 									<div className="flex flex-col w-full">
-										<div className="flex flex-row justify-start items-center px-2 w-full">
-											<p className="text-gray-800 font-semibold">DEPOSITS</p>
+										<div className="flex flex-row items-center justify-start w-full px-2">
+											<p className="font-semibold text-gray-800">DEPOSITS</p>
 											<ReactSVG src={arrDown} className="sidebar_arrDown" />
 										</div>
 									</div>
@@ -154,7 +142,7 @@ function sidebar({ signal, setSignal }) {
 							)}
 						</div>
 
-						<div className="flex flex-col gap-2 w-full">
+						<div className="flex flex-col w-full gap-2">
 							<button
 								className={`${dropState.withdrawDrop ? "bg-slate-200 sidebar_links" : "sidebar_links"} sidebar_links`}
 								title="Withdraw"
@@ -163,8 +151,8 @@ function sidebar({ signal, setSignal }) {
 								<ReactSVG src={withdraw} className={`${!isExpanded && "m-auto"}`} />
 								{isExpanded && (
 									<div className="flex flex-col w-full">
-										<div className="flex flex-row justify-start items-center px-2 w-full">
-											<p className="text-gray-800 font-semibold">WITHDRAWN</p>
+										<div className="flex flex-row items-center justify-start w-full px-2">
+											<p className="font-semibold text-gray-800">WITHDRAWN</p>
 											<ReactSVG src={arrDown} className="sidebar_arrDown" />
 										</div>
 									</div>
@@ -184,7 +172,7 @@ function sidebar({ signal, setSignal }) {
 							)}
 						</div>
 
-						<div className="flex flex-col gap-2 w-full">
+						<div className="flex flex-col w-full gap-2">
 							<button
 								className={`${dropState.withdrawDrop ? "bg-slate-200 sidebar_links" : "sidebar_links"} sidebar_links`}
 								title="Users"
@@ -193,8 +181,8 @@ function sidebar({ signal, setSignal }) {
 								<ReactSVG src={users} className={`${!isExpanded && "m-auto"}`} />
 								{isExpanded && (
 									<div className="flex flex-col w-full">
-										<div className="flex flex-row justify-start items-center px-2 w-full">
-											<p className="text-gray-800 font-semibold">USERS</p>
+										<div className="flex flex-row items-center justify-start w-full px-2">
+											<p className="font-semibold text-gray-800">USERS</p>
 											<ReactSVG src={arrDown} className="sidebar_arrDown" />
 										</div>
 									</div>
@@ -219,33 +207,33 @@ function sidebar({ signal, setSignal }) {
 						<section className="mt-3 w-[90%] flex flex-col gap-2">
 							<button onClick={() => toggleAdminState("reduceFunds")} className="sidebar_links" title="Reduce Funds">
 								<ReactSVG src={reduceCash} className={`${!isExpanded && "m-auto"}`} />
-								{isExpanded && <p className="text-gray-800 font-semibold">Reduce funds</p>}
+								{isExpanded && <p className="font-semibold text-gray-800">Reduce funds</p>}
 							</button>
 							<button onClick={() => toggleAdminState("addBonus")} className="sidebar_links" title="Add bonus">
 								<ReactSVG src={bonus} className={` ${!isExpanded && "m-auto"}`} />
-								{isExpanded && <p className="text-gray-800 font-semibold">Add bonus</p>}
+								{isExpanded && <p className="font-semibold text-gray-800">Add bonus</p>}
 							</button>
 							<button onClick={() => toggleAdminState("addProfit")} className="sidebar_links" title="Add Profit">
 								<ReactSVG src={bonus} className={`${!isExpanded && "m-auto"}`} />
-								{isExpanded && <p className="text-gray-800 font-semibold">Add profit</p>}
+								{isExpanded && <p className="font-semibold text-gray-800">Add profit</p>}
 							</button>
 							<button onClick={() => toggleAdminState("fundDeposit")} className="sidebar_links" title="Fund Deposit">
 								<ReactSVG src={bonus} className={`${!isExpanded && "m-auto"}`} />
-								{isExpanded && <p className="text-gray-800 font-semibold">Fund Deposit</p>}
+								{isExpanded && <p className="font-semibold text-gray-800">Fund Deposit</p>}
 							</button>
 							<button onClick={() => toggleAdminState("paymentMethod")} className="sidebar_links" title="Payment Method">
 								<ReactSVG src={payment} className={`${!isExpanded && "m-auto"}`} />
-								{isExpanded && <p className="text-gray-800 font-semibold">Payment Method</p>}
+								{isExpanded && <p className="font-semibold text-gray-800">Payment Method</p>}
 							</button>
 						</section>
 					</nav>
 				</section>
 
-				<section className="w-full static bottom-0">
+				<section className="static bottom-0 w-full">
 					{/* create a reusable btn here. */}
 					<button
 						onClick={handleLogout}
-						className="flex flex-row items-center justify-center gap-2 m-auto text-center bg-blue-700 text-gray-100 p-2 rounded-md w-4/5"
+						className="flex flex-row items-center justify-center w-4/5 gap-2 p-2 m-auto text-center text-gray-100 bg-blue-700 rounded-md"
 					>
 						<ReactSVG src={exit} />
 						{isExpanded && <p>Logout</p>}

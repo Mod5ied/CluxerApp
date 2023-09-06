@@ -5,46 +5,37 @@ import Contact from "./components/contact";
 import Homepage from "./components/homepage";
 import Aboutpage from "./components/aboutpage";
 import AdminDashboard from "./views/Admin/dashboard";
-import { useNavigate, useRoutes } from "react-router-dom";
 import GuestDashboard from "./views/Users/main/dashboard";
 import ResetPassword from "./views/recovery/forgotPassword";
+import { useRoutes, useNavigate } from "react-router-dom";
 
 function App() {
-	const navigate = useNavigate();
-	// useEffect(() => {
-	// 	const user = JSON.parse(localStorage.getItem("user"));
+  const navigate = useNavigate();
 
-	// 	if (!user) {
-	// 		navigate("/signin");
-	// 	} else {
-	// 		if (user.role === "admin") {
-	// 			navigate("/dashboard/admin");
-	// 		} else if (user.role === "guest") {
-	// 			navigate("/dashboard/guest");
-	// 		}
-	// 	}
-	// });
+//   useEffect(() => {
+//     const userRecords = JSON.parse(localStorage.getItem("userRecord"));
 
-	let element = useRoutes([
-		/* below should route to the sign-in page, but by default the Home page */
-		{ path: "/", element: <Homepage /> },
-		{ path: "/contact", element: <Contact /> },
-		{ path: "/about", element: <Aboutpage /> },
-		{ path: "/signin", element: <SignIn /> },
-		{ path: "/signup", element: <SignUp /> },
-		{ path: "/reset_password", element: <ResetPassword /> },
-		/* Test code below. Dash can only be accessed via guards. */
-		{
-			path: "/dashboard",
-			element: <GuestDashboard />,
-		},
-		{
-			path: "/admin/dashboard",
-			element: <AdminDashboard />,
-		},
-	]);
+//     if (userRecords.is_admin) {
+//       navigate("/admin/dashboard");
+//     } else {
+//       navigate("/dashboard");
+//     }
+//   }, [navigate]);
 
-	return <main className="bg-gray-100 h-[980px] md:h-[1100px]">{element}</main>;
+  let routes = useRoutes([
+    { path: "/", element: <Homepage /> },
+    { path: "/contact", element: <Contact /> },
+    { path: "/about", element: <Aboutpage /> },
+    { path: "/signin", element: <SignIn /> },
+    { path: "/signup", element: <SignUp /> },
+    { path: "/reset_password", element: <ResetPassword /> },
+    { path: "/dashboard", element: <GuestDashboard /> },
+    { path: "/admin/dashboard", element: <AdminDashboard /> },
+  ]);
+
+  return (
+    <main className="bg-gray-100 h-[980px] md:h-[1100px]">{routes}</main>
+  );
 }
 
 export default App;

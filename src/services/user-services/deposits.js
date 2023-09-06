@@ -11,9 +11,11 @@ export async function depositToWallet(amount, currency) {
       email: user.email,
       currency,
       amount,
+      pending: true
     };
 
-    await addDoc(collection(db, "deposits"), deposit);
+    const data = await addDoc(collection(db, "deposits"), deposit);
+    localStorage.setItem("userWallet", JSON.stringify(data));
     return { message: "Wallet deposit saved!", saved: true };
   } catch (error) {
     console.error("Error adding document: ", error);
@@ -49,24 +51,19 @@ export async function fetchDepositRecords() {
 }
 
 export async function execFundDeposit(username, amount) {
-  const user = JSON.parse(localStorage.getItem("userWallet"));
+  const user = JSON.parse(localStorage.getItem("userRecord"));
   try {
-    try {
-      const querySnapshot = await getDocs(collection(db, 'deposits'));
-      const depositDoc = querySnapshot.docs.find(doc => doc.data().username === username);
-      if (depositDoc) {
-        const depositRef = doc(db, 'deposits', depositDoc.id);
-        await updateDoc(depositRef, { amount });
-        return { message: 'update success', saved: true };
-      } else {
-        console.error('Deposit document not found');
-        return { message: 'Deposit document not found', saved: false };
-      }
-    } catch (error) {
-      console.error("fetchDeposit error: ", error);
+    const querySnapshot = await getDocs(collection(db, 'deposits'));
+    const depositDoc = querySnapshot.docs.find(doc => doc.data().email === user.email);
+    if (depositDoc) {
+      const depositRef = doc(db, 'deposits', depositDoc.id);
+      await updateDoc(depositRef, { amount });
+      return { message: 'update success', saved: true };
+    } else {
+      console.error('Deposit document not found');
+      return { message: 'Deposit document not found', saved: false };
     }
-    
   } catch (error) {
-    console.error("fundDeposit err: ", error)
+    console.error("fetchDeposit error: ", error);
   }
 }

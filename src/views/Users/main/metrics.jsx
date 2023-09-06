@@ -3,13 +3,10 @@ import check from "../../../assets/check.svg";
 import copy from "../../../assets/copy.svg";
 import { ReactSVG } from "react-svg";
 
-function metrics({ userAccount, userProfits, userWallet, width }) {
+function metrics({ userAccount, userBonus,userProfits, userWallet, width }) {
 	const [twoFactAuth, setTwoFActAuth] = useState(false);
 	const [sideWidth, setWidth] = useState(width);
 	const [copied, setCopied] = useState(false);
-	const [earnings, setEarnings] = useState(0);
-	const [balance, setBalance] = useState(0);
-	const [profit, setProfit] = useState(0);
 
 	useEffect(() => {
 		setWidth(width);
@@ -30,17 +27,17 @@ function metrics({ userAccount, userProfits, userWallet, width }) {
 				<div className="flex flex-col gap-5 md:flex-row">
 					<span className="dash_cards">
 						<h3>Wallet Balance</h3>
-						<p> $ {userWallet?.amount} </p>
+						<p> $ {userWallet?.amount || 0} </p>
 					</span>
 					<span className="dash_cards">
 						<h3>Available Profit</h3>
-						<p> $ {userProfits?.profit} </p>
+						<p> $ {userProfits?.amount || 0} </p>
 					</span>
 				</div>
 				<div className="flex flex-col gap-5 md:flex-row">
 					<span className="dash_cards">
 						<h3>Referral Earnings</h3>
-						<p> $ {earnings} </p>
+						<p> $ {userBonus?.amount || 0} </p>
 					</span>
 					<span className="dash_cards">
 						<h3>2FA Security</h3>

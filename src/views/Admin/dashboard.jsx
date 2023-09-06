@@ -15,23 +15,42 @@ import Client from "./main/users/client";
 import ApprovedWithdraw from "./main/withdrawn/approved";
 import ViewPayment from "./layouts/viewPayment";
 import { adminState } from "../../services/state/state";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-function Dashboard(props) {
-	const [stateAdmin, setStateAdmin] = useRecoilState(adminState);
+function Dashboard() {
 	const [signal, setSignal] = useState(false);
+	const [stateAdmin, setStateAdmin] = useRecoilState(adminState);
+	const [userRecord, setUserRecord] = useState({});
+	const [wallets, setWallets] = useState([]);
+	const [users, setUsers] = useState([]);
+
+	useEffect(() => {
+		const userRecord = localStorage.getItem("userRecord");
+		const userRecords = localStorage.getItem("userRecords");
+		const userWallet = localStorage.getItem("userWallet")
+
+		if (userRecord) {
+			const parsedUserRecord = JSON.parse(userRecord);
+			const parsedUsers = JSON.parse(userRecords);
+			const parsedWallets = JSON.parse(userWallet)
+
+			setUserRecord(parsedUserRecord);
+			setWallets(parsedWallets);
+			setUsers(parsedUsers);
+		}
+	}, []);
 
 	return (
 		<div className="flex flex-row font-body">
 			<Sidebar signal={signal} setSignal={setSignal} />
 			<section className="h-[220px] w-full md:w-[95%] md:ml-auto flex flex-col justify-between items-center bg-blue-600">
 				<Header setSignal={setSignal} signal={signal} />
-				{stateAdmin.depositPending && <PendingDepo />}
+				{stateAdmin.depositPending && <PendingDepo users={users} deposits={wallets} />}
 				{stateAdmin.depositApproved && <ApprovedDepo />}
 				{stateAdmin.withdrawnPending && <PendingWithdraw />}
 				{stateAdmin.withdrawnApproved && <ApprovedWithdraw />}
 				{/*  */}
-				{stateAdmin.client && <Client />}
+				{stateAdmin.client && <Client userRecords={users} userRecord={userRecord} />}
 				{stateAdmin.dashboard && <Metrics />}
 				{stateAdmin.addStaff && <AddStaff />}
 				{stateAdmin.addBonus && <AddBonus />}

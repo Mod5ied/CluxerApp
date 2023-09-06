@@ -87,7 +87,7 @@ function account({ userAccount }) {
 				<animated.p
 					style={successMessageStyles}
 					id="success"
-					className="w-[330px] absolute flex flex-row gap-3 items-center bg-green-500 text-stone-50 px-5 py-3 ml-4 rounded-md"
+					className="w-[330px] absolute flex flex-row gap-3 items-center bg-green-500 text-stone-50 px-5 py-3 ml-4 md:ml-8 rounded-md"
 				>
 					<ReactSVG src={successSv} />
 					Account updated successfully!

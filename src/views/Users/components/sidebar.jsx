@@ -15,6 +15,7 @@ import lifeguard from "../../../assets/lifeguard.svg";
 import cluxter_logo from "../../../assets/Cluxtercoin Logo2.png";
 import { usersState, useToggleState } from "../../../services/state/state";
 import { isMobile } from "react-device-detect";
+import { execSignOut } from "../../../services/auth-services/auth";
 
 function sidebar({ handleShow, width }) {
 	const [sideWidth, setSideWidth] = useState(width);
@@ -26,25 +27,16 @@ function sidebar({ handleShow, width }) {
 	}, [width]);
 
 	const handleLogout = () => {
+		execSignOut();
 		navigate("/signin");
-		// const auth = getAuth();
-		// signOut(auth)
-		// 	.then(() => {
-		// 		// Sign-out successful.
-		// 		navigate("/login"); // redirect the user to login page after sign out
-		// 	})
-		// 	.catch((error) => {
-		// 		// An error happened.
-		// 		console.error(error);
-		// 	});
 	};
 	const toAdmin = () => navigate("/admin/dashboard");
 
 	return (
 		<section className="flex flex-col items-center h-full gap-10 py-5 overflow-hidden bg-transparent">
 			<div className="w-full h-[34px] flex flex-row-reverse justify-around items-center cursor-pointer">
-				<ReactSVG onClick={handleShow} src={bars} className="hidden md:block text-gray-100 " />
-				<ReactSVG onClick={handleShow} src={close} className="block md:hidden text-gray-100 " />
+				<ReactSVG onClick={handleShow} src={bars} className="hidden text-gray-100 md:block " />
+				<ReactSVG onClick={handleShow} src={close} className="block text-gray-100 md:hidden " />
 				{isMobile || sideWidth == "16%" ? <img onClick={toAdmin} src={cluxter_logo} alt="cluxtercoin-logo" className="w-[38%] h-full" /> : null}
 			</div>
 

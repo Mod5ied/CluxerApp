@@ -40,11 +40,10 @@ function signUp() {
       country,
       email,
       fullname: fullName,
+      username: userName,
       mobile: number,
       password,
       ref_name: referral,
-      userName,
-      is_admin: false,
     };
 
     setResp(await execSignUp(data));
@@ -75,14 +74,14 @@ function signUp() {
   return (
     <div className="h-screen py-12 bg-gray-100 font-body">
       {showSuccess && (
-        <animated.p
+        <animated.div
           style={successMessageStyles}
           id="success"
           className="w-[300px] absolute flex flex-row gap-3 items-center bg-green-500 text-stone-50 px-5 py-3 ml-4 rounded-md"
         >
           <ReactSVG src={success} />
           Account created successfully!
-        </animated.p>
+        </animated.div>
       )}
       <form onSubmit={handleSignUp} id="signup_form_main">
         <section className="w-full h-[10%]">
