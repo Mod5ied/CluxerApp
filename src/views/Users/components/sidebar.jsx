@@ -30,7 +30,7 @@ function sidebar({ handleShow, width }) {
 		execSignOut();
 		navigate("/signin");
 	};
-	const toAdmin = () => navigate("/admin/dashboard");
+	const toAdmin = () => navigate("/");
 
 	return (
 		<section className="flex flex-col items-center h-full gap-10 py-5 overflow-hidden bg-transparent">

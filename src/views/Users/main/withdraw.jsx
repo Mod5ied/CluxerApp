@@ -17,7 +17,7 @@ function withdraw({ pendingWithdraws }) {
 			setWalletType("")
 			setWalletName("")
 			setWalletAddress("");
-		}, 2000);
+		}, 500);
 	};
 
 	return (
@@ -40,7 +40,7 @@ function withdraw({ pendingWithdraws }) {
 					</span>
 					<span>
 						<label htmlFor="amount">Wallet Name</label>
-						<input className="withdraw_form_input" value={walllet} type="text" id="amount" onChange={(e) => setWalletName(e.target.value)} />
+						<input className="withdraw_form_input" value={walletName} type="text" id="amount" onChange={(e) => setWalletName(e.target.value)} />
 					</span>
 					<span>
 						<label htmlFor="amount">Wallet Address</label>

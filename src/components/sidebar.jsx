@@ -70,6 +70,8 @@ function sidebar({ signal, setSignal }) {
 		navigate("/signin");
 	};
 
+	const toAdmin = () => navigate("/");
+
 	return (
 		<animated.div style={props} className={`fixed left-0 z-30 flex flex-col gap-8 overflow-hidden bg-white items-center border-r border-gray-300 h-screen justify-center`}>
 			{!isExpanded && window.innerWidth > 768 ? (
@@ -83,7 +85,7 @@ function sidebar({ signal, setSignal }) {
 			{isExpanded && (
 				<section id="expanded" className="flex flex-row justify-around h-[64px] px-2 cursor-pointer">
 					<nav>
-						<img src={Logo} alt="Cluxter-logo" className="w-full h-full" />
+						<img onClick={toAdmin} src={Logo} alt="Cluxter-logo" className="w-full h-full" />
 					</nav>
 					{!isMobile && isExpanded && <ReactSVG onClick={handleExpand} src={hamburg} className="p-2 m-auto text-lg duration-200 rounded hover:bg-slate-100" />}
 					{isMobile && isExpanded && (
