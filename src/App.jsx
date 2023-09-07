@@ -12,15 +12,14 @@ import { useRoutes, useNavigate } from "react-router-dom";
 function App() {
   const navigate = useNavigate();
 
-//   useEffect(() => {
-//     const userRecords = JSON.parse(localStorage.getItem("userRecord"));
-
-//     if (userRecords.is_admin) {
-//       navigate("/admin/dashboard");
-//     } else {
-//       navigate("/dashboard");
-//     }
-//   }, [navigate]);
+useEffect(() => {
+  const userRecords = JSON.parse(localStorage.getItem("userRecord"));
+  if (userRecords.is_admin) {
+   navigate("/admin/dashboard");
+  } else {
+  navigate("/dashboard");
+  }
+ }, [navigate]);
 
   let routes = useRoutes([
     { path: "/", element: <Homepage /> },
