@@ -1,11 +1,8 @@
-import React, { useEffect, useState, useContext } from "react";
-// import { EventContext } from "../../../main";
+import React, { useState} from "react";
 
 function viewPaymentMethod() {
 	const [coin, setCoin] = useState("");
 	const [address, setAddress] = useState("");
-
-	// const emitter = useContext(EventContext);
 
 	// useEffect(() => {
 	// 	// const handler = (val) => setCoin(val);
@@ -31,7 +28,7 @@ function viewPaymentMethod() {
 
 			<form id="deposit_form_main" onSubmit={handleSubmit}>
 				<section className="w-full h-[15%] border-b border-gray-100">
-					<h2 className="py-2 text-xl md:text-xl font-medium">VIEW PAYMENT METHOD</h2>
+					<h2 className="py-2 text-xl font-medium md:text-xl">VIEW PAYMENT METHOD</h2>
 				</section>
 
 				<section id="signup_form_section">
@@ -50,7 +47,7 @@ function viewPaymentMethod() {
 				</section>
 
 				<span>
-					<button type="submit" className="reduce_submit_btn relative bottom-6">
+					<button type="submit" className="relative reduce_submit_btn bottom-6">
 						Confirm
 					</button>
 				</span>

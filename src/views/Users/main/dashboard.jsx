@@ -5,7 +5,7 @@ import Referrals from "../utils/referrals";
 import Security from "../utils/security";
 import Account from "../utils/account";
 import Support from "../utils/support";
-import Deposit from "../main/deposit";
+import Deposit from "./deposit";
 import Withdraw from "./withdraw";
 import Metrics from "./metrics";
 import Invest from "./invest";
@@ -26,6 +26,7 @@ function userDashboard() {
 	const [userBonus, setUserBonus] = useState({});
 	const [userWallet, setUserWallet] = useState({});
 	const [userProfits, setUserProfits] = useState({});
+	const [pendingWithdraw, setPendingWith] = useState({});
 
 	const handleMouseOver = () => {
 		if (!isClicked.current) {
@@ -58,20 +59,23 @@ function userDashboard() {
 		const userRecord = localStorage.getItem("userRecord");
 		const userRecords = localStorage.getItem("userRecords");
 		const userBonus = localStorage.getItem("userBonus");
-
+		const pendingWithdraw = localStorage.getItem("pendingWithdraw");
 
 		if (userRecord) {
 			const parsedUserWalletData = JSON.parse(userWalletData);
 			const parsedUserRecord = JSON.parse(userRecord);
 			const parsedUserRecords = JSON.parse(userRecords);
 			const parsedUserProfits = JSON.parse(userProfits);
-			const parsedUserBonus = JSON.parse(userBonus)
+			const parsedUserBonus = JSON.parse(userBonus);
+			const parsedPendingWithdraw = JSON.parse(pendingWithdraw);
+			
 
 			setUserWallet(parsedUserWalletData);
 			setUserProfits(parsedUserProfits);
 			setUserBonus(parsedUserBonus);
 			setUserData(parsedUserRecord);
 			setUsers(parsedUserRecords);
+			setPendingWith(parsedPendingWithdraw);
 		}
 		return () => {
 			sidebarElement.removeEventListener("mouseover", handleMouseOver);
@@ -110,7 +114,7 @@ function userDashboard() {
 					{stateGuest.accountPage && <Account userAccount={userData} />}
 					{stateGuest.dashboard && <Metrics userAccount={userData} userBonus={userBonus} userProfits={userProfits} userWallet={userWallet} width={width} />}
 					{stateGuest.referralsPage && <Referrals />}
-					{stateGuest.withdrawPage && <Withdraw />}
+					{stateGuest.withdrawPage && <Withdraw pendingWithdraws={pendingWithdraw} />}
 					{stateGuest.securityPage && <Security userAccount={userData} />}
 					{stateGuest.depositPage && <Deposit />}
 					{stateGuest.supportPage && <Support />}

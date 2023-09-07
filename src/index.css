@@ -5,10 +5,10 @@
 @tailwind utilities;
 @tailwind base;
 
-/* * {
-	font-family: "Nunito", sans-serif;
+* {
+	/* font-family: "Nunito", sans-serif; */
 	outline: 1px solid green;
-} */
+}
 
 #homepage-main {
 	/* background-image: url("./assets/slide1.jpg"); */

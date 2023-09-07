@@ -23,20 +23,28 @@ function Dashboard() {
 	const [userRecord, setUserRecord] = useState({});
 	const [wallets, setWallets] = useState([]);
 	const [users, setUsers] = useState([]);
+	const [pendingWithdraw, setPendingWith] = useState([]);
+	const [approvedWithdraw, setApprovedWith] = useState([]);
 
 	useEffect(() => {
+		const userWallet = localStorage.getItem("userWallet");
 		const userRecord = localStorage.getItem("userRecord");
 		const userRecords = localStorage.getItem("userRecords");
-		const userWallet = localStorage.getItem("userWallet")
+		const penWithdraw = localStorage.getItem("pendingWithdraw");
+		const appWithdraw = localStorage.getItem("approvedWithdraw");
 
 		if (userRecord) {
 			const parsedUserRecord = JSON.parse(userRecord);
 			const parsedUsers = JSON.parse(userRecords);
-			const parsedWallets = JSON.parse(userWallet)
+			const parsedWallets = JSON.parse(userWallet);
+			const parsedPendingWithdraw = JSON.parse(penWithdraw);
+			const parsedApprovedWithdraw = JSON.parse(appWithdraw);
 
 			setUserRecord(parsedUserRecord);
 			setWallets(parsedWallets);
 			setUsers(parsedUsers);
+			setPendingWith(parsedPendingWithdraw);
+			setApprovedWith(parsedApprovedWithdraw);
 		}
 	}, []);
 
@@ -44,7 +52,7 @@ function Dashboard() {
 		<div className="flex flex-row font-body">
 			<Sidebar signal={signal} setSignal={setSignal} />
 			<section className="h-[220px] w-full md:w-[95%] md:ml-auto flex flex-col justify-between items-center bg-blue-600">
-				<Header setSignal={setSignal} signal={signal} />
+				<Header user={userRecord} setSignal={setSignal} signal={signal} />
 				{stateAdmin.depositPending && <PendingDepo users={users} deposits={wallets} />}
 				{stateAdmin.depositApproved && <ApprovedDepo />}
 				{stateAdmin.withdrawnPending && <PendingWithdraw />}

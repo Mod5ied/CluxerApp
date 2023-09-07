@@ -1,26 +1,37 @@
 import React, { useState } from "react";
 import DataTable from "../utils/dataTable";
+import { requestWithdrawal } from "../../../services/user-services/withdrawals";
 
-function withdraw() {
-	const [amount, setAmount] = useState("");
+function withdraw({ pendingWithdraws }) {
+	const [amount, setAmount] = useState(0);
 	const [walletType, setWalletType] = useState("");
 	const [walletName, setWalletName] = useState("");
 	const [walletAddress, setWalletAddress] = useState("");
 
-	const handleSubmit = () => {};
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		await requestWithdrawal(amount, walletType, walletName, walletAddress);
+
+		setTimeout(() => {
+			setAmount("")
+			setWalletType("")
+			setWalletName("")
+			setWalletAddress("");
+		}, 2000);
+	};
 
 	return (
-		<div className="flex flex-col items-center gap-5 md:gap-4 h-full bg-gray-100">
-			<form id="withdraw_form" onClick={handleSubmit}>
-				<h2 className="text-xl text-yellow-400 font-bold">Start Request</h2>
-				<section className="w-full h-full flex flex-col justify-between gap-2 md:gap-5">
+		<div className="flex flex-col items-center h-full gap-5 bg-gray-100 md:gap-4">
+			<form id="withdraw_form" onSubmit={handleSubmit}>
+				<h2 className="text-xl font-bold text-yellow-400">Start Withdraw Request</h2>
+				<section className="flex flex-col justify-between w-full h-full gap-2 md:gap-5">
 					<span>
 						<label htmlFor="amount">Amount</label>
-						<input className="withdraw_form_input" type="number" id="amount" onChange={(e) => setAmount(e.target.value)} />
+						<input className="withdraw_form_input" value={amount} type="number" id="amount" onChange={(e) => setAmount(e.target.value)} />
 					</span>
 					<span>
 						<label htmlFor="withdraw">Withdraw Type</label>
-						<select className="withdraw_form_input" id="withdraw" onChange={(e) => setWalletType(e.target.value)}>
+						<select className="withdraw_form_input" value={walletType} id="withdraw" onChange={(e) => setWalletType(e.target.value)}>
 							<option value=""></option>
 							<option value="bitcoin">Trading profit</option>
 							<option value="ethereum">Account balance</option>
@@ -29,11 +40,11 @@ function withdraw() {
 					</span>
 					<span>
 						<label htmlFor="amount">Wallet Name</label>
-						<input className="withdraw_form_input" type="text" id="amount" onChange={(e) => setWalletName(e.target.value)} />
+						<input className="withdraw_form_input" value={walllet} type="text" id="amount" onChange={(e) => setWalletName(e.target.value)} />
 					</span>
 					<span>
 						<label htmlFor="amount">Wallet Address</label>
-						<input className="withdraw_form_input" type="text" id="amount" onChange={(e) => setWalletAddress(e.target.value)} />
+						<input className="withdraw_form_input" value={walletAddress} type="text" id="amount" onChange={(e) => setWalletAddress(e.target.value)} />
 					</span>
 					<span className="">
 						<button id="withdraw_btn" type="submit">
@@ -44,7 +55,7 @@ function withdraw() {
 			</form>
 
 			<div className="h-[200px] w-full">
-				<DataTable tableContext={`Cashout History`} />
+				<DataTable tableContext={`Cashout History`} tableData={pendingWithdraws} />
 			</div>
 		</div>
 	);

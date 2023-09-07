@@ -12,9 +12,9 @@ import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 // import { adminState, useToggleState } from "../services/state/state";
 
-function header({ setSignal, signal }) {
-	const [activeAction, setActiveAction] = useState("");
+function header({ setSignal, signal, user }) {
 	const [mailState, setMailState] = useState(false);
+	const [activeAction, setActiveAction] = useState("");
 	const [isMobileVisible, setIsMobileVisible] = useState(isMobile);
 
 	const handleClick = (id) => {
@@ -61,7 +61,7 @@ function header({ setSignal, signal }) {
 					<span>
 						{activeAction === "messages" ? <Notifier /> : null}
 						{activeAction === "quick_actions" ? <QuickActions /> : null}
-						{activeAction === "avatar" ? <Accounts  /> : null}
+						{activeAction === "avatar" ? <Accounts email={user.email} role={user.is_admin ? "Admin" : "Client"} /> : null}
 					</span>
 				</section>
 			)}

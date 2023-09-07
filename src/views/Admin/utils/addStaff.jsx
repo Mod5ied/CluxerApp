@@ -84,19 +84,19 @@ function addStaff() {
 
 				<section id="staff-signup_formSection">
 					<span className="flex flex-col justify-between h-full p-2 w-full md:w-[50%]">
-						<div class="staff-input_section">
+						<div className="staff-input_section">
 							<span className="input_span">
 								<label htmlFor="username">First name</label>
 								<input className="input_span_input" type="text" value={firstName} placeholder="First name" onChange={handleFirstname} />
 							</span>
 						</div>
-						<div class="staff-input_section">
+						<div className="staff-input_section">
 							<span className="input_span">
 								<label htmlFor="username">Email</label>
 								<input className="input_span_input" type="text" value={email} placeholder="Email" onChange={handleEmail} />
 							</span>
 						</div>
-						<div class="staff-input_section">
+						<div className="staff-input_section">
 							<span className="input_span">
 								<label htmlFor="username">Password</label>
 								<input
@@ -111,19 +111,19 @@ function addStaff() {
 					</span>
 
 					<span className="flex flex-col justify-between h-full p-2 w-full md:w-[50%]">
-						<div class="staff-input_section">
+						<div className="staff-input_section">
 							<span className="input_span">
 								<label htmlFor="username">Username</label>
 								<input className="input_span_input" value={username} type="text" placeholder="Username" onChange={handleUsername} />
 							</span>
 						</div>
-						<div class="staff-input_section">
+						<div className="staff-input_section">
 							<span className="input_span">
 								<label htmlFor="username">Phone number</label>
 								<input className="input_span_input" value={phone} type="number" placeholder="Phone number" onChange={handlePhone} />
 							</span>
 						</div>
-						<div class="staff-input_section">
+						<div className="staff-input_section">
 							<span className="input_span">
 								<label htmlFor="username">Confirm Password</label>
 								<input

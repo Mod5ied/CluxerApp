@@ -230,7 +230,6 @@ function sidebar({ signal, setSignal }) {
 				</section>
 
 				<section className="static bottom-0 w-full">
-					{/* create a reusable btn here. */}
 					<button
 						onClick={handleLogout}
 						className="flex flex-row items-center justify-center w-4/5 gap-2 p-2 m-auto text-center text-gray-100 bg-blue-700 rounded-md"

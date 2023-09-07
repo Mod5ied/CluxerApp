@@ -1,25 +1,22 @@
-import React, { useContext } from "react";
+import React from "react";
 import { adminState, useToggleState } from "../../../services/state/state";
-// import { EventContext } from "../../../main";
 
 function paymentMethod(prop) {
 	const toggleAdminState = useToggleState(adminState);
-	// const emitter = useContext(EventContext);
 
 	const handleToggleState = (coin) => {
-		// emitter.emit("toggleCoin", { coin: coin });
 		toggleAdminState("viewPayment");
 	};
-
+	
 	return (
 		<div className="bg-transparent flex flex-col gap-8 p-2 absolute md:h-[70%] w-full md:w-[80%] top-20">
 			<section className="flex flex-row justify-between py-2">
-				<span className="flex flex-col justify-center md:justify-start gap-6">
+				<span className="flex flex-col justify-center gap-6 md:justify-start">
 					<h2 className="text-xl font-semibold text-gray-100">Payment Method</h2>
 				</span>
 				<button className="reduce_btn h-11">Add Payment Method</button>
 			</section>
-			<section className="flex flex-col items-center md:items-start md:flex-row w-full gap-8 ">
+			<section className="flex flex-col items-center w-full gap-8 md:items-start md:flex-row ">
 				<div className="method_cards">
 					<section>
 						<h3>Bitcoin</h3>

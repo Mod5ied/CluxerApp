@@ -2,22 +2,23 @@ import { collection, doc, addDoc, getDocs, updateDoc, query, where, getDoc } fro
 import { execFetchBonus, fetchProfit, fetchWalletData } from "../user-services/account";
 import { getCurrentDate } from "../user-services/deposits";
 import { db } from "../db_config";
+import { fetchApprovedWithdrawal, fetchPendingWithdrawal } from "../user-services/withdrawals";
 
 export async function isAuthenticated() {
   const userRecord = localStorage.getItem("userRecord");
   !!userRecord
 }
 
-async function getUserByUsernameAndPass(username, password) {
-  const q = query(collection(db, "users"), where("username", "==", username), where("password", "==", password));
-  const querySnapshot = await getDocs(q);
-  if (!querySnapshot.empty) {
-    return querySnapshot.docs[0].data();
-  } else {
-    console.log('No user found!');
-    return null;
-  }
-}
+// async function getUserByUsernameAndPass(username, password) {
+//   const q = query(collection(db, "users"), where("username", "==", username), where("password", "==", password));
+//   const querySnapshot = await getDocs(q);
+//   if (!querySnapshot.empty) {
+//     return querySnapshot.docs[0].data();
+//   } else {
+//     console.log('No user found!');
+//     return null;
+//   }
+// }
 
 async function execGenReferrals({ email, ref_name }) {
   try {
@@ -91,12 +92,14 @@ export async function execSignInStaff(details) {
     if (databaseUserRecord) {
       localStorage.setItem("userRecord", JSON.stringify(databaseUserRecord));
       localStorage.setItem("userRecords", JSON.stringify(users));
-      await fetchWalletData();
-      await execFetchBonus();
       await fetchProfit();
+      await execFetchBonus();
+      await fetchWalletData();
+      await fetchEntityCount();
+      await fetchPendingWithdrawal();
+      await fetchApprovedWithdrawal();
       return true;
     }
-    return false;
   } catch (error) {
     console.error(`Signin Error: ${error}`);
     return false;
@@ -122,7 +125,9 @@ export function execSignOut() {
   localStorage.removeItem("userWallet");
   localStorage.removeItem("userProfits");
   localStorage.removeItem("userBonus");
-
+  localStorage.removeItem("entityCount");
+  localStorage.removeItem("approvedWithdrawal");
+  localStorage.removeItem("pendingWithdrawal");
 }
 
 export async function updateUser(fullname, mobile, country, city, address, zip_code, email) {
@@ -152,5 +157,22 @@ export async function updatePassword(email, newPassword) {
   } catch (error) {
     console.error("Error updating password: ", error);
     throw error; // Re-throw the error to allow callers to handle it
+  }
+}
+
+export async function fetchEntityCount() {
+  try {
+    const adminQuerySnapshot = await getDocs(collection(db, "admin"));
+    const adminCount = adminQuerySnapshot.size;
+
+    const usersQuerySnapshot = await getDocs(collection(db, "users"));
+    const usersCount = usersQuerySnapshot.size;
+
+    const entityCount = { admin: adminCount, clients: usersCount };
+    localStorage.setItem("entityCount", JSON.stringify(entityCount));
+    return true;
+  } catch (error) {
+    console.error("Error fetching entity count: ", error);
+    throw error;
   }
 }
