@@ -1,25 +1,39 @@
-import React, { useState } from "react";
 import { ReactSVG } from "react-svg";
+import Loader from "../../utils/loader";
 import bin from "../../../../assets/bin.svg";
+import React, { useEffect, useState } from "react";
 import arrDown from "../../../../assets/arrow-down.svg";
 import arrDouble from "../../../../assets/arrow-double.svg";
 import { adminState, useToggleState } from "../../../../services/state/state";
 
-function pendingDepo({users, deposits}) {
-	// const pendingUsers = [
-	// 	{ id: 1, details: ["ogwuru patrick", "paddy@email.com", "234-701-362-0343"], username: "patrick", amount: "$4000", status: true, actions: false },
-	// 	{ id: 2, details: ["ogwuru patrick", "paddy@email.com", "234-701-362-0343"], username: "patrick", amount: "$4000", status: true, actions: false },
-	// 	{ id: 3, details: ["john doe", "john@email.com", "234-801-362-0343"], username: "patrick", amount: "$4000", status: true, actions: false },
-	// 	{ id: 4, details: ["john doe", "john@email.com", "234-801-362-0343"], username: "patrick", amount: "$4000", status: true, actions: false },
-	// 	{ id: 5, details: ["jane doe", "jane@email.com", "234-701-362-0343"], username: "patrick", amount: "$4000", status: true, actions: false },
-	// 	{ id: 6, details: ["jane doe", "jane@email.com", "234-701-362-0343"], username: "patrick", amount: "$4000", status: true, actions: false },
-	// 	{ id: 7, details: ["lana lang", "lang@email.com", "234-701-362-0343"], username: "patrick", amount: "$4000", status: true, actions: false },
-	// 	{ id: 8, details: ["lana lang", "lang@email.com", "234-701-362-0343"], username: "patrick", amount: "$4000", status: true, actions: false },
-	// 	{ id: 9, details: ["ogwuru patrick", "paddy@email.com", "234-701-362-0343"], username: "patrick", amount: "$4000", status: true, actions: false },
-	// 	{ id: 10, details: ["ogwuru patrick", "paddy@email.com", "234-701-362-0343"], username: "patrick", amount: "$4000", status: true, actions: false },
-	// ];
-	const [paginateNumDrop, setPaginateNum] = useState(false);
+function pendingDepo({ deleteDepo, updateDepo }) {
+	const [paginateNumDrop] = useState(false);
+	const [deposits, setDeposits] = useState([]);
+	const [approve, setApprove] = useState(false);
 	const toggleAdminState = useToggleState(adminState);
+
+	const updateDeposit = (val) => {
+		setApprove(true);
+		setTimeout(async () => {
+			await updateDepo(val);
+			setApprove(false);
+		}, 500);
+	};
+
+	const deleteDeposit = (val) => {
+		setApprove(true);
+		setTimeout(async () => {
+			await deleteDepo(val);
+			setApprove(false);
+		}, 500);
+	};
+
+	useEffect(() => {
+		setTimeout(() => {
+			const reqs = JSON.parse(localStorage.getItem("userDeposits"));
+			setDeposits(reqs);
+		}, 600);
+	}, [deleteDeposit, updateDeposit]);
 
 	return (
 		<div className="bg-transparent flex flex-col gap-4 py-2 px-2 md:p-2 absolute h-full w-full md:w-[80%] top-20">
@@ -38,14 +52,14 @@ function pendingDepo({users, deposits}) {
 
 				{/* table section. */}
 				<div className="flex flex-col gap-4 overflow-x-scroll md:w-full">
-					<div className="flex flex-col justify-center overflow-x-scroll md:flex-row md:justify-between">
-						<span className="flex flex-row items-center w-full gap-1 px-4 md:px-0 md:w-1/2">
+					<div className="flex flex-col justify-center overflow-x-scroll md:overflow-x-hidden md:flex-row md:justify-between">
+						<div className="flex flex-row items-center w-full gap-1 px-4 md:px-0 md:w-1/2">
 							Show
-							<p className="flex flex-row items-center justify-center gap-2 px-1 text-gray-800 border rounded-md hover:bg-gray-200">
+							<div className="flex flex-row items-center justify-center gap-2 px-1 text-gray-800 border rounded-md hover:bg-gray-200">
 								10
-								<span className="flex flex-col items-center">
+								<div className="flex flex-col items-center">
 									<ReactSVG src={arrDown} className="p-1 rounded-md hover:bg-gray-200" />
-								</span>
+								</div>
 								{paginateNumDrop && (
 									<span id="drop" className="absolute overflow-hidden bg-gray-100 rounded-md">
 										<p className="hover:bg-gray-300 px-2 py-1 w-[50px]">10</p>
@@ -54,9 +68,9 @@ function pendingDepo({users, deposits}) {
 										<p className="hover:bg-gray-300 px-2 py-1 w-[50px]">All</p>
 									</span>
 								)}
-							</p>
+							</div>
 							entries
-						</span>
+						</div>
 
 						<span className="flex flex-row items-center w-full gap-1 px-4 md:justify-end md:px-0 md:w-1/2">
 							Search
@@ -66,6 +80,13 @@ function pendingDepo({users, deposits}) {
 
 					{/* table below: */}
 					<div className="flex flex-col w-full overflow-scroll">
+						{approve && (
+							<div className="absolute rounded-md cursor-wait md:mb-5 w-full md:w-[95%] h-[400px] bg-gray-600 bg-opacity-50 flex flex-col justify-center items-center gap-2">
+								<Loader />
+								<p className="text-blue-600 font-bold">Processing, please wait!</p>
+							</div>
+						)}
+
 						<span className="flex flex-row w-[640px] px-4 md:px-0 md:w-full text-gray-100 bg-blue-500 md:rounded-t-md">
 							<h3 className="h-[60px] md:w-[10%] w-[10%]  flex items-center justify-around md:pl-5 ">
 								S.N <ReactSVG src={arrDouble} className="text-gray-600" />
@@ -85,35 +106,43 @@ function pendingDepo({users, deposits}) {
 							<h3 className="h-[60px] md:w-[20%] w-[25%] flex items-center pl-12 md:pl-28 ">Actions</h3>
 						</span>
 						{/* 10 list below */}
-						{users.map((user, index) => {
-							 const deposit = deposits[index]; 
-							return (
-								<span key={index} className={`flex flex-row w-[640px] px-4 md:px-0 md:w-full ${index % 2 === 0 ? "bg-gray-200" : "bg-white"}`}>
-									<p className="h-[75px] md:h-[63px] md:w-[10%] w-[15%] text-gray-800 flex items-center md:px-1 md:ml-8">
-										{++index}
-									</p>
-									<div className="h-[75px] md:h-[63px] md:w-[35%] w-[35%] text-gray-800 flex flex-col justify-between md:pl-6 py-1 md:ml-8  md:overflow-hidden">
-										<h5 className="text-sm">{user.fullname}</h5>
-										<h5 className="text-sm">{user.email}</h5>
-										<h5 className="text-sm">{user.mobile}</h5>
-									</div>
-									<p className="h-[75px] md:h-[63px] md:w-[20%] w-[20%] text-gray-800 flex items-center pl-6 ml-8">
-										{user.username}
-									</p>
-									<p className="h-[75px] md:h-[63px] md:w-[20%] w-[10%] text-gray-800 flex items-center pl-6 md:ml-8">{deposit.amount}</p>
-									<p className="h-[75px] md:h-[63px] md:w-[25%] w-[20%] text-gray-800 flex items-center pl-6 md:ml-8">
-										<button type="submit"> {!user.status ? "Approved" : "Pending"} </button>
-									</p>
-									<p className="h-[75px] md:h-[63px] md:w-[25%] w-[25%] text-gray-800 flex items-center gap-2 justify-center pl-6 ml-8">
-										<button className="px-3 py-1 duration-200 bg-blue-600 rounded text-gray-50 hover:bg-blue-400">Edit</button>
-										<ReactSVG
-											src={bin}
-											className="py-[0.40rem] px-3 rounded bg-red-600 text-gray-50 hover:bg-red-400 cursor-pointer duration-200"
-										/>
-									</p>
-								</span>
-							);
-						})}
+						{!deposits || !deposits.length ? (
+							<p className="text-stone-800 py-4">No deposits found</p>
+						) : (
+							deposits.map((deposit, index) => {
+								return (
+									<span
+										key={index}
+										className={`flex flex-row w-[640px] px-4 md:px-0 md:w-full ${index % 2 === 0 ? "bg-gray-200" : "bg-white"}`}
+									>
+										<p className="h-[75px] md:h-[63px] md:w-[10%] w-[15%] text-gray-800 flex items-center md:px-1 md:ml-8">{++index}</p>
+										<div className="h-[75px] md:h-[63px] md:w-[35%] w-[35%] text-gray-800 flex flex-col justify-between md:pl-6 py-1 md:ml-8  md:overflow-hidden">
+											<h5 className="text-sm">{deposit.fullname}</h5>
+											<h5 className="text-sm">{deposit.email}</h5>
+											<h5 className="text-sm">{deposit.mobile}</h5>
+										</div>
+										<p className="h-[75px] md:h-[63px] md:w-[20%] w-[20%] text-gray-800 flex items-center pl-6 ml-8">{deposit.username}</p>
+										<p className="h-[75px] md:h-[63px] md:w-[20%] w-[10%] text-gray-800 flex items-center pl-6 md:ml-8">{deposit.amount}</p>
+										<p className="h-[75px] md:h-[63px] md:w-[25%] w-[20%] text-gray-800 flex items-center pl-6 md:ml-8">
+											<button type="submit"> {!deposit.pending ? "Approved" : "Pending"} </button>
+										</p>
+										<div className="h-[75px] md:h-[63px] md:w-[25%] w-[25%] text-gray-800 flex items-center gap-2 justify-center pl-6 ml-8">
+											<button
+												onClick={() => updateDeposit(deposit?.email)}
+												className="px-3 py-1 duration-200 bg-blue-600 rounded text-sm text-gray-50 hover:bg-blue-400"
+											>
+												Approve
+											</button>
+											<ReactSVG
+												onClick={() => deleteDeposit(deposit?.email)}
+												src={bin}
+												className="py-[0.40rem] px-3 rounded bg-red-600 text-gray-50 hover:bg-red-400 cursor-pointer duration-200"
+											/>
+										</div>
+									</span>
+								);
+							})
+						)}
 					</div>
 
 					{/* sectioning by right. */}

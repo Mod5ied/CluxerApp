@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 
-function dataTable({ tableContext, request }) {
-	const [req, setRequest] = useState(null)
+function dataTable({ tableContext, requests }) {
+	const [req, setRequest] = useState(null);
 
 	useEffect(() => {
-		setRequest(request)
-	}, [request]);
+		setRequest(requests);
+	}, [requests]);
 	return (
-		<section className="w-full h-full overflow-x-scroll overflow-y-hidden rounded-md bg-stone-900 md:overflow-hidden">
+		<section className="w-full overflow-x-scroll rounded-md bg-stone-900 md:overflow-hidden">
 			<h3 className="h-[70px] text-gray-50 font-bold p-4">{tableContext}</h3>
-			<div className="border-y border-blue-700 h-[50px] w-[450px] md:w-full">
+			<div className="flex flex-col gap-5 border-b border-blue-700 w-[450px] md:w-full">
 				<div id="head" className="h-full">
 					<span className="flex flex-row items-center h-full">
 						<p className="text-blue-700 text-xs text-center w-[90px] md:w-[15%] px-3">S/N</p>
@@ -20,17 +20,28 @@ function dataTable({ tableContext, request }) {
 						<p className="text-blue-700 text-xs text-center w-[40%] md:w-[10%]">CREATED</p>
 					</span>
 				</div>
-				{request ? (
-					<div id="data-loaded" className="px-4 py-6 text-gray-100" key={key}>
-						<p className="text-sm text-stone-200"> {key} </p>
-						<p className="text-sm text-stone-200"> {req.transact_id} </p>
-						<p className="text-sm text-stone-200"> {req.amount} </p>
-						<p className="text-sm text-stone-200"> {req.currency} </p>
-						<p className="text-sm text-stone-200"> {req.pending && "Pending"} </p>
-						<p className="text-sm text-stone-200"> {req.created} </p>
-					</div>
+				{!requests || requests.length === 0 ? (
+					<p className="p-2 text-sm">No withdrawals found</p>
+				) : Array.isArray(requests) ? (
+					requests.map((req, index) => (
+						<div id="data-loaded" className="flex flex-row py-6 text-gray-100" key={index}>
+							<p className="text-sm text-stone-200 text-center w-[90px] md:w-[15%] px-3"> {index} </p>
+							<p className="text-sm text-stone-200 text-center w-[60%] md:w-[25%]"> {req.transact_id} </p>
+							<p className="text-sm text-stone-200 text-center w-[50%] md:w-[20%]"> {req.amount} </p>
+							<p className="text-sm text-stone-200 text-center w-[45%] md:w-[15%]"> {req.currency} </p>
+							<p className="text-sm text-stone-200 text-center w-[45%] md:w-[15%]"> {req.pending && "Pending"} </p>
+							<p className="text-sm text-stone-200 text-center w-[40%] md:w-[10%]"> {req.created} </p>
+						</div>
+					))
 				) : (
-					<p className="px-4 py-6 text-gray-100">No data found</p>
+					<div id="data-loaded" className="flex flex-row py-6 text-gray-100">
+						<p className="text-sm text-stone-200 text-center w-[90px] md:w-[15%] px-3"> 1 </p>
+						<p className="text-sm text-stone-200 text-center w-[60%] md:w-[25%]"> {requests.transact_id} </p>
+						<p className="text-sm text-stone-200 text-center w-[50%] md:w-[20%]"> {requests.amount} </p>
+						<p className="text-sm text-stone-200 text-center w-[45%] md:w-[15%]"> {requests.currency} </p>
+						<p className="text-sm text-stone-200 text-center w-[45%] md:w-[15%]"> {requests.pending && "Pending"} </p>
+						<p className="text-sm text-stone-200 text-center w-[40%] md:w-[10%]"> {requests.created} </p>
+					</div>
 				)}
 			</div>
 		</section>

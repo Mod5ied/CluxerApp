@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DataTable from "../utils/dataTable";
 import { requestWithdrawal } from "../../../services/user-services/withdrawals";
 
-function withdraw({ pendingWithdraws }) {
+function withdraw() {
 	const [amount, setAmount] = useState(0);
 	const [walletType, setWalletType] = useState("");
 	const [walletName, setWalletName] = useState("");
+	const [withdrawals, setWithdrawals] = useState([]);
 	const [walletAddress, setWalletAddress] = useState("");
 
 	const handleSubmit = async (e) => {
@@ -13,12 +14,19 @@ function withdraw({ pendingWithdraws }) {
 		await requestWithdrawal(amount, walletType, walletName, walletAddress);
 
 		setTimeout(() => {
-			setAmount("")
-			setWalletType("")
-			setWalletName("")
+			setAmount("");
+			setWalletType("");
+			setWalletName("");
 			setWalletAddress("");
 		}, 500);
 	};
+
+	useEffect(() => {
+		setTimeout(() => {
+			const withdraw = JSON.parse(localStorage.getItem("pendingWithdraw"));
+			setWithdrawals(withdraw);
+		}, 900);
+	}, [handleSubmit]);
 
 	return (
 		<div className="flex flex-col items-center h-full gap-5 bg-gray-100 md:gap-4">
@@ -55,7 +63,7 @@ function withdraw({ pendingWithdraws }) {
 			</form>
 
 			<div className="h-[200px] w-full">
-				<DataTable tableContext={`Cashout History`} tableData={pendingWithdraws} />
+				<DataTable tableContext={`Cashout History`} tableData={withdrawals} />
 			</div>
 		</div>
 	);

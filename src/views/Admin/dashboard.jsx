@@ -16,47 +16,46 @@ import ApprovedWithdraw from "./main/withdrawn/approved";
 import ViewPayment from "./layouts/viewPayment";
 import { adminState } from "../../services/state/state";
 import { useEffect, useState } from "react";
+import { deleteDeposit, updateDeposit } from "../../services/user-services/deposits";
+import { approveWithdrawal, deleteWithdrawal } from "../../services/user-services/withdrawals";
 
 function Dashboard() {
 	const [signal, setSignal] = useState(false);
 	const [stateAdmin, setStateAdmin] = useRecoilState(adminState);
-	const [userRecord, setUserRecord] = useState({});
-	const [wallets, setWallets] = useState([]);
 	const [users, setUsers] = useState([]);
-	const [pendingWithdraw, setPendingWith] = useState([]);
+	const [userRecord, setUserRecord] = useState({});
 	const [approvedWithdraw, setApprovedWith] = useState([]);
+	const [approvedDeposits, setApprovedDepo] = useState([]);
 
 	useEffect(() => {
-		const userWallet = localStorage.getItem("userWallet");
 		const userRecord = localStorage.getItem("userRecord");
 		const userRecords = localStorage.getItem("userRecords");
-		const penWithdraw = localStorage.getItem("pendingWithdraw");
-		const appWithdraw = localStorage.getItem("approvedWithdraw");
 
 		if (userRecord) {
-			const parsedUserRecord = JSON.parse(userRecord);
-			const parsedUsers = JSON.parse(userRecords);
-			const parsedWallets = JSON.parse(userWallet);
-			const parsedPendingWithdraw = JSON.parse(penWithdraw);
-			const parsedApprovedWithdraw = JSON.parse(appWithdraw);
-
-			setUserRecord(parsedUserRecord);
-			setWallets(parsedWallets);
-			setUsers(parsedUsers);
-			setPendingWith(parsedPendingWithdraw);
-			setApprovedWith(parsedApprovedWithdraw);
+			setUserRecord(JSON.parse(userRecord));
+			setUsers(JSON.parse(userRecords));
+			setApprovedWith(JSON.parse(localStorage.getItem("approvedWithdraw")));
+			setApprovedDepo(JSON.parse(localStorage.getItem("approvedDeposits")));
 		}
 	}, []);
+
+	const deleteDepo = async (val) => {
+		await deleteDeposit(val);
+	};
+
+	const updateDepo = async (val) => {
+		await updateDeposit(val);
+	};
 
 	return (
 		<div className="flex flex-row font-body">
 			<Sidebar signal={signal} setSignal={setSignal} />
 			<section className="h-[220px] w-full md:w-[95%] md:ml-auto flex flex-col justify-between items-center bg-blue-600">
 				<Header user={userRecord} setSignal={setSignal} signal={signal} />
-				{stateAdmin.depositPending && <PendingDepo users={users} deposits={wallets} />}
-				{stateAdmin.depositApproved && <ApprovedDepo />}
-				{stateAdmin.withdrawnPending && <PendingWithdraw />}
-				{stateAdmin.withdrawnApproved && <ApprovedWithdraw />}
+				{stateAdmin.depositApproved && <ApprovedDepo approvedReqs={approvedDeposits} />}
+				{stateAdmin.withdrawnApproved && <ApprovedWithdraw approvedReqs={approvedWithdraw} />}
+				{stateAdmin.depositPending && <PendingDepo deleteDepo={deleteDepo} updateDepo={updateDepo} />}
+				{stateAdmin.withdrawnPending && <PendingWithdraw deleteWith={deleteWithdrawal} updateWith={approveWithdrawal} />}
 				{/*  */}
 				{stateAdmin.client && <Client userRecords={users} userRecord={userRecord} />}
 				{stateAdmin.dashboard && <Metrics />}

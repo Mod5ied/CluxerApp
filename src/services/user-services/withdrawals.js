@@ -1,4 +1,4 @@
-import { collection, addDoc, updateDoc, doc } from "firebase/firestore";
+import { collection, addDoc, updateDoc, doc, getDocs, where, deleteDoc, query } from "firebase/firestore";
 import { db } from "../db_config";
 import { ulid } from 'ulid';
 
@@ -31,8 +31,9 @@ export async function requestWithdrawal(amount, wallet_type, wallet_name, wallet
     };
 
     // Save the withdrawal object to the "withdrawals" collection
-    await addDoc(collection(db, "withdrawal"), withdrawal);
-    return { message: "Withdrawal successfully saved!" };
+    const data = await addDoc(collection(db, "withdrawal"), withdrawal);
+    localStorage.setItem("pendingWithdraw", JSON.stringify(data));
+    return { message: "Withdrawal successfully saved!", saved: true };
   } catch (error) {
     console.error("Error adding document: ", error);
     throw error;
@@ -41,7 +42,7 @@ export async function requestWithdrawal(amount, wallet_type, wallet_name, wallet
 
 export async function approveWithdrawal(username) {
   try {
-    // Fetch the withdrawal document from the "withdrawals" collection
+    // Fetch the withdrawal document from the "withdrawal" collection
     const querySnapshot = await getDocs(
       query(collection(db, "withdrawal"), where("username", "==", username))
     );
@@ -51,19 +52,15 @@ export async function approveWithdrawal(username) {
       const withdrawalDoc = querySnapshot.docs[0];
       const withdrawalData = withdrawalDoc.data();
 
-      // Remove the "pending" field and add the "approved" field with a value of true
       const updatedWithdrawalData = {
         ...withdrawalData,
         approved: true,
+        pending: false
       };
 
-      // Save the updated withdrawal document to the "approvedWithdraw" collection
       await addDoc(collection(db, "approvedWithdraw"), updatedWithdrawalData);
-
-      // Update the original withdrawal document in the "withdrawals" collection
-      await updateDoc(doc(db, "withdrawal", withdrawalDoc.id), {
-        approved: true,
-      });
+      await deleteDoc(doc(db, "withdrawal", withdrawalDoc.id));
+      await Promise.all([fetchApprovedWithdrawal(username), fetchPendingWithdrawal(username)]);
 
       return { message: "Withdrawal approved and saved!" };
     } else {
@@ -75,24 +72,63 @@ export async function approveWithdrawal(username) {
   }
 }
 
-export async function fetchPendingWithdrawal() {
+export async function deleteWithdrawal(username) {
   try {
-    const querySnapshot = await getDocs(collection(db, "withdrawal"));
-    const pendingWithdrawal = querySnapshot.docs.map((doc) => doc.data());
+    const querySnapshot = await getDocs(
+      query(collection(db, "withdrawal"), where("username", "==", username))
+    );
 
-    localStorage.setItem("pendingWithdraw", JSON.stringify(pendingWithdrawal));
+    // Check if a matching document exists
+    if (!querySnapshot.empty) {
+      const withdrawalDoc = querySnapshot.docs[0];
+      await deleteDoc(doc(db, "withdrawal", withdrawalDoc.id));
+
+      return { message: "Withdrawal deleted successfully!" };
+    } else {
+      throw new Error("No matching withdrawal record found!");
+    }
+  } catch (error) {
+    console.error("Error deleting withdrawal: ", error);
+    throw error;
+  }
+}
+
+export async function fetchPendingWithdrawal(username) {
+  try {
+    if (username) {
+      const querySnapshot = await getDocs(
+        query(collection(db, "withdrawal"), where("username", "==", username))
+      );
+      const pendingWithdrawal = querySnapshot.docs.map((doc) => doc.data());
+
+      localStorage.setItem("pendingWithdraw", JSON.stringify(pendingWithdrawal));
+    } else {
+      const querySnapshot = await getDocs(collection(db, "withdrawal"));
+      const pendingWithdrawal = querySnapshot.docs.map((doc) => doc.data());
+
+      localStorage.setItem("pendingWithdraw", JSON.stringify(pendingWithdrawal));
+    }
   } catch (error) {
     console.error("Error fetching pending withdrawal: ", error);
     throw error;
   }
 }
 
-export async function fetchApprovedWithdrawal() { 
+export async function fetchApprovedWithdrawal(username) {
   try {
-    const querySnapshot = await getDocs(collection(db, "approvedWithdraw"));
-    const approvedWithdrawal = querySnapshot.docs.map((doc) => doc.data());
+    if (username) {
+      const querySnapshot = await getDocs(
+        query(collection(db, "approvedWithdraw"), where("username", "==", username))
+      );
+      const approvedWithdrawal = querySnapshot.docs.map((doc) => doc.data());
 
-    localStorage.setItem("approvedWithdraw", JSON.stringify(approvedWithdrawal));
+      localStorage.setItem("approvedWithdraw", JSON.stringify(approvedWithdrawal));
+    } else {
+      const querySnapshot = await getDocs(collection(db, "approvedWithdraw"));
+      const approvedWithdrawal = querySnapshot.docs.map((doc) => doc.data());
+
+      localStorage.setItem("approvedWithdraw", JSON.stringify(approvedWithdrawal));
+    }
   } catch (error) {
     console.error("Error fetching approved withdrawal: ", error);
     throw error;

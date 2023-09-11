@@ -21,7 +21,7 @@ function userDashboard() {
 	const [width, setWidth] = useState(isMobile ? "0%" : "16%");
 	const isClicked = useRef(false);
 	const sidebarRef = useRef(null);
-	const [users, setUsers] = useState([]);
+	// const [users, setUsers] = useState([]);
 	const [userData, setUserData] = useState({});
 	const [userBonus, setUserBonus] = useState({});
 	const [userWallet, setUserWallet] = useState({});
@@ -54,28 +54,15 @@ function userDashboard() {
 		const sidebarElement = sidebarRef.current;
 		sidebarElement.addEventListener("mouseover", handleMouseOver);
 		sidebarElement.addEventListener("mouseout", handleMouseOut);
-		const userWalletData = localStorage.getItem("userWallet");
-		const userProfits = localStorage.getItem("userProfits");
 		const userRecord = localStorage.getItem("userRecord");
-		const userRecords = localStorage.getItem("userRecords");
-		const userBonus = localStorage.getItem("userBonus");
-		const pendingWithdraw = localStorage.getItem("pendingWithdraw");
 
 		if (userRecord) {
-			const parsedUserWalletData = JSON.parse(userWalletData);
-			const parsedUserRecord = JSON.parse(userRecord);
-			const parsedUserRecords = JSON.parse(userRecords);
-			const parsedUserProfits = JSON.parse(userProfits);
-			const parsedUserBonus = JSON.parse(userBonus);
-			const parsedPendingWithdraw = JSON.parse(pendingWithdraw);
-			
-
-			setUserWallet(parsedUserWalletData);
-			setUserProfits(parsedUserProfits);
-			setUserBonus(parsedUserBonus);
-			setUserData(parsedUserRecord);
-			setUsers(parsedUserRecords);
-			setPendingWith(parsedPendingWithdraw);
+			setUserData(JSON.parse(userRecord));
+			setUserBonus(JSON.parse(localStorage.getItem("userBonus")));
+			setUserWallet(JSON.parse(localStorage.getItem("userDeposits")));
+			setUserProfits(JSON.parse(localStorage.getItem("userProfits")));
+			setPendingWith(JSON.parse(localStorage.getItem("pendingWithdraw")));
+			// setUsers(parsedUserRecords);
 		}
 		return () => {
 			sidebarElement.removeEventListener("mouseover", handleMouseOver);
@@ -107,7 +94,7 @@ function userDashboard() {
 					<ReactSVG onClick={handleClick} id="hamburger-icon" src={menu} />
 					<span className="flex items-center">
 						<Avatar />
-						<h3 className="text-sm font-bold text-gray-600 md:mr-10 md:text-xl"> ${userWallet?.amount || 0} </h3>
+						<h3 className="text-sm font-bold text-gray-600 md:mr-10 md:text-xl"> ${userWallet[0]?.amount || 0} </h3>
 					</span>
 				</header>
 				<main className="relative w-full bg-gray-100 top-20 md:top-24">

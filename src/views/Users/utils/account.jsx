@@ -79,7 +79,6 @@ function account({ userAccount }) {
 			}, 4000);
 		}
 	}, [success]);
-	// }, [userAccount, success]);
 
 	return (
 		<div className="flex flex-col items-center h-full bg-gray-100">
@@ -131,7 +130,7 @@ function account({ userAccount }) {
 			<section className="flex flex-col justify-between w-full gap-3 p-5 md:flex-row md:gap-0">
 				<form id="account_form" onSubmit={handleProfile}>
 					<section>
-						<h3>Username: {userAccount.userName} </h3>
+						<h3>Username: {userAccount.username} </h3>
 					</section>
 					<section>
 						<span>

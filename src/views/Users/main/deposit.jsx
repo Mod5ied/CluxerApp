@@ -1,4 +1,4 @@
-import { depositToWallet, fetchDepositRecords } from "../../../services/user-services/deposits";
+import { fundWallet, fetchDeposits } from "../../../services/user-services/deposits";
 import React, { useState, useEffect } from "react";
 import { useSpring, animated } from "react-spring";
 import success from "../../../assets/success.svg";
@@ -17,7 +17,7 @@ function deposit() {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			setResp(await depositToWallet(amount, wallet));
+			setResp(await fundWallet(amount, wallet));
 			setAmount(null);
 			setWallet(null);
 		} catch (error) {
@@ -34,9 +34,10 @@ function deposit() {
 		},
 	});
 
-	const fetchDeposits = async () => {
+	const getDeposits = async () => {
 		try {
-			const records = await fetchDepositRecords();
+			const records = await fetchDeposits();
+			console.log(records);
 			setDepositRecords(records);
 		} catch (error) {
 			console.error("Error fetching deposit records: ", error);
@@ -44,7 +45,7 @@ function deposit() {
 	};
 
 	useEffect(() => {
-    fetchDeposits()
+    getDeposits()
 		if (resp?.saved) {
 			setShowSuccess(true);
 			setTimeout(() => {
@@ -59,10 +60,10 @@ function deposit() {
 				<animated.div
 					style={successMessageStyles}
 					id="success"
-					className="w-[300px] absolute flex flex-row gap-3 items-center bg-green-500 text-stone-50 px-5 py-3 ml-4 rounded-md"
+					className="w-[330px] absolute flex flex-row gap-3 items-center bg-green-500 text-stone-50 px-5 py-3 ml-4 rounded-md"
 				>
 					<ReactSVG src={success} />
-					{resp?.message}
+					Deposit Registered and Pending!
 				</animated.div>
 			)}
 			<form id="deposit_form" onSubmit={handleSubmit}>
@@ -88,7 +89,7 @@ function deposit() {
 
 			{/* FORM SECTION */}
 			<div className="h-[200px] w-full">
-				<DataTable tableData={depositRecords} tableContext={`Deposit Transaction History`} />
+				<DataTable requests={depositRecords} tableContext={`Deposit Transaction History`} />
 			</div>
 		</div>
 	);

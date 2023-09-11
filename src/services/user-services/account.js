@@ -1,6 +1,6 @@
 import { getDocs, updateDoc, doc, setDoc, collection } from "firebase/firestore";
-import { db } from "../db_config";
 import { userData } from "../state/state";
+import { db } from "../db_config";
 
 export async function updatePassword(email, newPassword) {
     try {
@@ -66,29 +66,29 @@ export async function updatePin(email, pin) {
     }
 }
 
-export const fetchWalletData = async (email) => {
-    try {
-        if (!email) {
-            const querySnapshot = await getDocs(collection(db, 'deposits'));
-            const walletData = querySnapshot.docs.map((doc) => doc.data());
-            localStorage.setItem("userWallet", JSON.stringify(walletData));
-            return walletData;
-        } else {
-            const querySnapshot = await getDocs(collection(db, 'deposits'));
-            const depositDoc = querySnapshot.docs.find((doc) => doc.data().email === email);
-            if (depositDoc) {
-                const walletData = depositDoc.data();
-                localStorage.setItem("userWallet", JSON.stringify(walletData));
-                return walletData;
-            } else {
-                return null; // or handle the case when the document is not found
-            }
-        }
-    } catch (error) {
-        console.error("fetchWalletData error: ", error);
-        throw error; // or handle the error accordingly
-    }
-}
+// export const fetchWalletData = async (email) => {
+//     try {
+//         if (!email) {
+//             const querySnapshot = await getDocs(collection(db, 'deposits'));
+//             const walletData = querySnapshot.docs.map((doc) => doc.data());
+//             localStorage.setItem("userWallet", JSON.stringify(walletData));
+//             return walletData;
+//         } else {
+//             const querySnapshot = await getDocs(collection(db, 'deposits'));
+//             const depositDoc = querySnapshot.docs.find((doc) => doc.data().email === email);
+//             if (depositDoc) {
+//                 const walletData = depositDoc.data();
+//                 localStorage.setItem("userWallet", JSON.stringify(walletData));
+//                 return walletData;
+//             } else {
+//                 return null; // or handle the case when the document is not found
+//             }
+//         }
+//     } catch (error) {
+//         console.error("fetchWalletData error: ", error);
+//         throw error; // or handle the error accordingly
+//     }
+// }
 
 export const fetchWalletDataAdmin = async () => {
     try {

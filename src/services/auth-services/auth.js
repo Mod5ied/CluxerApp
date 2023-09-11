@@ -1,6 +1,7 @@
 import { collection, doc, addDoc, getDocs, updateDoc, query, where, getDoc } from "firebase/firestore";
-import { execFetchBonus, fetchProfit, fetchWalletData } from "../user-services/account";
-import { getCurrentDate } from "../user-services/deposits";
+import { execFetchBonus, fetchProfit } from "../user-services/account";
+import { fetchDeposits, getCurrentDate } from "../user-services/deposits";
+
 import { db } from "../db_config";
 import { fetchApprovedWithdrawal, fetchPendingWithdrawal } from "../user-services/withdrawals";
 
@@ -8,17 +9,6 @@ export async function isAuthenticated() {
   const userRecord = localStorage.getItem("userRecord");
   !!userRecord
 }
-
-// async function getUserByUsernameAndPass(username, password) {
-//   const q = query(collection(db, "users"), where("username", "==", username), where("password", "==", password));
-//   const querySnapshot = await getDocs(q);
-//   if (!querySnapshot.empty) {
-//     return querySnapshot.docs[0].data();
-//   } else {
-//     console.log('No user found!');
-//     return null;
-//   }
-// }
 
 async function execGenReferrals({ email, ref_name }) {
   try {
@@ -68,9 +58,11 @@ export async function execSignIn(details) {
     if (databaseUserRecord) {
       localStorage.setItem("userRecord", JSON.stringify(databaseUserRecord));
       localStorage.setItem("userRecords", JSON.stringify(users));
-      await fetchWalletData(databaseUserRecord.email);
+      await fetchDeposits(databaseUserRecord.email);
       await fetchProfit(databaseUserRecord.userName);
       await execFetchBonus(databaseUserRecord.userName);
+      await fetchPendingWithdrawal(databaseUserRecord.username);
+      await fetchApprovedWithdrawal(databaseUserRecord.username);
       return true;
     } else {
       return await execSignInStaff(details);
@@ -94,7 +86,7 @@ export async function execSignInStaff(details) {
       localStorage.setItem("userRecords", JSON.stringify(users));
       await fetchProfit();
       await execFetchBonus();
-      await fetchWalletData();
+      await fetchDeposits();
       await fetchEntityCount();
       await fetchPendingWithdrawal();
       await fetchApprovedWithdrawal();
@@ -124,15 +116,16 @@ export function execSignOut() {
   localStorage.removeItem("userRecord");
   localStorage.removeItem("userWallet");
   localStorage.removeItem("userProfits");
+  localStorage.removeItem("userDeposits");
   localStorage.removeItem("userBonus");
   localStorage.removeItem("entityCount");
-  localStorage.removeItem("approvedWithdrawal");
-  localStorage.removeItem("pendingWithdrawal");
+  localStorage.removeItem("approvedWithdraw");
+  localStorage.removeItem("approvedDeposits");
+  localStorage.removeItem("pendingWithdraw");
 }
 
 export async function updateUser(fullname, mobile, country, city, address, zip_code, email) {
   try {
-    // Create a new user object
     const user = { fullname, mobile, country, city, address, zip_code, email };
     const userRef = doc(db, "users", email);
     await updateDoc(userRef, user);
@@ -156,7 +149,7 @@ export async function updatePassword(email, newPassword) {
     return { message: "Password successfully updated!" };
   } catch (error) {
     console.error("Error updating password: ", error);
-    throw error; // Re-throw the error to allow callers to handle it
+    throw error;
   }
 }
 

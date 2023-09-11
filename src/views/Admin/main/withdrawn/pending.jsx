@@ -1,105 +1,39 @@
-import React, { useState } from "react";
 import { ReactSVG } from "react-svg";
 import bin from "../../../../assets/bin.svg";
+import React, { useEffect, useState } from "react";
 import arrDown from "../../../../assets/arrow-down.svg";
 import arrDouble from "../../../../assets/arrow-double.svg";
 import { adminState, useToggleState } from "../../../../services/state/state";
+import Loader from "../../utils/loader";
 
-function pending(pendingWithdraw) {
-	const pendingUsers = [
-		{
-			id: 1,
-			details: ["ogwuru patrick", "paddy@email.com", "234-701-362-0343"],
-			username: "paddy",
-			walletDetails: { wallet: "Bitcoin", walletAddress: "12njh2jh1jh2" },
-			amount: "$4000",
-			status: true,
-			actions: false,
-		},
-		{
-			id: 2,
-			details: ["ogwuru patrick", "paddy@email.com", "234-701-362-0343"],
-			username: "paddy",
-			walletDetails: { wallet: "Bitcoin", walletAddress: "12njh2jh1jh2" },
-			amount: "$4000",
-			status: true,
-			actions: false,
-		},
-		{
-			id: 3,
-			details: ["john doe", "john@email.com", "234-801-362-0343"],
-			username: "johnny",
-			walletDetails: { wallet: "Bitcoin", walletAddress: "12njh2jh1jh2" },
-			amount: "$4000",
-			status: true,
-			actions: false,
-		},
-		{
-			id: 4,
-			details: ["john doe", "john@email.com", "234-801-362-0343"],
-			username: "johnny",
-			walletDetails: { wallet: "Bitcoin", walletAddress: "12njh2jh1jh2" },
-			amount: "$4000",
-			status: true,
-			actions: false,
-		},
-		{
-			id: 5,
-			details: ["jane doe", "jane@email.com", "234-701-362-0343"],
-			username: "janny",
-			walletDetails: { wallet: "Bitcoin", walletAddress: "12njh2jh1jh2" },
-			amount: "$4000",
-			status: true,
-			actions: false,
-		},
-		{
-			id: 6,
-			details: ["jane doe", "jane@email.com", "234-701-362-0343"],
-			username: "janny",
-			walletDetails: { wallet: "Bitcoin", walletAddress: "12njh2jh1jh2" },
-			amount: "$4000",
-			status: true,
-			actions: false,
-		},
-		{
-			id: 7,
-			details: ["lana lang", "lang@email.com", "234-701-362-0343"],
-			username: "lanny",
-			walletDetails: { wallet: "Bitcoin", walletAddress: "12njh2jh1jh2" },
-			amount: "$4000",
-			status: true,
-			actions: false,
-		},
-		{
-			id: 8,
-			details: ["lana lang", "lang@email.com", "234-701-362-0343"],
-			username: "lanny",
-			walletDetails: { wallet: "Bitcoin", walletAddress: "12njh2jh1jh2" },
-			amount: "$4000",
-			status: true,
-			actions: false,
-		},
-		{
-			id: 9,
-			details: ["ogwuru patrick", "paddy@email.com", "234-701-362-0343"],
-			username: "paddy",
-			walletDetails: { wallet: "Bitcoin", walletAddress: "12njh2jh1jh2" },
-			amount: "$4000",
-			status: true,
-			actions: false,
-		},
-		{
-			id: 10,
-			details: ["ogwuru patrick", "paddy@email.com", "234-701-362-0343"],
-			username: "paddy",
-			walletDetails: { wallet: "Bitcoin", walletAddress: "12njh2jh1jh2" },
-			amount: "$4000",
-			status: true,
-			actions: false,
-		},
-	];
+function pending({ deleteWith, updateWith }) {
 	const [paginateNumDrop, setPaginateNum] = useState(false);
 	const toggleAdminState = useToggleState(adminState);
+	const [approve, setApprove] = useState(false);
+	const [withdrawals, setWithdrawals] = useState([]);
+
+	const updateWithdrawal = (val) => {
+		setApprove(true);
+		setTimeout(async () => {
+			await updateWith(val);
+			setApprove(false);
+		}, 500);
+	};
+
+	const deleteWithdrawal = (val) => {
+		setApprove(true);
+		setTimeout(async () => {
+			await deleteWith(val);
+			setApprove(false);
+		}, 500);
+	};
+
+	useEffect(() => {
+		setTimeout(() => {
+			const withdraw = JSON.parse(localStorage.getItem("pendingWithdraw"));
+			setWithdrawals(withdraw);
+		}, 800);
+	}, [deleteWithdrawal, updateWithdrawal]);
 
 	return (
 		<div className="bg-transparent flex flex-col gap-4 py-2 px-2 md:p-2 absolute h-full w-full md:w-[80%] top-20">
@@ -117,7 +51,7 @@ function pending(pendingWithdraw) {
 
 				{/* table section. */}
 				<div className="flex flex-col gap-4 overflow-x-scroll md:w-full">
-					<div className="flex flex-col justify-center overflow-x-scroll md:flex-row md:justify-between">
+					<div className="flex flex-col justify-center overflow-x-scroll md:overflow-x-hidden md:flex-row md:justify-between">
 						<span className="flex flex-row items-center w-full gap-1 px-4 md:px-0 md:w-1/2">
 							Show
 							<p className="flex flex-row items-center justify-center gap-2 px-1 text-gray-800 border rounded-md hover:bg-gray-200">
@@ -144,54 +78,72 @@ function pending(pendingWithdraw) {
 					</div>
 
 					{/* table below: */}
-					<div className="flex flex-col w-full overflow-scroll">
-						<span className="flex flex-row w-[640px] px-4 md:px-0 md:w-full text-gray-100 bg-blue-500 md:rounded-t-md">
-							<h3 className="h-[60px] w-[10%] flex items-center justify-around pl-5 ">
-								S.N <ReactSVG src={arrDouble} className="text-gray-600" />
+					<div className="flex flex-col w-full overflow-scroll md:overflow-hidden">
+						{approve && (
+							<div className="absolute rounded-md cursor-wait md:mb-5 w-full md:w-[95%] h-[400px] bg-gray-700 bg-opacity-50 flex flex-col justify-center items-center gap-2">
+								<Loader />
+								<p className="text-blue-600 font-bold">Processing, please wait!</p>
+							</div>
+						)}
+
+						<span className="flex flex-row w-[640px] px-0 md:px-0 md:w-full text-gray-100 bg-blue-500 md:rounded-t-md">
+							<h3 className="h-[60px] w-[10%] flex items-center justify-around pl-1 md:pl-0 ">
+								S.N 
 							</h3>
-							<h3 className="h-[60px] w-[25%] flex items-center justify-around pl-5 ">
+							<h3 className="h-[60px] w-[25%] flex items-center md:justify-around pl-5 ">
 								Client Details <ReactSVG src={arrDouble} className="text-gray-600" />
 							</h3>
 							<h3 className="h-[60px] w-[20%] flex items-center justify-around pl-5 ">
 								Wallet Details <ReactSVG src={arrDouble} className="text-gray-600" />
 							</h3>
-							<h3 className="h-[60px] w-[15%] flex items-center justify-around pl-1 ">
+							{/* <h3 className="h-[60px] w-[15%] flex items-center justify-around pl-1 ">
 								Username <ReactSVG src={arrDouble} className="text-gray-600" />
-							</h3>
+							</h3> */}
 							<h3 className="h-[60px] w-[15%] flex items-center justify-around pl-1 ">
 								Amount <ReactSVG src={arrDouble} className="text-gray-600" />
 							</h3>
-							<h3 className="h-[60px] w-[10%] flex items-center justify-around pl-1 ">
+							<h3 className="h-[60px] w-[20%] flex items-center justify-around pl-1 ">
 								Status <ReactSVG src={arrDouble} className="text-gray-600" />
 							</h3>
-							<h3 className="h-[60px] w-[15%] flex items-center pl-16 ">Actions</h3>
+							<h3 className="h-[60px] w-[15%] flex items-center pl-2 md:pl-12 ">Actions</h3>
 						</span>
 						{/* 10 list below */}
-						{pendingUsers.map((user, index) => {
-							return (
-								<span className={`flex flex-row w-[640px] px-4 md:px-0 md:w-full text-sm ${index % 2 === 0 ? "bg-gray-200" : "bg-white"}`}>
-									<p className="h-[63px] w-[10%] flex text-gray-800 items-center md:px-1 md:ml-8">{user.id}</p>
-									<div className="h-[63px] w-[25%] flex text-gray-800 flex-col justify-between md:pl-6 py-1 md:ml-8  md:overflow-hidden">
-										<h5 className="text-sm text-stone-800">{user.fullname}</h5>
-										<h5 className="text-sm text-stone-800">{user.email}</h5>
-										<h5 className="text-sm text-stone-800">{user.mobile}</h5>
-									</div>
-									<div className="h-[63px] w-[20%] flex text-gray-800 flex-col justify-between pl-6 py-1 ml-8 overflow-hidden">
-										<h5  className="text-sm text-stone-800"> Wallet: {user.wallet_name} </h5>
-										<h5  className="text-sm text-stone-800">Wallet Address: {user.wallet_address} </h5>
-									</div>
-									<p className="h-[63px] w-[15%] flex text-gray-800 items-center justify-between pl-6">{user.username}</p>
-									<p className="h-[63px] w-[15%] flex text-gray-800 items-center justify-between pl-6">{user.amount}</p>
-									<p className="h-[63px] w-[10%] flex text-gray-800 items-center justify-between pl-6">
-										<button type="submit"> {user.pending ? "Pending" : "Approved"} </button>
-									</p>
-									<p className="h-[63px] w-[15%] flex items-center gap-2 justify-center pl-6 ml-8">
-										<button className="px-3 py-1 bg-blue-600 rounded text-gray-50">Edit</button>
-										<ReactSVG src={bin} className="py-[0.40rem] px-3 rounded bg-red-600 text-gray-50" />
-									</p>
-								</span>
-							);
-						})}
+						{!withdrawals || !withdrawals.length ? (
+							<p className="text-stone-800 py-4">No withdrawals found</p>
+						) : (
+							withdrawals.map((req, index) => {
+								return (
+									<span
+										key={index}
+										className={`flex flex-row w-[640px] px-4 md:px-0 md:w-full text-sm ${index % 2 === 0 ? "bg-gray-200" : "bg-white"}`}
+									>
+										<p className="h-[63px] w-[10%] flex text-gray-800 items-center md:px-1 md:ml-8">{++index}</p>
+										<div className="h-[63px] w-[20%] flex text-gray-800 flex-col justify-between md:pl-6 py-1 md:ml-8  md:overflow-hidden">
+											<h5 className="text-sm text-stone-800">{req.username}</h5>
+											{/* <h5 className="text-sm text-stone-800">{req.email}</h5> */}
+											{/* <h5 className="text-sm text-stone-800">{req.mobile}</h5> */}
+										</div>
+										<div className="h-[63px] w-[20%] flex text-gray-800 flex-col justify-between pl-6 py-1 ml-8 overflow-hidden">
+											<h5 className="text-sm text-stone-800"> Wallet: {req.wallet_name} </h5>
+											<h5 className="text-sm text-stone-800">Wallet Address: {req.wallet_address} </h5>
+										</div>
+										{/* <p className="h-[63px] w-[15%] flex text-gray-800 items-center justify-between pl-6">{req.username}</p> */}
+										<p className="h-[63px] w-[15%] flex text-gray-800 items-center justify-between pl-6">{req.amount}</p>
+										<p className="h-[63px] w-[10%] md:w-[20%] flex text-gray-800 items-center justify-between pl-6 md:pl-9">Pending</p>
+										<p className="h-[63px] w-[25%] md:w-[15%] flex items-center gap-2 justify-center pl-6 ml-8">
+											<button onClick={() => updateWithdrawal(req?.username)} className="px-3 py-1 bg-blue-600 rounded text-gray-50">
+												Approve
+											</button>
+											<ReactSVG
+												onClick={() => deleteWithdrawal(req?.username)}
+												src={bin}
+												className="py-[0.40rem] px-3 rounded bg-red-600 text-gray-50"
+											/>
+										</p>
+									</span>
+								);
+							})
+						)}
 					</div>
 
 					{/* sectioning by right. */}
