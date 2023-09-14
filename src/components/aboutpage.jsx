@@ -120,7 +120,7 @@ const AboutPage = () => {
           id="left"
           className="w-[45%] relative md:left-20 flex flex-col justify-center gap-8"
         >
-          <h2 className="text-4xl font-bold">Welcome To Cluxtercoin</h2>
+          <h2 className="text-4xl font-bold">Welcome To Blockvault</h2>
           <span className="flex flex-row justify-between ">
             <p className="flex flex-row items-center gap-2 text-lg font-bold text-stone-800">
               <img src={expert} alt="Expert_trader" /> Expert Traders
@@ -130,7 +130,7 @@ const AboutPage = () => {
             </p>
           </span>
           <p className="text-lg text-stone-600">
-            Cluxtercoin is a registered investment platform providing digital
+            Blockvault is a registered investment platform providing digital
             asset investment management services to individuals. We provide a
             dynamic investment solution to clients in need of a self-operating
             portfolio, as well as a smart fund with flexible time and investment
@@ -204,10 +204,10 @@ const AboutPage = () => {
                 alt="cluxter_logo"
                 className="w-[80px] h-[80px]"
               />
-              <h1 className="text-3xl font-bold text-stone-100">CLUXTERCOIN</h1>
+              <h1 className="text-3xl font-bold text-stone-100">BLOCKVAULT</h1>
             </span>
             <p className="font-light text-stone-300">
-              Cluxtercoin is a registered investment platform providing digital
+              Blockvault is a registered investment platform providing digital
               asset investment management services to individuals. We provide a
               dynamic investment solution to clients in need of a self-operating
               portfolio, as well as a smart fund with flexible time and
@@ -258,7 +258,7 @@ const AboutPage = () => {
                 <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
                 <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
               </svg>
-              info@cluxtercoin.com
+              info@blockvault.com
             </p>
           </span>
           <span className="w-[30%] flex flex-col gap-5">
@@ -300,13 +300,12 @@ const AboutPage = () => {
           className="w-[80%] flex flex-row justify-between py-2 border-t-gray-400"
         >
           <p className="flex flex-row items-center text-sm font-light">
-            © <span className="text-yellow-600">Cluxtercoin</span>, All Right
+            © <span className="text-yellow-600">Blockvault</span>, All Right
             Reserved.
           </p>
 
           <p className="text-sm font-light">
-            {" "}
-            Designed By Cluxtercoin Distributed by cluxtercoin Marketer{" "}
+            Designed By Blockvault and Distributed by Blockvault Marketer
           </p>
         </section>
       </footer>

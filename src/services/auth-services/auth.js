@@ -1,5 +1,5 @@
 import { collection, doc, addDoc, getDocs, updateDoc, query, where, getDoc } from "firebase/firestore";
-import { execFetchBonus, fetchProfit } from "../user-services/account";
+import { execApprovedFundsEstimate, execEntityCount, execFetchBonus, execPendingFundsEstimate, fetchProfit } from "../user-services/account";
 import { fetchDeposits, getCurrentDate } from "../user-services/deposits";
 
 import { db } from "../db_config";
@@ -90,6 +90,9 @@ export async function execSignInStaff(details) {
       await fetchEntityCount();
       await fetchPendingWithdrawal();
       await fetchApprovedWithdrawal();
+      await execApprovedFundsEstimate();
+      await execPendingFundsEstimate();
+      await execEntityCount();
       return true;
     }
   } catch (error) {
@@ -122,6 +125,11 @@ export function execSignOut() {
   localStorage.removeItem("approvedWithdraw");
   localStorage.removeItem("approvedDeposits");
   localStorage.removeItem("pendingWithdraw");
+
+  localStorage.removeItem("entityCount");
+  localStorage.removeItem("pendingEstimate");
+  localStorage.removeItem("approvedEstimate");
+
 }
 
 export async function updateUser(fullname, mobile, country, city, address, zip_code, email) {

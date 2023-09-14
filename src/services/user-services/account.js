@@ -66,30 +66,6 @@ export async function updatePin(email, pin) {
     }
 }
 
-// export const fetchWalletData = async (email) => {
-//     try {
-//         if (!email) {
-//             const querySnapshot = await getDocs(collection(db, 'deposits'));
-//             const walletData = querySnapshot.docs.map((doc) => doc.data());
-//             localStorage.setItem("userWallet", JSON.stringify(walletData));
-//             return walletData;
-//         } else {
-//             const querySnapshot = await getDocs(collection(db, 'deposits'));
-//             const depositDoc = querySnapshot.docs.find((doc) => doc.data().email === email);
-//             if (depositDoc) {
-//                 const walletData = depositDoc.data();
-//                 localStorage.setItem("userWallet", JSON.stringify(walletData));
-//                 return walletData;
-//             } else {
-//                 return null; // or handle the case when the document is not found
-//             }
-//         }
-//     } catch (error) {
-//         console.error("fetchWalletData error: ", error);
-//         throw error; // or handle the error accordingly
-//     }
-// }
-
 export const fetchWalletDataAdmin = async () => {
     try {
         const querySnapshot = await getDocs(collection(db, 'deposits'));
@@ -231,5 +207,73 @@ export const execReduceFund = async ({ username, fundtype, amount }) => {
     } catch (error) {
         console.error("reduceFund error:", error);
         return { message: 'update failed', saved: false, error };
+    }
+}
+
+/* Below are methods to fetch information for the dashboard metric cards. */
+export async function execEntityCount() {
+    try {
+        const usersSnapshot = await getDocs(collection(db, 'users'));
+        const adminSnapshot = await getDocs(collection(db, 'admin'));
+        const usersCount = usersSnapshot.size;
+        const adminCount = adminSnapshot.size;
+        const entityCount = { clients: usersCount, admin: adminCount };
+        localStorage.setItem("entityCount", JSON.stringify(entityCount));
+        return true;
+    } catch (error) {
+        console.error("entity-count error:", error);
+        return { message: 'entity-count failed', error };
+    }
+}
+
+export async function execApprovedFundsEstimate() {
+    try {
+        const withdrawSnapshot = await getDocs(collection(db, 'approvedWithdraw'));
+        const depositSnapshot = await getDocs(collection(db, 'approvedDeposit'));
+        let withdrawSum = 0;
+        let depositSum = 0;
+
+        withdrawSnapshot.forEach(doc => {
+            const data = doc.data();
+            withdrawSum += parseInt(data.amount);
+        });
+
+        depositSnapshot.forEach(doc => {
+            const data = doc.data();
+            depositSum += parseInt(data.amount);
+        });
+
+        const approvedEstimate = { approvedWithdraw: withdrawSum, approvedDeposit: depositSum };
+        localStorage.setItem("approvedEstimate", JSON.stringify(approvedEstimate));
+        return true;
+    } catch (error) {
+        console.error("approved-estimate error:", error);
+        return { message: 'approved-estimate failed', error };
+    }
+}
+
+export async function execPendingFundsEstimate() {
+    try {
+        const pendingWithdrawSnapshot = await getDocs(collection(db, 'withdrawal'));
+        const pendingDepositSnapshot = await getDocs(collection(db, 'deposits'));
+        let pendingWithdrawSum = 0;
+        let pendingDepositSum = 0;
+
+        pendingWithdrawSnapshot.forEach(doc => {
+            const data = doc.data();
+            pendingWithdrawSum += parseInt(data.amount);
+        });
+
+        pendingDepositSnapshot.forEach(doc => {
+            const data = doc.data();
+            pendingDepositSum += parseInt(data.amount);
+        });
+
+        const pendingEstimate = { pendingWithdraw: pendingWithdrawSum, pendingDeposit: pendingDepositSum };
+        localStorage.setItem("pendingEstimate", JSON.stringify(pendingEstimate));
+        return true;
+    } catch (error) {
+        console.error("pending-estimate error:", error);
+        return { message: 'pending-estimate failed', error };
     }
 }

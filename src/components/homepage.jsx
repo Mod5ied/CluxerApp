@@ -37,8 +37,8 @@ function homepage() {
 			currentImageIndex = (currentImageIndex + 1) % images.length;
 		};
 
-		changeBackgroundImage(); // Change the image immediately when the component mounts
-		const intervalId = setInterval(changeBackgroundImage, 5000); // Change the image every 5 seconds
+		changeBackgroundImage(); // Change the image immediately on mount.
+		const intervalId = setInterval(changeBackgroundImage, 5000);
 
 		return () => clearInterval(intervalId); // Clean up the interval when the component unmounts
 	}, []);
@@ -107,7 +107,7 @@ function homepage() {
 								.04a2.25 2.25 0 012.134 0l7.5 4.04a2.25 2.25 0 011.183 1.98V19.5z"
 							/>
 						</svg>
-						info@cluxtercoin.com
+						info@blockvault.com
 					</p>
 					<span className="flex flex-row items-center gap-4 text-sm text-gray-100">
 						{/* <a href="#home">Home</a>
@@ -119,7 +119,7 @@ function homepage() {
 				<section id="flat" className="w-full h-[130px] flex flex-row justify-between gap-10 md:gap-0 md:items-center bg-stone-50 px-2 md:px-8">
 					<span className="flex flex-row items-center h-full gap-2">
 						<img src={logo} alt="cluxter_logo" className="w-[50%] h-[50%]" />
-						<h1 className="text-3xl font-bold">CLUXTERCOIN</h1>
+						<h1 className="text-3xl font-bold">BLOCKVAULT</h1>
 					</span>
 					{isMobile ? (
 						<span id="menu-icon" className="m-auto">
@@ -208,7 +208,7 @@ function homepage() {
 
 			<section id="welcome-section" className="w-full h-[550px] bg-white flex flex-col md:flex-row items-center justify-between md:py-20 md:px-20 gap-8 md:gap-0">
 				<div id="left" className="w-full md:w-[45%] relative md:left-20 flex flex-col justify-center gap-8">
-					<h2 className="text-3xl md:text-4xl text-center font-bold">Welcome To Cluxtercoin</h2>
+					<h2 className="text-3xl md:text-4xl text-center font-bold">Welcome To Blockvault</h2>
 					<span className="flex flex-col md:flex-row justify-between px-4 md:px-0">
 						<p className="flex flex-row items-center gap-2 text-xl font-bold text-stone-800">
 							<img src={expert} alt="Expert_trader" /> Expert Traders
@@ -218,7 +218,7 @@ function homepage() {
 						</p>
 					</span>
 					<p className="text-lg px-4 md:px-0 text-stone-800">
-						Cluxtercoin is a registered investment platform providing digital asset investment management services to individuals. We provide a dynamic
+						Blockvault is a registered investment platform providing digital asset investment management services to individuals. We provide a dynamic
 						investment solution to clients in need of a self-operating portfolio, as well as a smart fund with flexible time and investment amount.
 					</p>
 				</div>
@@ -299,7 +299,7 @@ function homepage() {
 							<span>
 								<h4 className="text-xl font-semibold">Registered and Regulated</h4>
 								<p className="text-sm text-stone-600">
-									Cluxtercoin is Registered under UK Companies House and Duns & Bradstreet (USA). We are also regulated by Security Exchange
+									Blockvault is Registered under UK Companies House and Duns & Bradstreet (USA). We are also regulated by Security Exchange
 									Commission(SEC) & CFTC.
 								</p>
 							</span>
@@ -384,7 +384,7 @@ function homepage() {
 						<span className="md:w-[50%] flex flex-col items-center gap-3">
 							<img src={test1} alt="ted-moralee" className="rounded-full" />
 							<p className="text-lg text-center text-stone-600">
-								I highly recommend you try Cluxtercoin Trade if you really want your money to work for you. Great people to deal with. Very
+								I highly recommend you try Blockvault Trade if you really want your money to work for you. Great people to deal with. Very
 								professional and offer a fantastic level of personal customer service.
 							</p>
 							<p className="text-lg font-bold text-stone-800">Ted Moralee</p>
@@ -398,7 +398,7 @@ function homepage() {
 						<span className="md:w-[50%] flex flex-col items-center gap-3">
 							<img src={test2} alt="peter bowyer" />
 							<p className="text-xl text-center text-stone-600">
-								I am very impressed with the thoroughness and professionalism of the investment diligence packages Cluxtercoin Trade provides.
+								I am very impressed with the thoroughness and professionalism of the investment diligence packages Blockvault Trade provides.
 							</p>
 							<p className="text-lg font-bold text-stone-800">Peter Bowyer</p>
 						</span>
@@ -429,10 +429,10 @@ function homepage() {
 					<div className="md:w-[50%] flex flex-col gap-3">
 						<span className="flex flex-row items-center gap-2 ">
 							<img src={logo} alt="cluxter_logo" className="w-[80px] h-[80px]" />
-							<h1 className="text-3xl font-bold text-stone-100">CLUXTERCOIN</h1>
+							<h1 className="text-3xl font-bold text-stone-100">BLOCKVAULT</h1>
 						</span>
 						<p className="font-light text-stone-300">
-							Cluxtercoin is a registered investment platform providing digital asset investment management services to individuals. We provide a
+							Blockvault is a registered investment platform providing digital asset investment management services to individuals. We provide a
 							dynamic investment solution to clients in need of a self-operating portfolio, as well as a smart fund with flexible time and investment
 							amount.
 						</p>
@@ -466,7 +466,7 @@ function homepage() {
 								<path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
 								<path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
 							</svg>
-							info@cluxtercoin.com
+							info@blockvault.com
 						</p>
 					</span>
 					<span className="md:w-[30%] flex flex-col gap-5">
@@ -511,10 +511,10 @@ function homepage() {
 
 				<section id="flat" className="md:w-[80%] flex flex-col md:flex-row justify-between md:py-2 border-t-gray-400">
 					<p className="flex flex-row items-center text-sm font-light">
-						© <span className="text-yellow-600">Cluxtercoin</span>, All Right Reserved.
+						© <span className="text-yellow-600">Blockvault</span>, All Right Reserved.
 					</p>
 
-					<p className="text-sm font-light"> Designed By Cluxtercoin Distributed by cluxtercoin Marketer </p>
+					<p className="text-sm font-light"> Designed at Blockvault and Distributed by Blockvault Marketer </p>
 				</section>
 			</footer>
 		</div>

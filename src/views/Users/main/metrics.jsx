@@ -27,17 +27,17 @@ function metrics({ userAccount, userBonus,userProfits, userWallet, width }) {
 				<div className="flex flex-col gap-5 md:flex-row">
 					<span className="dash_cards">
 						<h3>Wallet Balance</h3>
-						<p> $ {userWallet?.amount || 0} </p>
+						<p> $ {userWallet.amount || 0} </p>
 					</span>
 					<span className="dash_cards">
 						<h3>Available Profit</h3>
-						<p> $ {userProfits?.amount || 0} </p>
+						<p> $ {userProfits[0]?.amount || 0} </p>
 					</span>
 				</div>
 				<div className="flex flex-col gap-5 md:flex-row">
 					<span className="dash_cards">
 						<h3>Referral Earnings</h3>
-						<p> $ {userBonus?.amount || 0} </p>
+						<p> $ {userBonus.amount || 0} </p>
 					</span>
 					<span className="dash_cards">
 						<h3>2FA Security</h3>
@@ -53,7 +53,7 @@ function metrics({ userAccount, userBonus,userProfits, userWallet, width }) {
 						Automatically top up your account balance by sharing your referral link, Earn a percentage of whatever plan your referred user buys.
 					</p>
 					<span className="flex flex-row items-center w-full mt-2 border border-gray-500 rounded-md">
-						<input type="text" value={`https://www.cluxtercoin.com/?refid=paddy`} onChange={handleInput} />
+						<input type="text" value={`https://www.blockvault.com/?refid=${userAccount.username}`} className="text-sm" onChange={handleInput} />
 						<div onClick={handleCopy} className="px-4 py-2 bg-blue-800 w-[15%] rounded-r-md hover:bg-blue-600 duration-200">
 							{!copied ? <ReactSVG src={copy} className="text-gray-100" /> : <ReactSVG src={check} className="font-extrabold text-gray-200" />}
 						</div>
