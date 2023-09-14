@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 function dataTable({ tableContext, requests }) {
 	const [req, setRequest] = useState(null);
 
-	useEffect(() => {
-		setRequest(requests);
-	}, [requests]);
 	return (
 		<section className="w-full overflow-x-scroll rounded-md bg-stone-900 md:overflow-hidden">
 			<h3 className="h-[70px] text-gray-50 font-bold p-4">{tableContext}</h3>

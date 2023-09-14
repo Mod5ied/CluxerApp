@@ -71,7 +71,11 @@ export async function updateDeposit(email) {
       const depositRef = doc(db, 'deposits', depositDoc.id);
       const approvedDepositRef = doc(db, 'approvedDeposit', depositDoc.id);
 
-      await setDoc(approvedDepositRef, depositDoc.data());
+      const depositData = depositDoc.data();
+      depositData.pending = false;
+      depositData.updatedAt = getCurrentDate();
+
+      await setDoc(approvedDepositRef, depositData);
       await deleteDoc(depositRef);
 
       await fetchDeposits(); // Execute fetchDeposits function

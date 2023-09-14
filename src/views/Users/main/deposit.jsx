@@ -19,7 +19,6 @@ function deposit() {
 		try {
 			setResp(await fundWallet(amount, wallet));
 			setAmount(null);
-			setWallet(null);
 		} catch (error) {
 			console.error("Error depositing to wallet: ", error);
 		}
@@ -37,7 +36,6 @@ function deposit() {
 	const getDeposits = async () => {
 		try {
 			const records = await fetchDeposits();
-			console.log(records);
 			setDepositRecords(records);
 		} catch (error) {
 			console.error("Error fetching deposit records: ", error);
@@ -75,9 +73,9 @@ function deposit() {
 				<span>
 					<label htmlFor="amount">Select Currency</label>
 					<select className="deposit_form_input" name="wallet" id="wallet-drop" onChange={(e) => handleSelect(e.target.value)}>
-						<option value="bitcoin">Bitcoin</option>
-						<option value="ethereum">Ethereum</option>
-						<option value="usdt">USDT</option>
+						<option value="Bitcoin">Bitcoin</option>
+						<option value="Ethereum">Ethereum</option>
+						<option value="USDT">USDT</option>
 					</select>
 				</span>
 				<span className="w-1/2">

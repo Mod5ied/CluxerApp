@@ -69,17 +69,16 @@ function approvedWith({ approvedReqs }) {
 							<h3 className="h-[60px] w-[20%] md:w-[25%] flex items-center justify-between px-1 ml-5">Status</h3>
 						</span>
 						{/* 10 list below */}
-						{console.log(approvedReqs)}
 						{!approvedReqs || (Array.isArray(approvedReqs) && approvedReqs.length === 0) ? (
-							<p>No approved requests found</p>
+							<p className="p-2 text-sm">No approved requests found</p>
 						) : Array.isArray(approvedReqs) ? (
 							approvedReqs.map((req, index) => (
 								<span key={index} className={`flex flex-row w-[640px] px-4 md:px-0 md:w-full ${index % 2 === 0 ? "bg-gray-200" : "bg-white"}`}>
 									<p className="h-[65px] md:h-[63px] w-[10%] md:w-[10%] flex items-center text-gray-800 justify-between px-1 ml-5">{++index}</p>
 									<div className="h-[65px] md:h-[63px] w-[30%] md:w-[35%] flex flex-col text-gray-800 justify-between px-1 py-1 ml-5 overflow-hidden">
-										<h5 className="text-sm text-gray-800">{req.fullname}</h5>
-										<h5 className="text-sm text-gray-800">{req.email}</h5>
-										<h5 className="text-sm text-gray-800">{req.mobile}</h5>
+										<h5 className="text-sm font-bold text-gray-800">Txn ID: {req.transact_id}</h5>
+										<h5 className="text-sm font-bold text-gray-800">Wallet: {req.wallet_address}</h5>
+										<h5 className="text-sm font-bold text-gray-800">Coin: {req.wallet_type}</h5>
 									</div>
 									<p className="h-[65px] md:h-[63px] w-[20%] md:w-[20%] flex items-center text-gray-800 justify-between px-1 ml-5">
 										{req.username}

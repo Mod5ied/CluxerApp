@@ -6,8 +6,9 @@ function withdraw() {
 	const [amount, setAmount] = useState(0);
 	const [walletType, setWalletType] = useState("");
 	const [walletName, setWalletName] = useState("");
-	const [withdrawals, setWithdrawals] = useState([]);
 	const [walletAddress, setWalletAddress] = useState("");
+
+	const [withdrawals, setWithdrawals] = useState([]);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -25,8 +26,8 @@ function withdraw() {
 		setTimeout(() => {
 			const withdraw = JSON.parse(localStorage.getItem("pendingWithdraw"));
 			setWithdrawals(withdraw);
-		}, 900);
-	}, [handleSubmit]);
+		}, 600);
+	}, []);
 
 	return (
 		<div className="flex flex-col items-center h-full gap-5 bg-gray-100 md:gap-4">
@@ -63,7 +64,8 @@ function withdraw() {
 			</form>
 
 			<div className="h-[200px] w-full">
-				<DataTable tableContext={`Cashout History`} tableData={withdrawals} />
+				
+				{!withdrawals ? null : <DataTable tableContext={`Cashout History`} requests={withdrawals} />}
 			</div>
 		</div>
 	);
