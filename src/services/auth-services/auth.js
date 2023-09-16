@@ -63,7 +63,7 @@ export async function execSignIn(details) {
       await execFetchBonus(databaseUserRecord.userName);
       await fetchPendingWithdrawal(databaseUserRecord.username);
       await fetchApprovedWithdrawal(databaseUserRecord.username);
-      return true;
+      return { admin: false };
     } else {
       return await execSignInStaff(details);
     }
@@ -93,7 +93,7 @@ export async function execSignInStaff(details) {
       await execApprovedFundsEstimate();
       await execPendingFundsEstimate();
       await execEntityCount();
-      return true;
+      return { admin: true };
     }
   } catch (error) {
     console.error(`Signin Error: ${error}`);

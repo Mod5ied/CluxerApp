@@ -22,8 +22,15 @@ function signIn() {
   };
 
   useEffect(() => {
-    resp && navigate("/dashboard");
+    if (resp) {
+      if (resp.admin) {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/dashboard");
+      }
+    }
   }, [resp]);
+  
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
