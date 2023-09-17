@@ -21,23 +21,22 @@ function metrics({ userAccount, userBonus,userProfits, userWallet, width }) {
 	function handleInput() {}
 
 	return (
-		// <div className={`${sideWidth == "16%" ? "w-[84%]" : "w-[96%]"} bg-gray-100`}>
 		<div className="flex flex-col md:flex-row gap-4 md:gap-0 h-[330px] w-full bg-gray-100">
 			<section className="w-full md:w-[65%] flex flex-col gap-5">
 				<div className="flex flex-col gap-5 md:flex-row">
 					<span className="dash_cards">
 						<h3>Wallet Balance</h3>
-						<p> $ {userWallet.amount || 0} </p>
+						<p> $ {userWallet?.amount || 0} </p>
 					</span>
 					<span className="dash_cards">
 						<h3>Available Profit</h3>
-						<p> $ {userProfits[0]?.amount || 0} </p>
+						<p> $ {userProfits?.amount || 0} </p>
 					</span>
 				</div>
 				<div className="flex flex-col gap-5 md:flex-row">
 					<span className="dash_cards">
 						<h3>Referral Earnings</h3>
-						<p> $ {userBonus.amount || 0} </p>
+						<p> $ {userBonus?.amount || 0} </p>
 					</span>
 					<span className="dash_cards">
 						<h3>2FA Security</h3>

@@ -80,27 +80,24 @@ export const fetchWalletDataAdmin = async () => {
 
 export const fetchProfit = async (username) => {
     try {
-      if (!username) {
-        const querySnapshot = await getDocs(collection(db, 'profits'));
-        const profitsData = querySnapshot.docs.map((doc) => doc.data());
-        localStorage.setItem("userProfits", JSON.stringify(profitsData));
-        return profitsData;
-      } else {
-        const querySnapshot = await getDocs(collection(db, 'profits'));
-        const profitsDoc = querySnapshot.docs.find((doc) => doc.data().username === username);
-        if (profitsDoc) {
-          const profitsData = profitsDoc.data();
-          localStorage.setItem("userProfits", JSON.stringify(profitsData));
-          return profitsData;
+        if (!username) {
+            return {};
         } else {
-          return null; // or handle the case when the document is not found
+            const querySnapshot = await getDocs(collection(db, 'profits'));
+            const profitsDoc = querySnapshot.docs.find((doc) => doc.data().username === username);
+            if (profitsDoc) {
+                const profitsData = profitsDoc.data();
+                localStorage.setItem("userProfits", JSON.stringify(profitsData));
+                return profitsData;
+            } else {
+                return null;
+            }
         }
-      }
     } catch (error) {
-      console.error("fetchProfit error: ", error);
-      throw error;
+        console.error("fetchProfit error: ", error);
+        throw error;
     }
-  }
+}
 
 export const execAddProfit = async ({ username, amount }) => {
     try {
@@ -132,27 +129,27 @@ export const execAddProfit = async ({ username, amount }) => {
 
 export const execFetchBonus = async (username) => {
     try {
-      if (!username) {
-        const querySnapshot = await getDocs(collection(db, 'bonus'));
-        const bonusData = querySnapshot.docs.map((doc) => doc.data());
-        localStorage.setItem("userBonus", JSON.stringify(bonusData));
-        return bonusData;
-      } else {
-        const querySnapshot = await getDocs(collection(db, 'bonus'));
-        const bonusDoc = querySnapshot.docs.find((doc) => doc.data().username === username);
-        if (bonusDoc) {
-          const bonusData = bonusDoc.data();
-          localStorage.setItem("userBonus", JSON.stringify(bonusData));
-          return bonusData;
+        if (!username) {
+            const querySnapshot = await getDocs(collection(db, 'bonus'));
+            const bonusData = querySnapshot.docs.map((doc) => doc.data());
+            localStorage.setItem("userBonus", JSON.stringify(bonusData));
+            return bonusData;
         } else {
-          return null;
+            const querySnapshot = await getDocs(collection(db, 'bonus'));
+            const bonusDoc = querySnapshot.docs.find((doc) => doc.data().username === username);
+            if (bonusDoc) {
+                const bonusData = bonusDoc.data();
+                localStorage.setItem("userBonus", JSON.stringify(bonusData));
+                return bonusData;
+            } else {
+                return null;
+            }
         }
-      }
     } catch (error) {
-      console.error("fetchBonus error:", error);
-      throw { message: 'fetch-bonus failed', saved: false, error };
+        console.error("fetchBonus error:", error);
+        throw { message: 'fetch-bonus failed', saved: false, error };
     }
-  }
+}
 
 export const execAddToBonus = async ({ username, amount }) => {
     try {

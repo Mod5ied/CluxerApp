@@ -40,22 +40,37 @@ export function getCurrentDate() {
   return `${day}/${month}/${year}`;
 }
 
-export async function fetchDeposits() {
+export async function fetchDeposits(email) {
   try {
-    const depositCollection = collection(db, "deposits");
-    const approvedDepositCollection = collection(db, "approvedDeposit");
-    const depositQuery = query(depositCollection);
-    const approvedDepositQuery = query(approvedDepositCollection);
-    const depositSnapshot = await getDocs(depositQuery);
-    const approvedDepositSnapshot = await getDocs(approvedDepositQuery);
+    if (!email) {
+      const depositCollection = collection(db, "deposits");
+      const approvedDepositCollection = collection(db, "approvedDeposit");
+      const depositQuery = query(depositCollection);
+      const approvedDepositQuery = query(approvedDepositCollection);
+      const depositSnapshot = await getDocs(depositQuery);
+      const approvedDepositSnapshot = await getDocs(approvedDepositQuery);
 
-    const depositRecords = depositSnapshot.docs.map(doc => doc.data());
-    const approvedDepositRecords = approvedDepositSnapshot.docs.map(doc => doc.data());
+      const depositRecords = depositSnapshot.docs.map(doc => doc.data());
+      const approvedDepositRecords = approvedDepositSnapshot.docs.map(doc => doc.data());
 
-    localStorage.setItem("userDeposits", JSON.stringify(depositRecords));
-    localStorage.setItem("approvedDeposits", JSON.stringify(approvedDepositRecords));
+      localStorage.setItem("userDeposits", JSON.stringify(depositRecords));
+      localStorage.setItem("approvedDeposits", JSON.stringify(approvedDepositRecords));
 
-    return depositRecords;
+      return depositRecords;
+    } else {
+      const depositCollection = collection(db, "deposits");
+      const depositQuery = query(depositCollection);
+      const depositSnapshot = await getDocs(depositQuery);
+
+      const depositRecords = depositSnapshot.docs.map(doc => doc.data());
+      const filteredDepositRecords = depositRecords.filter(record => record.email === email);
+
+      if (filteredDepositRecords.length === 0) {
+        localStorage.setItem("userDeposits", JSON.stringify({}));
+      } else {
+        localStorage.setItem("userDeposits", JSON.stringify(filteredDepositRecords));
+      }
+    }
   } catch (error) {
     console.error("Error fetching deposit records: ", error);
     throw error;

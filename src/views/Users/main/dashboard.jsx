@@ -94,7 +94,7 @@ function userDashboard() {
 					<ReactSVG onClick={handleClick} id="hamburger-icon" src={menu} />
 					<span className="flex items-center">
 						<Avatar />
-						<h3 className="text-sm font-bold text-gray-600 md:mr-10 md:text-xl"> ${userWallet[0]?.amount || 0} </h3>
+						<h3 className="text-sm font-bold text-gray-600 md:mr-10 md:text-xl"> ${userWallet?.amount || 0} </h3>
 					</span>
 				</header>
 				<main className="relative w-full bg-gray-100 top-20 md:top-24">

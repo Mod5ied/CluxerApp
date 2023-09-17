@@ -193,7 +193,7 @@
 	@apply flex flex-col;
 }
 .signin_submit_btn {
-	@apply w-[80%] p-2 text-center shadow-md bg-amber-400 text-gray-800 font-semibold rounded-lg hover:bg-amber-500;
+	@apply w-[80%] flex justify-center p-2 text-center shadow-md bg-amber-400 text-gray-800 font-semibold rounded-lg hover:bg-amber-500;
 }
 
 /* reduce funds, et.al */

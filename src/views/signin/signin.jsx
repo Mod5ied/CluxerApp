@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import Progress from "../../components/progress-btn";
 import { execSignIn } from "../../services/auth-services/auth";
 
 function signIn() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [resp, setResp] = useState(false);
 
   const navigate = useNavigate();
 
   const handleSignIn = async (e) => {
     e.preventDefault()
+    setLoading(!loading)
     const data = {
-      username: username,
+      username: username.toLowerCase(),
       password: password,
     };
 
@@ -24,8 +27,10 @@ function signIn() {
   useEffect(() => {
     if (resp) {
       if (resp.admin) {
+        setLoading(!loading);
         navigate("/admin/dashboard");
       } else {
+        setLoading(!loading);
         navigate("/dashboard");
       }
     }
@@ -74,7 +79,10 @@ function signIn() {
           </div>
           <div id="signin_submit_section">
             <section className="flex justify-center p-2">
-              <button onClick={handleSignIn} className="signin_submit_btn">SignIn</button>
+              <button onClick={handleSignIn} className="signin_submit_btn">
+                {!!loading && < Progress/>}
+                { !loading && "SignIn" }
+                </button>
             </section>
             <section className="p-2">
               <Link
