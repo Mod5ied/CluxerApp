@@ -6,7 +6,7 @@ import { useSpring, animated } from "react-spring";
 import { Link, useNavigate } from "react-router-dom";
 import { execSignUp } from "../../services/auth-services/auth";
 import { CountryDropdown } from "react-country-region-selector";
-import Progress from "../../components/progress-btn";
+import Progress from "../../components/progress";
 
 function signUp() {
 	const navigate = useNavigate();

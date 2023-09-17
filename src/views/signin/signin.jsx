@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import Progress from "../../components/progress-btn";
+import Progress from "../../components/progress.jsx";
 import { execSignIn } from "../../services/auth-services/auth";
 
 function signIn() {
