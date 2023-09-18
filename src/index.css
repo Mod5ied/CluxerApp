@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500;600;700;800;900&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;500;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;500;700;800;900&display=swap");
 @tailwind components;
 @tailwind utilities;
 @tailwind base;
@@ -9,14 +9,14 @@
 	/* background-image: url("./assets/slide1.jpg"); */
 	/* background-repeat: no-repeat;
 	background-size: cover; */
-	font-family: 'Roboto Slab', serif;
+	font-family: "Roboto Slab", serif;
 }
 #numbers-section {
 	background-image: url("./assets/slide1.jpg");
 	background-repeat: no-repeat;
 	background-clip: border-box;
 	background-size: cover;
-	font-family: 'Roboto Slab', serif;
+	font-family: "Roboto Slab", serif;
 }
 #numbers-sec {
 	background: linear-gradient(rgba(15, 15, 112, 0.304), rgba(15, 15, 112, 0.296));
@@ -52,7 +52,6 @@
 	z-index: 1;
 }
 
-
 #slide1,
 #slide2 {
 	position: relative;
@@ -79,6 +78,51 @@
 	height: 100%;
 	background: linear-gradient(rgba(15, 15, 112, 0.304), rgba(15, 15, 112, 0.296));
 	z-index: 1;
+}
+
+/* progress loader */
+.hollow-dots-spinner,
+.hollow-dots-spinner * {
+	box-sizing: border-box;
+}
+
+.hollow-dots-spinner {
+	height: 19px;
+	width: calc(30px * 3);
+}
+
+.hollow-dots-spinner .dot {
+	background-color: #135bbf;
+	width: 15px;
+	height: 15px;
+	margin: 0 calc(15px / 2);
+	border: calc(15px / 5) solid #135bbf;
+	border-radius: 50%;
+	float: left;
+	transform: scale(0);
+	animation: hollow-dots-spinner-animation 1000ms ease infinite 0ms;
+}
+
+.hollow-dots-spinner .dot:nth-child(1) {
+	animation-delay: calc(300ms * 1);
+}
+
+.hollow-dots-spinner .dot:nth-child(2) {
+	animation-delay: calc(300ms * 2);
+}
+
+.hollow-dots-spinner .dot:nth-child(3) {
+	animation-delay: calc(300ms * 3);
+}
+
+@keyframes hollow-dots-spinner-animation {
+	50% {
+		transform: scale(1);
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
 }
 
 .actions-cards {

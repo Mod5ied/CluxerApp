@@ -6,7 +6,6 @@ import { useSpring, animated } from "react-spring";
 import { Link, useNavigate } from "react-router-dom";
 import { execSignUp } from "../../services/auth-services/auth";
 import { CountryDropdown } from "react-country-region-selector";
-import Progress from "../../components/progress";
 
 function signUp() {
 	const navigate = useNavigate();
@@ -33,6 +32,14 @@ function signUp() {
 	const handleFullnameChange = (e) => setFullname(e.target.value);
 	const handleUsernameChange = (e) => setUsername(e.target.value);
 	const handleReferralChange = (e) => setReferral(e.target.value);
+
+	const Progress = () => (
+		<div className="hollow-dots-spinner">
+			<div className="dot"></div>
+			<div className="dot"></div>
+			<div className="dot"></div>
+		</div>
+	);
 
 	// handleSignUp Method to send data to backend
 	const handleSignUp = async (event) => {
