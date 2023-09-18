@@ -42,37 +42,45 @@ export function getCurrentDate() {
 
 export async function fetchDeposits(email) {
   try {
-    if (!email) {
-      const depositCollection = collection(db, "deposits");
-      const approvedDepositCollection = collection(db, "approvedDeposit");
-      const depositQuery = query(depositCollection);
-      const approvedDepositQuery = query(approvedDepositCollection);
-      const depositSnapshot = await getDocs(depositQuery);
-      const approvedDepositSnapshot = await getDocs(approvedDepositQuery);
+    const depositCollection = collection(db, "deposits");
+    const depositQuery = query(depositCollection);
+    const depositSnapshot = await getDocs(depositQuery);
 
-      const depositRecords = depositSnapshot.docs.map(doc => doc.data());
-      const approvedDepositRecords = approvedDepositSnapshot.docs.map(doc => doc.data());
+    const depositRecords = depositSnapshot.docs.map(doc => doc.data());
+    const filteredDepositRecords = depositRecords.filter(record => record.email === email);
 
-      localStorage.setItem("userDeposits", JSON.stringify(depositRecords));
-      localStorage.setItem("approvedDeposits", JSON.stringify(approvedDepositRecords));
-
-      return depositRecords;
+    if (filteredDepositRecords.length === 0) {
+      localStorage.setItem("userDeposits", JSON.stringify([])); // Set an empty array
     } else {
-      const depositCollection = collection(db, "deposits");
-      const depositQuery = query(depositCollection);
-      const depositSnapshot = await getDocs(depositQuery);
-
-      const depositRecords = depositSnapshot.docs.map(doc => doc.data());
-      const filteredDepositRecords = depositRecords.filter(record => record.email === email);
-
-      if (filteredDepositRecords.length === 0) {
-        localStorage.setItem("userDeposits", JSON.stringify({}));
-      } else {
-        localStorage.setItem("userDeposits", JSON.stringify(filteredDepositRecords));
-      }
+      localStorage.setItem("userDeposits", JSON.stringify(filteredDepositRecords));
     }
+
+    return JSON.parse(localStorage.getItem("userDeposits"));
   } catch (error) {
     console.error("Error fetching deposit records: ", error);
+    throw error;
+  }
+}
+
+export async function fetchApprovedDeposits(email) {
+  try {
+    const approvedDepositCollection = collection(db, "approvedDeposit");
+    const approvedDepositQuery = query(approvedDepositCollection);
+    const approvedDepositSnapshot = await getDocs(approvedDepositQuery);
+
+    const approvedDepositRecords = approvedDepositSnapshot.docs.map(doc => doc.data());
+    const filteredApprovedDepositRecords = approvedDepositRecords.filter(record => record.email === email);
+
+    if (filteredApprovedDepositRecords.length === 0) {
+      console.log("User's approved deposit not found.");
+      localStorage.setItem("approvedDeposits", JSON.stringify([])); // Set an empty array
+    } else {
+      localStorage.setItem("approvedDeposits", JSON.stringify(filteredApprovedDepositRecords));
+    }
+
+    return JSON.parse(localStorage.getItem("approvedDeposits"));
+  } catch (error) {
+    console.error("Error fetching approved deposit records: ", error);
     throw error;
   }
 }

@@ -9,13 +9,25 @@ function deposit() {
 	const [resp, setResp] = useState({});
 	const [amount, setAmount] = useState(null);
 	const [wallet, setWallet] = useState(null);
-	const handleSelect = (val) => setWallet(val);
+	const [loading, setLoading] = useState(false);
 	const [showSuccess, setShowSuccess] = useState(false);
 	const [depositRecords, setDepositRecords] = useState([]);
+	const currentUser = JSON.parse(localStorage.getItem("userRecord"));
+
 	const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+	const handleSelect = (val) => setWallet(val);
+
+	const Progress = () => (
+		<div className="hollow-dots-spinner">
+			<div className="dot"></div>
+			<div className="dot"></div>
+			<div className="dot"></div>
+		</div>
+	);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		setLoading(!loading);
 		try {
 			setResp(await fundWallet(amount, wallet));
 			setAmount(null);
@@ -35,7 +47,7 @@ function deposit() {
 
 	const getDeposits = async () => {
 		try {
-			const records = await fetchDeposits();
+			const records = await fetchDeposits(currentUser?.email);
 			setDepositRecords(records);
 		} catch (error) {
 			console.error("Error fetching deposit records: ", error);
@@ -43,8 +55,9 @@ function deposit() {
 	};
 
 	useEffect(() => {
-    getDeposits()
+		getDeposits();
 		if (resp?.saved) {
+			setLoading(!loading);
 			setShowSuccess(true);
 			setTimeout(() => {
 				setShowSuccess(false);
@@ -80,7 +93,7 @@ function deposit() {
 				</span>
 				<span className="w-1/2">
 					<button onClick={handleSubmit} id="btn" type="submit">
-						Deposit
+						{loading ? <Progress /> : "Deposit"}
 					</button>
 				</span>
 			</form>

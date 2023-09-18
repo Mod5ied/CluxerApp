@@ -1,6 +1,6 @@
 import { collection, doc, addDoc, getDocs, updateDoc, query, where, getDoc } from "firebase/firestore";
 import { execApprovedFundsEstimate, execEntityCount, execFetchBonus, execPendingFundsEstimate, fetchProfit } from "../user-services/account";
-import { fetchDeposits, getCurrentDate } from "../user-services/deposits";
+import { fetchApprovedDeposits, fetchDeposits, getCurrentDate } from "../user-services/deposits";
 
 import { db } from "../db_config";
 import { fetchApprovedWithdrawal, fetchPendingWithdrawal } from "../user-services/withdrawals";
@@ -59,6 +59,7 @@ export async function execSignIn(details) {
       localStorage.setItem("userRecord", JSON.stringify(databaseUserRecord));
       localStorage.setItem("userRecords", JSON.stringify(users));
       await fetchDeposits(databaseUserRecord.email);
+      await fetchApprovedDeposits(databaseUserRecord.email);
       await fetchProfit(databaseUserRecord.userName);
       await execFetchBonus(databaseUserRecord.userName);
       await fetchPendingWithdrawal(databaseUserRecord.username);

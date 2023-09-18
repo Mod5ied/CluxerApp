@@ -1,12 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { ReactSVG } from "react-svg";
 import DataTable from "../utils/dataTable";
 import check from "../../../assets/checked.svg";
+import InvestCard from "../utils/investCard";
 
 function invest() {
+	const [pack, setPack] = useState("");
+	const [showCard, setShowCard] = useState(false);
+	const displayCard = (packEvent) => {
+		setPack(packEvent);
+		setShowCard(!showCard);
+	};
+
+	const hideCard = () => setShowCard(!showCard);
+
 	return (
 		<div className="bg-gray-100 flex flex-col gap-4 md:h-full">
 			<section className="flex flex-col md:flex-row flex-wrap items-center justify-center gap-6 md:gap-5">
+				{!!showCard && <InvestCard pack={pack} hideCard={hideCard} />}
+
 				<div className="invest_cards">
 					<span className="flex flex-col md:flex-row justify-between gap-2 md:gap-0 px-5">
 						<h3 className="font-bold text-gray-50">Starter Pack</h3>
@@ -14,7 +26,10 @@ function invest() {
 							<button className="bg-slate-100 text-slate-800 px-2 py-1 hover:bg-slate-200 duration-200 rounded-md text-xs font-semibold">
 								Calculate profit
 							</button>
-							<button className="bg-slate-800 text-slate-100 px-2 py-1 hover:bg-slate-700 duration-200 rounded-md text-xs font-bold">
+							<button
+								onClick={() => displayCard("Starter Pack")}
+								className="bg-slate-800 text-slate-100 px-2 py-1 hover:bg-slate-700 duration-200 rounded-md text-xs font-bold"
+							>
 								Purchase plan
 							</button>
 						</span>
@@ -43,7 +58,10 @@ function invest() {
 							<button className="bg-slate-100 text-slate-800 px-2 py-1 hover:bg-slate-200 duration-200 rounded-md text-xs font-semibold">
 								Calculate profit
 							</button>
-							<button className="bg-slate-800 text-slate-100 px-2 py-1 hover:bg-slate-700 duration-200 rounded-md text-xs font-bold">
+							<button
+								onClick={() => displayCard("Standard Pack")}
+								className="bg-slate-800 text-slate-100 px-2 py-1 hover:bg-slate-700 duration-200 rounded-md text-xs font-bold"
+							>
 								Purchase plan
 							</button>
 						</span>
@@ -64,6 +82,7 @@ function invest() {
 						</li>
 					</ul>
 				</div>
+
 				<div className="invest_cards">
 					<span className="flex flex-col md:flex-row justify-between gap-2 md:gap-0 px-5">
 						<h3 className="font-bold text-gray-50">Premium Pack</h3>
@@ -71,7 +90,10 @@ function invest() {
 							<button className="bg-slate-100 text-slate-800 px-2 py-1 hover:bg-slate-200 duration-200 rounded-md text-xs font-semibold">
 								Calculate profit
 							</button>
-							<button className="bg-slate-800 text-slate-100 px-2 py-1 hover:bg-slate-700 duration-200 rounded-md text-xs font-bold">
+							<button
+								onClick={() => displayCard("Premium Pack")}
+								className="bg-slate-800 text-slate-100 px-2 py-1 hover:bg-slate-700 duration-200 rounded-md text-xs font-bold"
+							>
 								Purchase plan
 							</button>
 						</span>
@@ -92,6 +114,7 @@ function invest() {
 						</li>
 					</ul>
 				</div>
+
 				<div className="invest_cards">
 					<span className="flex flex-col md:flex-row justify-between gap-2 md:gap-0 px-5">
 						<h3 className="font-bold text-gray-50">Professional Pack</h3>
@@ -99,7 +122,10 @@ function invest() {
 							<button className="bg-slate-100 text-slate-800 px-2 py-1 hover:bg-slate-200 duration-200 rounded-md text-xs font-semibold">
 								Calculate profit
 							</button>
-							<button className="bg-slate-800 text-slate-100 px-2 py-1 hover:bg-slate-700 duration-200 rounded-md text-xs font-bold">
+							<button
+								onClick={() => displayCard("Professional Pack")}
+								className="bg-slate-800 text-slate-100 px-2 py-1 hover:bg-slate-700 duration-200 rounded-md text-xs font-bold"
+							>
 								Purchase plan
 							</button>
 						</span>
