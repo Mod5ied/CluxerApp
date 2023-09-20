@@ -26,6 +26,7 @@ function Dashboard() {
 	const [userRecord, setUserRecord] = useState({});
 	const [approvedWithdraw, setApprovedWith] = useState([]);
 	const [approvedDeposits, setApprovedDepo] = useState([]);
+	const [deposits, setDepo] = useState([]);
 
 	useEffect(() => {
 		const userRecord = localStorage.getItem("userRecord");
@@ -36,6 +37,7 @@ function Dashboard() {
 			setUsers(JSON.parse(userRecords));
 			setApprovedWith(JSON.parse(localStorage.getItem("approvedWithdraw")));
 			setApprovedDepo(JSON.parse(localStorage.getItem("approvedDeposits")));
+			setDepo(JSON.parse(localStorage.getItem("userDeposits")));
 		}
 	}, []);
 
@@ -54,7 +56,7 @@ function Dashboard() {
 				<Header user={userRecord} setSignal={setSignal} signal={signal} />
 				{stateAdmin.depositApproved && <ApprovedDepo approvedReqs={approvedDeposits} />}
 				{stateAdmin.withdrawnApproved && <ApprovedWithdraw approvedReqs={approvedWithdraw} />}
-				{stateAdmin.depositPending && <PendingDepo deleteDepo={deleteDepo} updateDepo={updateDepo} />}
+				{stateAdmin.depositPending && <PendingDepo deps={deposits} deleteDepo={deleteDepo} updateDepo={updateDepo} />}
 				{stateAdmin.withdrawnPending && <PendingWithdraw deleteWith={deleteWithdrawal} updateWith={approveWithdrawal} />}
 				{/*  */}
 				{stateAdmin.client && <Client userRecords={users} userRecord={userRecord} />}

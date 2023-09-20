@@ -26,7 +26,7 @@ function dataTable({ tableContext, requests }) {
 							<p className="text-sm text-stone-200 text-center w-[60%] md:w-[25%]"> {req.transact_id} </p>
 							<p className="text-sm text-stone-200 text-center w-[50%] md:w-[20%]"> {req.amount} </p>
 							<p className="text-sm text-stone-200 text-center w-[45%] md:w-[15%]"> {req.currency} </p>
-							<p className="text-sm text-stone-200 text-center w-[45%] md:w-[15%]"> {req.pending && "Pending"} </p>
+							<p className="text-sm text-red-600 font-bold text-center w-[45%] md:w-[15%]"> {req.pending && "Pending"} </p>
 							<p className="text-sm text-stone-200 text-center w-[40%] md:w-[10%]"> {req.created} </p>
 						</div>
 					))
@@ -36,7 +36,7 @@ function dataTable({ tableContext, requests }) {
 						<p className="text-sm text-stone-200 text-center w-[60%] md:w-[25%]"> {requests.transact_id} </p>
 						<p className="text-sm text-stone-200 text-center w-[50%] md:w-[20%]"> {requests.amount} </p>
 						<p className="text-sm text-stone-200 text-center w-[45%] md:w-[15%]"> {requests.currency} </p>
-						<p className="text-sm text-stone-200 text-center w-[45%] md:w-[15%]"> {requests.pending && "Pending"} </p>
+						<p className="text-sm text-red-600 font-bold text-center w-[45%] md:w-[15%]"> {requests.pending && "Pending"} </p>
 						<p className="text-sm text-stone-200 text-center w-[40%] md:w-[10%]"> {requests.created} </p>
 					</div>
 				)}

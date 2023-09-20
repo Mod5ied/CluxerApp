@@ -10,7 +10,7 @@ function approvedWith({ approvedReqs }) {
 
 	return (
 		<div className="bg-transparent flex flex-col items-center md:items-start gap-4 py-2 px-0 md:p-2 absolute h-full w-full md:w-[80%] top-20">
-			<section className="flex flex-row justify-between w-full py-2 px-4 md:px-0">
+			<section className="flex flex-row justify-between w-full px-4 py-2 md:px-0">
 				<h2 className="text-xl font-semibold text-gray-100">Approved Withdraw</h2>
 				<button onClick={() => toggleAdminState("addStaff")} className="reduce_btn" type="submit">
 					Add Staff
@@ -20,21 +20,21 @@ function approvedWith({ approvedReqs }) {
 			{/* White card */}
 			<section className="w-[95%] md:w-full flex flex-col gap-8 bg-white rounded-md md:px-5 py-3 border">
 				<div>
-					<h2 className="text-xl px-4 md:px-0 text-gray-700 font-semibold md:font-medium">Approved Withdraw</h2>
+					<h2 className="px-4 text-xl font-semibold text-gray-700 md:px-0 md:font-medium">Approved Withdraw</h2>
 				</div>
 
 				{/* table section. */}
-				<div className="flex flex-col gap-4 md:w-full overflow-x-scroll md:overflow-x-hidden">
-					<div className="flex flex-col md:flex-row justify-center md:justify-between overflow-x-scroll md:overflow-x-hidden">
-						<span className="flex flex-row gap-1 px-4 md:px-0 items-center w-full md:w-1/2">
+				<div className="flex flex-col gap-4 overflow-x-scroll md:w-full md:overflow-x-hidden">
+					<div className="flex flex-col justify-center overflow-x-scroll md:flex-row md:justify-between md:overflow-x-hidden">
+						<span className="flex flex-row items-center w-full gap-1 px-4 md:px-0 md:w-1/2">
 							Show
-							<p className="flex flex-row gap-2 items-center justify-center px-1 rounded-md text-gray-800 hover:bg-gray-200 border">
+							<p className="flex flex-row items-center justify-center gap-2 px-1 text-gray-800 border rounded-md hover:bg-gray-200">
 								10
 								<span className="flex flex-col items-center">
-									<ReactSVG src={arrDown} className="hover:bg-gray-200 rounded-md p-1" />
+									<ReactSVG src={arrDown} className="p-1 rounded-md hover:bg-gray-200" />
 								</span>
 								{paginateNumDrop && (
-									<span id="drop" className="absolute rounded-md bg-gray-100 overflow-hidden">
+									<span id="drop" className="absolute overflow-hidden bg-gray-100 rounded-md">
 										<p className="hover:bg-gray-300 px-2 py-1 w-[50px]">10</p>
 										<p className="hover:bg-gray-300 px-2 py-1 w-[50px]">25</p>
 										<p className="hover:bg-gray-300 px-2 py-1 w-[50px]">100</p>
@@ -45,9 +45,9 @@ function approvedWith({ approvedReqs }) {
 							entries
 						</span>
 
-						<span className="flex flex-row items-center md:justify-end px-4 md:px-0 gap-1 w-full md:w-1/2">
+						<span className="flex flex-row items-center w-full gap-1 px-4 md:justify-end md:px-0 md:w-1/2">
 							Search
-							<input type="text" className="border bg-gray-50 rounded-md py-1 px-2" />
+							<input type="text" className="px-2 py-1 border rounded-md bg-gray-50" />
 						</span>
 					</div>
 
@@ -70,7 +70,7 @@ function approvedWith({ approvedReqs }) {
 						</span>
 						{/* 10 list below */}
 						{!approvedReqs || (Array.isArray(approvedReqs) && approvedReqs.length === 0) ? (
-							<p className="p-2 text-sm">No approved requests found</p>
+							<p className="py-4 text-stone-800">No approved requests found</p>
 						) : Array.isArray(approvedReqs) ? (
 							approvedReqs.map((req, index) => (
 								<span key={index} className={`flex flex-row w-[640px] px-4 md:px-0 md:w-full ${index % 2 === 0 ? "bg-gray-200" : "bg-white"}`}>
@@ -87,7 +87,7 @@ function approvedWith({ approvedReqs }) {
 										{req.amount}
 									</p>
 									<div className="h-[65px] md:h-[63px] w-[20%] md:w-[25%] flex items-center text-gray-800 justify-between px-1 ml-5">
-										<p className="px-3 py-2 rounded-md bg-green-500 text-xs text-gray-100 cursor-pointer hover:bg-green-400 duration-300">
+										<p className="px-3 py-2 text-xs text-gray-100 duration-300 bg-green-500 rounded-md cursor-pointer hover:bg-green-400">
 											Approved
 										</p>
 									</div>
@@ -108,7 +108,7 @@ function approvedWith({ approvedReqs }) {
 									{approvedReqs.amount}
 								</p>
 								<div className="h-[65px] md:h-[63px] w-[20%] md:w-[25%] flex items-center text-gray-800 justify-between px-1 ml-5">
-									<p className="px-3 py-2 rounded-md bg-green-500 text-xs text-gray-100 cursor-pointer hover:bg-green-400 duration-300">
+									<p className="px-3 py-2 text-xs text-gray-100 duration-300 bg-green-500 rounded-md cursor-pointer hover:bg-green-400">
 										Approved
 									</p>
 								</div>
@@ -117,15 +117,15 @@ function approvedWith({ approvedReqs }) {
 					</div>
 
 					{/* sectioning by right. */}
-					<div className="flex justify-end border-t w-full">
+					<div className="flex justify-end w-full border-t">
 						<span className="w-full md:w-[50%] h-[50px] py-2 px-1 flex justify-between md:justify-end gap-1">
-							<button className="py-1 px-3 rounded-xl hover:bg-slate-300 duration-200 border border-gray-300">Previous</button>
+							<button className="px-3 py-1 duration-200 border border-gray-300 rounded-xl hover:bg-slate-300">Previous</button>
 							<span className="w-[50%] md:w-[22%] flex justify-around gap-2">
-								<button className="rounded-full p-1 px-3 hover:bg-blue-500 hover:text-gray-50 duration-200 border border-gray-300">1</button>
-								<button className="rounded-full p-1 px-3 hover:bg-blue-500 hover:text-gray-50 duration-200 border border-gray-300">2</button>
-								<button className="rounded-full p-1 px-3 hover:bg-blue-500 hover:text-gray-50 duration-200 border border-gray-300">3</button>
+								<button className="p-1 px-3 duration-200 border border-gray-300 rounded-full hover:bg-blue-500 hover:text-gray-50">1</button>
+								<button className="p-1 px-3 duration-200 border border-gray-300 rounded-full hover:bg-blue-500 hover:text-gray-50">2</button>
+								<button className="p-1 px-3 duration-200 border border-gray-300 rounded-full hover:bg-blue-500 hover:text-gray-50">3</button>
 							</span>
-							<button className="py-1 px-3 rounded-xl hover:bg-slate-300 duration-200 border border-gray-300">Next</button>
+							<button className="px-3 py-1 duration-200 border border-gray-300 rounded-xl hover:bg-slate-300">Next</button>
 						</span>
 					</div>
 				</div>

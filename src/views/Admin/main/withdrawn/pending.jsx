@@ -78,11 +78,11 @@ function pending({ deleteWith, updateWith }) {
 					</div>
 
 					{/* table below: */}
-					<div className="flex flex-col w-full overflow-scroll md:overflow-hidden">
+					<div className="flex flex-col w-full overflow-scroll">
 						{approve && (
 							<div className="absolute rounded-md cursor-wait md:mb-5 w-full md:w-[95%] h-[400px] bg-gray-700 bg-opacity-50 flex flex-col justify-center items-center gap-2">
 								<Loader />
-								<p className="text-blue-600 font-bold">Processing, please wait!</p>
+								<p className="font-bold text-blue-600">Processing, please wait!</p>
 							</div>
 						)}
 
@@ -109,7 +109,7 @@ function pending({ deleteWith, updateWith }) {
 						</span>
 						{/* 10 list below */}
 						{!withdrawals || !withdrawals.length ? (
-							<p className="text-stone-800 py-4">No withdrawals found</p>
+							<p className="py-4 text-stone-800">No withdrawals found</p>
 						) : (
 							withdrawals.map((req, index) => {
 								return (
@@ -129,7 +129,7 @@ function pending({ deleteWith, updateWith }) {
 										</div>
 										{/* <p className="h-[63px] w-[15%] flex text-gray-800 items-center justify-between pl-6">{req.username}</p> */}
 										<p className="h-[63px] w-[15%] flex text-gray-800 items-center justify-between pl-6">{req.amount}</p>
-										<p className="h-[63px] w-[10%] md:w-[20%] flex text-gray-800 items-center justify-between pl-6 md:pl-9">Pending</p>
+										<p className="h-[63px] w-[10%] md:w-[20%] flex text-red-600 font-bold items-center justify-between pl-6 md:pl-9">Pending</p>
 										<p className="h-[63px] w-[25%] md:w-[15%] flex items-center gap-2 justify-center pl-6 ml-8">
 											<button onClick={() => updateWithdrawal(req?.username)} className="px-3 py-1 bg-blue-600 rounded text-gray-50">
 												Approve

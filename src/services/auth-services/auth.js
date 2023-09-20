@@ -89,6 +89,7 @@ export async function execSignInStaff(details) {
       await execFetchBonus();
       await fetchDeposits();
       await fetchEntityCount();
+      await fetchApprovedDeposits();
       await fetchPendingWithdrawal();
       await fetchApprovedWithdrawal();
       await execApprovedFundsEstimate();

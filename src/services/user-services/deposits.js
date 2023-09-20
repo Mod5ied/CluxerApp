@@ -1,6 +1,5 @@
 import { getDocs, query, collection, addDoc, deleteDoc, updateDoc, doc, setDoc } from "firebase/firestore";
 import { db } from "../db_config";
-import { ulid } from 'ulid';
 
 /** Used within the client's fund wallet section.  */
 export async function fundWallet(amount, currency) {
@@ -28,7 +27,7 @@ export async function fundWallet(amount, currency) {
 }
 
 export function generateTransactId() {
-  return ulid();
+  return Math.random().toString(36).substring(2, 8);
 }
 
 export function getCurrentDate() {
@@ -47,15 +46,19 @@ export async function fetchDeposits(email) {
     const depositSnapshot = await getDocs(depositQuery);
 
     const depositRecords = depositSnapshot.docs.map(doc => doc.data());
-    const filteredDepositRecords = depositRecords.filter(record => record.email === email);
 
-    if (filteredDepositRecords.length === 0) {
-      localStorage.setItem("userDeposits", JSON.stringify([])); // Set an empty array
+    if (!email) {
+      localStorage.setItem("userDeposits", JSON.stringify(depositRecords));
     } else {
-      localStorage.setItem("userDeposits", JSON.stringify(filteredDepositRecords));
+      const filteredDepositRecords = depositRecords.filter(record => record.email === email);
+      if (filteredDepositRecords.length === 0) {
+        localStorage.setItem("userDeposits", JSON.stringify([]));
+      } else {
+        localStorage.setItem("userDeposits", JSON.stringify(filteredDepositRecords));
+      }
     }
 
-    return JSON.parse(localStorage.getItem("userDeposits"));
+    return true;
   } catch (error) {
     console.error("Error fetching deposit records: ", error);
     throw error;
@@ -72,7 +75,6 @@ export async function fetchApprovedDeposits(email) {
     const filteredApprovedDepositRecords = approvedDepositRecords.filter(record => record.email === email);
 
     if (filteredApprovedDepositRecords.length === 0) {
-      console.log("User's approved deposit not found.");
       localStorage.setItem("approvedDeposits", JSON.stringify([])); // Set an empty array
     } else {
       localStorage.setItem("approvedDeposits", JSON.stringify(filteredApprovedDepositRecords));

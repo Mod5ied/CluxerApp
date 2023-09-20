@@ -47,7 +47,7 @@ function deposit() {
 
 	const getDeposits = async () => {
 		try {
-			const records = await fetchDeposits(currentUser?.email);
+			const records = JSON.parse(localStorage.getItem("userDeposits"));
 			setDepositRecords(records);
 		} catch (error) {
 			console.error("Error fetching deposit records: ", error);
@@ -100,6 +100,7 @@ function deposit() {
 
 			{/* FORM SECTION */}
 			<div className="h-[200px] w-full">
+				{console.log(depositRecords)}
 				<DataTable requests={depositRecords} tableContext={`Deposit Transaction History`} />
 			</div>
 		</div>

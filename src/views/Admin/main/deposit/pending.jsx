@@ -6,9 +6,9 @@ import arrDown from "../../../../assets/arrow-down.svg";
 import arrDouble from "../../../../assets/arrow-double.svg";
 import { adminState, useToggleState } from "../../../../services/state/state";
 
-function pendingDepo({ deleteDepo, updateDepo }) {
+function pendingDepo({ deleteDepo, updateDepo, deps }) {
 	const [paginateNumDrop] = useState(false);
-	const [deposits, setDeposits] = useState([]);
+	const [deposits, setDeposits] = useState(deps);
 	const [approve, setApprove] = useState(false);
 	const toggleAdminState = useToggleState(adminState);
 
@@ -28,6 +28,18 @@ function pendingDepo({ deleteDepo, updateDepo }) {
 		}, 500);
 	};
 
+	// const fetchPending = () => {
+	// 	try {
+	// 		const reqs = JSON.parse(localStorage.getItem("userDeposits"));
+	// 		setDeposits(reqs);
+	// 	} catch (error) {
+	// 		return false;
+	// 	}
+	// };
+
+	// useEffect(() => {
+	// 	fetchPending();
+	// }, []);
 	useEffect(() => {
 		setTimeout(() => {
 			const reqs = JSON.parse(localStorage.getItem("userDeposits"));
@@ -83,7 +95,7 @@ function pendingDepo({ deleteDepo, updateDepo }) {
 						{approve && (
 							<div className="absolute rounded-md cursor-wait md:mb-5 w-full md:w-[95%] h-[400px] bg-gray-600 bg-opacity-50 flex flex-col justify-center items-center gap-2">
 								<Loader />
-								<p className="text-blue-600 font-bold">Processing, please wait!</p>
+								<p className="font-bold text-blue-600">Processing, please wait!</p>
 							</div>
 						)}
 
@@ -107,7 +119,7 @@ function pendingDepo({ deleteDepo, updateDepo }) {
 						</span>
 						{/* 10 list below */}
 						{!deposits || !deposits.length ? (
-							<p className="text-stone-800 py-4">No deposits found</p>
+							<p className="py-4 text-stone-800">No deposits found</p>
 						) : (
 							deposits.map((deposit, index) => {
 								return (
@@ -124,12 +136,14 @@ function pendingDepo({ deleteDepo, updateDepo }) {
 										<p className="h-[75px] md:h-[63px] md:w-[20%] w-[20%] text-gray-800 flex items-center pl-6 ml-8">{deposit.username}</p>
 										<p className="h-[75px] md:h-[63px] md:w-[20%] w-[10%] text-gray-800 flex items-center pl-6 md:ml-8">{deposit.amount}</p>
 										<p className="h-[75px] md:h-[63px] md:w-[25%] w-[20%] text-gray-800 flex items-center pl-6 md:ml-8">
-											<button type="submit"> {!deposit.pending ? "Approved" : "Pending"} </button>
+											<button className="font-bold text-red-600" type="submit">
+												{!deposit.pending ? "Approved" : "Pending"}
+											</button>
 										</p>
 										<div className="h-[75px] md:h-[63px] md:w-[25%] w-[25%] text-gray-800 flex items-center gap-2 justify-center pl-6 ml-8">
 											<button
 												onClick={() => updateDeposit(deposit?.email)}
-												className="px-3 py-1 duration-200 bg-blue-600 rounded text-sm text-gray-50 hover:bg-blue-400"
+												className="px-3 py-1 text-sm duration-200 bg-blue-600 rounded text-gray-50 hover:bg-blue-400"
 											>
 												Approve
 											</button>
