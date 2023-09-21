@@ -52,6 +52,21 @@
 	z-index: 1;
 }
 
+#slide1 {
+	background-image: url("./assets/slide1.jpg");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-origin: border-box;
+	background-size: cover;
+}
+#slide2 {
+	background-image: url("./assets/slide2.jpg");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-origin: border-box;
+	background-size: cover;
+}
+
 #slide1,
 #slide2 {
 	position: relative;

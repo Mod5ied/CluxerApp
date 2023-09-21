@@ -4,8 +4,6 @@ import left from "../assets/left.svg";
 import right from "../assets/right.svg";
 import pc from "../assets/computers.jpg";
 import badge from "../assets/badge1.png";
-import slide1 from "../assets/slide1.jpg";
-import slide2 from "../assets/slide2.jpg";
 import expert from "../assets/expert1.png";
 import office from "../assets/office.jpg";
 import shake from "../assets/shake.png";
@@ -24,24 +22,106 @@ import menu from "../assets/hamburg.svg";
 import { Carousel } from "@trendyol-js/react-carousel";
 import { useNavigate } from "react-router";
 import { isMobile } from "react-device-detect";
+import { animated, useTransition } from "react-spring";
+import FooterSlide from "./footerslide";
 
 function homepage() {
 	const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
-	useEffect(() => {
-		const images = [slide1, slide2];
-		let currentImageIndex = 0;
-
-		const changeBackgroundImage = () => {
-			document.getElementById("homepage-main").style.backgroundImage = `url(${images[currentImageIndex]})`;
-			currentImageIndex = (currentImageIndex + 1) % images.length;
+	const changeBackground = () => {
+		const changeForward = () => {
+			setIndex((prevIndex) => (prevIndex + 1) % slides.length);
 		};
 
-		changeBackgroundImage(); // Change the image immediately on mount.
-		const intervalId = setInterval(changeBackgroundImage, 5000);
+		const changeBackward = () => {
+			setIndex((prevIndex) => (prevIndex - 1 + slides.length) % slides.length);
+		};
 
-		return () => clearInterval(intervalId); // Clean up the interval when the component unmounts
-	}, []);
+		// Define the initial state
+		const [index, setIndex] = useState(0);
+		const slides = [
+			{
+				id: "slide1",
+				content: (
+					<div id="slide1" className="md:h-[620px] h-[500px] flex flex-row justify-around items-center w-full bg-transparent">
+						<div id="hue"></div>
+						<span onClick={changeBackward} className="relative z-20">
+							<ReactSVG src={left} className="p-3 text-gray-200 rounded-full bg-stone-700 hover:text-gray-50 hover:bg-stone-900" />
+						</span>
+						<div className="relative flex flex-col items-center justify-center h-full md:gap-7 z-20">
+							<h3 className="md:w-[60%] w-full text-3xl md:text-5xl text-white text-center font-extrabold relative md:top-20">
+								We Provide Best Investment plans
+							</h3>
+							<p className="relative text-lg top-10 md:top-20">Start Bitcoin Investment today</p>
+							<span className="md:w-[55%] w-full relative flex flex-row justify-between top-28 md:top-36">
+								<button onClick={redirectToSignup} className="w-[130px] h-[60px] bg-yellow-600 text-stone-100">
+									Sign Up
+								</button>
+								<button onClick={redirectToSignin} className="w-[130px] h-[60px] bg-yellow-600 text-stone-100">
+									Sign In
+								</button>
+							</span>
+						</div>
+						<span onClick={changeForward} className="relative z-20">
+							<ReactSVG src={right} className="p-3 text-gray-200 rounded-full bg-stone-700 hover:text-gray-50 hover:bg-stone-900" />
+						</span>
+					</div>
+				),
+			},
+			{
+				id: "slide2",
+				content: (
+					<div id="slide2" className="h-[620px] flex flex-row justify-around items-center w-full bg-transparent">
+						<div id="hue"></div>
+						<span onClick={changeBackward} className="relative z-20">
+							<ReactSVG src={left} className="p-3 text-gray-200 rounded-full bg-stone-700 hover:text-gray-50 hover:bg-stone-900" />
+						</span>
+						<div className="relative flex flex-col items-center justify-center h-full gap-7 z-20">
+							<h3 className="md:w-[60%] w-full text-3xl md:text-5xl text-white text-center font-extrabold relative md:top-20">Our investment is highly guaranteed</h3>
+							<p className="relative text-lg top-10 md:top-20">Select an Investment plan below today!</p>
+							<span className="md:w-[55%] w-full relative flex flex-row justify-between top-28 md:top-36">
+								<button onClick={redirectToSignup} className="w-[130px] h-[60px] bg-yellow-600 text-stone-100">
+									Sign Up
+								</button>
+								<button onClick={redirectToSignin} className="w-[130px] h-[60px] bg-yellow-600 text-stone-100">
+									Sign In
+								</button>
+							</span>
+						</div>
+						<span onClick={changeForward} className="relative z-20">
+							<ReactSVG src={right} className="p-3 text-gray-200 rounded-full bg-stone-700 hover:text-gray-50 hover:bg-stone-900" />
+						</span>
+					</div>
+				),
+			},
+		];
+
+		// Use react-spring's useTransition hook to animate the transition
+		const transitions = useTransition(index, {
+			from: { opacity: 0 },
+			enter: { opacity: 1 },
+			leave: { opacity: 0 },
+			immediate: true,
+		});
+
+		// Update the index at intervals of 6 seconds
+		useEffect(() => {
+			const interval = setInterval(() => {
+				setIndex((prevIndex) => (prevIndex + 1) % slides.length);
+			}, 8000);
+
+			return () => clearInterval(interval);
+		}, []);
+
+		// Render the animated divs
+		return (
+			<section id="carousel-section" className="md:h-[620px] h-[500px] relative">
+				{transitions((style, i) => (
+					<animated.div style={style}>{slides[i].content}</animated.div>
+				))}
+			</section>
+		);
+	};
 
 	const data = [
 		{
@@ -129,7 +209,9 @@ function homepage() {
 					{isMobile ? (
 						<span
 							id="dropdown"
-							className={`md:w-[30%] w-[95%] absolute mt-28 z-40 md:relative gap-4 md:gap-0 flex flex-col bg-stone-200 md:flex-row items-center justify-between rounded-lg py-4 md:py-0 ${isDropdownVisible ? "block" : "hidden"}`}
+							className={`md:w-[30%] w-[95%] absolute mt-28 z-40 md:relative gap-4 md:gap-0 flex flex-col bg-stone-200 md:flex-row items-center justify-between rounded-lg py-4 md:py-0 ${
+								isDropdownVisible ? "block" : "hidden"
+							}`}
 						>
 							<a className="border-orange-500 hover:border-b" href="#">
 								Home
@@ -161,52 +243,10 @@ function homepage() {
 			</header>
 
 			<section id="carousel-section" className="md:h-[620px] h-[500px] relative">
-				<div id="hue"></div>
-				<Carousel autoSwipe infinite={true} responsive={true} useArrowKeys={true} className="z-20">
-					<div id="slide1" className="md:h-[620px] h-[500px] flex flex-row justify-around items-center w-full bg-transparent">
-						{/* ...content of slide1... */}
-						<span>
-							<ReactSVG src={left} className="p-3 text-gray-200 rounded-full bg-stone-700 hover:text-gray-50 hover:bg-stone-900" />
-						</span>
-						<div className="relative flex flex-col items-center justify-center h-full md:gap-7">
-							<h3 className="md:w-[60%] w-full text-3xl md:text-5xl text-white text-center font-extrabold relative md:top-20">We Provide Best Investment plans</h3>
-							<p className="relative text-lg top-10 md:top-20">Start Bitcoin Investment today</p>
-							<span className="md:w-[55%] w-full relative flex flex-row justify-between top-28 md:top-36">
-								<button onClick={redirectToSignup} className="w-[130px] h-[60px] bg-yellow-600 text-stone-100">
-									Sign Up
-								</button>
-								<button onClick={redirectToSignin} className="w-[130px] h-[60px] bg-yellow-600 text-stone-100">
-									Sign In
-								</button>
-							</span>
-						</div>
-						<span>
-							<ReactSVG src={right} className="p-3 text-gray-200 rounded-full bg-stone-700 hover:text-gray-50 hover:bg-stone-900" />
-						</span>
-					</div>
-					<div id="slide2" className="h-[620px] flex flex-row justify-around items-center w-full bg-transparent">
-						{/* ...content of slide2... */}
-						<span>
-							<ReactSVG src={left} className="p-3 text-gray-200 rounded-full bg-stone-700 hover:text-gray-50 hover:bg-stone-900" />
-						</span>
-						<div className="relative flex flex-col items-center justify-center h-full gap-7">
-							<h3 className="w-[60%] text-5xl text-white text-center font-extrabold relative md:top-20">Our investment is highly guaranteed</h3>
-							<p className="relative text-lg font-bold text-white md:top-20">Select an Investment plan below today!</p>
-							<span className="w-[55%] relative flex flex-row justify-between top-36">
-								<button className="w-[130px] h-[60px] bg-yellow-600 text-stone-100">Sign Up</button>
-								<button className="w-[130px] h-[60px] bg-yellow-600 text-stone-100">Sign In</button>
-							</span>
-						</div>
-						<span>
-							<ReactSVG src={right} className="p-3 text-gray-200 rounded-full bg-stone-700 hover:text-gray-50 hover:bg-stone-900" />
-						</span>
-					</div>
-				</Carousel>
+				{changeBackground()}
 			</section>
 
-			{/* <section id="trade-view-section"></section> */}
-
-			<section id="welcome-section" className="w-full h-[550px] bg-white flex flex-col md:flex-row items-center justify-between md:py-20 md:px-20 gap-8 md:gap-0">	
+			<section id="welcome-section" className="w-full h-[550px] bg-white flex flex-col md:flex-row items-center justify-between md:py-20 md:px-20 gap-8 md:gap-0">
 				<div id="left" className="w-full md:w-[45%] relative md:left-20 flex flex-col justify-center gap-8">
 					<h2 className="text-3xl md:text-4xl text-center font-bold">Welcome To Blockvault</h2>
 					<span className="flex flex-col md:flex-row justify-between px-4 md:px-0">
@@ -376,10 +416,7 @@ function homepage() {
 					<h3 className="md:w-[70%] font-extrabold text-center text-stone-900 text-2xl md:text-4xl">What They Say About Our Services</h3>
 				</span>
 
-				<Carousel autoSwipe={true} infinite={true} responsive={true} useArrowKeys={true}>
-					{/* <div>Hello</div>
-					<div>Hi</div>
-					<div>How na</div> */}
+				{/* <Carousel autoSwipe={true} infinite={true} responsive={true} useArrowKeys={true}>
 					<div className="flex flex-col items-center gap-10 md:h-[500px] w-full">
 						<span className="md:w-[50%] flex flex-col items-center gap-3">
 							<img src={test1} alt="ted-moralee" className="rounded-full" />
@@ -390,8 +427,8 @@ function homepage() {
 							<p className="text-lg font-bold text-stone-800">Ted Moralee</p>
 						</span>
 						<span className="flex flex-row gap-4">
-							<ReactSVG src={left} className="p-3 text-gray-100 bg-yellow-500 rounded-full hover:text-gray-50 hover:bg-yellow-600" />
-							<ReactSVG src={right} className="p-3 text-gray-100 bg-yellow-500 rounded-full hover:text-gray-50 hover:bg-yellow-600" />
+							<ReactSVG onClick={handleNext} src={left} className="p-3 text-gray-100 bg-yellow-500 rounded-full hover:text-gray-50 hover:bg-yellow-600" />
+							<ReactSVG onClick={handlePrev} src={right} className="p-3 text-gray-100 bg-yellow-500 rounded-full hover:text-gray-50 hover:bg-yellow-600" />
 						</span>
 					</div>
 					<div className="flex flex-col items-center gap-10 md:h-[500px] w-full">
@@ -403,8 +440,8 @@ function homepage() {
 							<p className="text-lg font-bold text-stone-800">Peter Bowyer</p>
 						</span>
 						<span className="flex flex-row gap-4">
-							<ReactSVG src={left} className="p-3 text-gray-100 bg-yellow-500 rounded-full hover:text-gray-50 hover:bg-yellow-600" />
-							<ReactSVG src={right} className="p-3 text-gray-100 bg-yellow-500 rounded-full hover:text-gray-50 hover:bg-yellow-600" />
+							<ReactSVG onClick={handleNext} src={left} className="p-3 text-gray-100 bg-yellow-500 rounded-full hover:text-gray-50 hover:bg-yellow-600" />
+							<ReactSVG onClick={handlePrev} src={right} className="p-3 text-gray-100 bg-yellow-500 rounded-full hover:text-gray-50 hover:bg-yellow-600" />
 						</span>
 					</div>
 					<div className="flex flex-col items-center gap-10 md:h-[500px] w-full">
@@ -417,11 +454,12 @@ function homepage() {
 							<p className="text-lg font-bold text-stone-800">Mr L. & Mrs H. M. Steward</p>
 						</span>
 						<span className="flex flex-row gap-4">
-							<ReactSVG src={left} className="p-3 text-gray-100 bg-yellow-500 rounded-full hover:text-gray-50 hover:bg-yellow-600" />
-							<ReactSVG src={right} className="p-3 text-gray-100 bg-yellow-500 rounded-full hover:text-gray-50 hover:bg-yellow-600" />
+							<ReactSVG onClick={handleNext} src={left} className="p-3 text-gray-100 bg-yellow-500 rounded-full hover:text-gray-50 hover:bg-yellow-600" />
+							<ReactSVG onClick={handlePrev} src={right} className="p-3 text-gray-100 bg-yellow-500 rounded-full hover:text-gray-50 hover:bg-yellow-600" />
 						</span>
 					</div>
-				</Carousel>
+				</Carousel> */}
+				<FooterSlide />
 			</section>
 
 			<footer className="flex flex-col items-center gap-5 bg-indigo-900 py-4 px-3 md:py-5">
@@ -432,9 +470,8 @@ function homepage() {
 							<h1 className="text-3xl font-bold text-stone-100">BLOCKVAULT</h1>
 						</span>
 						<p className="font-light text-stone-300">
-							Blockvault is a registered investment platform providing digital asset investment management services to individuals. We provide a
-							dynamic investment solution to clients in need of a self-operating portfolio, as well as a smart fund with flexible time and investment
-							amount.
+							Blockvault is a registered investment platform providing digital asset investment management services to individuals. We provide a dynamic
+							investment solution to clients in need of a self-operating portfolio, as well as a smart fund with flexible time and investment amount.
 						</p>
 					</div>
 
@@ -443,7 +480,7 @@ function homepage() {
 						<p>For update about our investment. Please subscribe</p>
 						<span className="h-[50px] border">
 							<input type="text" className="w-[80%] h-full bg-transparent text-stone-200 px-5" />
-							<button className="w-[16%] h-[80%] text-sm rounded-md p-1 ml-3 bg-yellow-500 text-stone-100">Sign Up</button>
+							<button className="md:w-[16%] h-[80%] text-sm rounded-md p-2 md:p-1 md:ml-3 bg-yellow-500 text-stone-100">Sign Up</button>
 						</span>
 					</div>
 				</section>
