@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../assets/Cluxtercoin Logo3.png";
+import logo from "../assets/block-logo.png";
 import expert from "../assets/expert1.png";
 import badge from "../assets/badge1.png";
 import slide1 from "../assets/slide1.jpg";
@@ -15,7 +15,6 @@ const AboutPage = () => {
 
   const redirectToHome = () => navigator("/")
   const redirectToAbout = () => navigator("/about");
-  const redirectToDepo = () => navigator("/signup");
   const redirectToSignup = () => navigator("/signup");
   const redirectToSignin = () => navigator("/signin");
   const redirectToContact = () => navigator("/contact");
@@ -42,7 +41,7 @@ const AboutPage = () => {
                 d="M21.75 9v.906a2.25 2.25 0 01-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 001.183 1.981l6.478 3.488m8.839 2.51l-4.66-2.51m0 0l-1.023-.55a2.25 2.25 0 00-2.134 0l-1.022.55m0 0l-4.661 2.51m16.5 1.615a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V8.844a2.25 2.25 0 011.183-1.98l7.5-4.04a2.25 2.25 0 012.134 0l7.5 4.04a2.25 2.25 0 011.183 1.98V19.5z"
               />
             </svg>
-            info@cluxtercoin.com
+            info@blockvault.com
           </p>
           <span className="flex flex-row items-center gap-4 text-sm text-gray-100"></span>
         </section>
@@ -52,7 +51,7 @@ const AboutPage = () => {
         >
           <span className="[60%] flex flex-row items-center gap-2">
             <img src={logo} alt="cluxter_logo" className="w-[50%] h-[50%]" />
-            <h1 className="text-3xl font-bold">CLUXTERCOIN</h1>
+            <h1 className="text-3xl font-bold">BLOCKVAULT</h1>
           </span>
           <span className="w-[30%] flex flex-row items-center justify-between">
             <a onClick={redirectToHome} className="border-orange-500 hover:border-b" href="">

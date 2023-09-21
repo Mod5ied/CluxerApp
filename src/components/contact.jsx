@@ -1,13 +1,5 @@
 import React from "react";
-import logo from "../assets/Cluxtercoin Logo3.png";
-import expert from "../assets/expert1.png";
-import badge from "../assets/badge1.png";
-import slide1 from "../assets/slide1.jpg";
-import pc from "../assets/computers.jpg";
-import staff1 from "../assets/staff1.jpg";
-import staff2 from "../assets/staff2.jpeg";
-import staff3 from "../assets/staff3.jpg";
-import staff4 from "../assets/staff4.jpeg";
+import logo from "../assets/block-logo.png";
 import { useNavigate } from "react-router";
 
 function contactPage() {

@@ -19,7 +19,7 @@ import staff4 from "../assets/staff4.jpeg";
 import test1 from "../assets/testimonial1.jpg";
 import test2 from "../assets/testimonial2.jpg";
 import test3 from "../assets/test3.jpg";
-import logo from "../assets/Cluxtercoin Logo3.png";
+import logo from "../assets/block-logo.png";
 import menu from "../assets/hamburg.svg";
 import { Carousel } from "@trendyol-js/react-carousel";
 import { useNavigate } from "react-router";
@@ -206,7 +206,7 @@ function homepage() {
 
 			{/* <section id="trade-view-section"></section> */}
 
-			<section id="welcome-section" className="w-full h-[550px] bg-white flex flex-col md:flex-row items-center justify-between md:py-20 md:px-20 gap-8 md:gap-0">
+			<section id="welcome-section" className="w-full h-[550px] bg-white flex flex-col md:flex-row items-center justify-between md:py-20 md:px-20 gap-8 md:gap-0">	
 				<div id="left" className="w-full md:w-[45%] relative md:left-20 flex flex-col justify-center gap-8">
 					<h2 className="text-3xl md:text-4xl text-center font-bold">Welcome To Blockvault</h2>
 					<span className="flex flex-col md:flex-row justify-between px-4 md:px-0">
