@@ -100,7 +100,6 @@ function deposit() {
 
 			{/* FORM SECTION */}
 			<div className="h-[200px] w-full">
-				{console.log(depositRecords)}
 				<DataTable requests={depositRecords} tableContext={`Deposit Transaction History`} />
 			</div>
 		</div>
