@@ -77,7 +77,9 @@ function homepage() {
 							<ReactSVG src={left} className="p-3 text-gray-200 rounded-full bg-stone-700 hover:text-gray-50 hover:bg-stone-900" />
 						</span>
 						<div className="relative flex flex-col items-center justify-center h-full gap-7 z-20">
-							<h3 className="md:w-[60%] w-full text-3xl md:text-5xl text-white text-center font-extrabold relative md:top-20">Our investment is highly guaranteed</h3>
+							<h3 className="md:w-[60%] w-full text-3xl md:text-5xl text-white text-center font-extrabold relative md:top-20">
+								Our investment is highly guaranteed
+							</h3>
 							<p className="relative text-lg top-10 md:top-20">Select an Investment plan below today!</p>
 							<span className="md:w-[55%] w-full relative flex flex-row justify-between top-28 md:top-36">
 								<button onClick={redirectToSignup} className="w-[130px] h-[60px] bg-yellow-600 text-stone-100">
@@ -427,8 +429,8 @@ function homepage() {
 							<p className="text-lg font-bold text-stone-800">Ted Moralee</p>
 						</span>
 						<span className="flex flex-row gap-4">
-							<ReactSVG onClick={handleNext} src={left} className="p-3 text-gray-100 bg-yellow-500 rounded-full hover:text-gray-50 hover:bg-yellow-600" />
-							<ReactSVG onClick={handlePrev} src={right} className="p-3 text-gray-100 bg-yellow-500 rounded-full hover:text-gray-50 hover:bg-yellow-600" />
+							<ReactSVG src={left} className="p-3 text-gray-100 bg-yellow-500 rounded-full hover:text-gray-50 hover:bg-yellow-600" />
+							<ReactSVG src={right} className="p-3 text-gray-100 bg-yellow-500 rounded-full hover:text-gray-50 hover:bg-yellow-600" />
 						</span>
 					</div>
 					<div className="flex flex-col items-center gap-10 md:h-[500px] w-full">
@@ -440,8 +442,8 @@ function homepage() {
 							<p className="text-lg font-bold text-stone-800">Peter Bowyer</p>
 						</span>
 						<span className="flex flex-row gap-4">
-							<ReactSVG onClick={handleNext} src={left} className="p-3 text-gray-100 bg-yellow-500 rounded-full hover:text-gray-50 hover:bg-yellow-600" />
-							<ReactSVG onClick={handlePrev} src={right} className="p-3 text-gray-100 bg-yellow-500 rounded-full hover:text-gray-50 hover:bg-yellow-600" />
+							<ReactSVG src={left} className="p-3 text-gray-100 bg-yellow-500 rounded-full hover:text-gray-50 hover:bg-yellow-600" />
+							<ReactSVG src={right} className="p-3 text-gray-100 bg-yellow-500 rounded-full hover:text-gray-50 hover:bg-yellow-600" />
 						</span>
 					</div>
 					<div className="flex flex-col items-center gap-10 md:h-[500px] w-full">
@@ -454,8 +456,8 @@ function homepage() {
 							<p className="text-lg font-bold text-stone-800">Mr L. & Mrs H. M. Steward</p>
 						</span>
 						<span className="flex flex-row gap-4">
-							<ReactSVG onClick={handleNext} src={left} className="p-3 text-gray-100 bg-yellow-500 rounded-full hover:text-gray-50 hover:bg-yellow-600" />
-							<ReactSVG onClick={handlePrev} src={right} className="p-3 text-gray-100 bg-yellow-500 rounded-full hover:text-gray-50 hover:bg-yellow-600" />
+							<ReactSVG src={left} className="p-3 text-gray-100 bg-yellow-500 rounded-full hover:text-gray-50 hover:bg-yellow-600" />
+							<ReactSVG src={right} className="p-3 text-gray-100 bg-yellow-500 rounded-full hover:text-gray-50 hover:bg-yellow-600" />
 						</span>
 					</div>
 				</Carousel>
