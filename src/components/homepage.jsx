@@ -23,7 +23,7 @@ import { Carousel } from "@trendyol-js/react-carousel";
 import { useNavigate } from "react-router";
 import { isMobile } from "react-device-detect";
 import { animated, useTransition } from "react-spring";
-import FooterSlide from "./footerslide";
+import footerSlide from "./footerslide";
 
 function homepage() {
 	const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -416,7 +416,7 @@ function homepage() {
 					<h3 className="md:w-[70%] font-extrabold text-center text-stone-900 text-2xl md:text-4xl">What They Say About Our Services</h3>
 				</span>
 
-				{/* <Carousel autoSwipe={true} infinite={true} responsive={true} useArrowKeys={true}>
+				<Carousel autoSwipe={true} infinite={true} responsive={true} useArrowKeys={true}>
 					<div className="flex flex-col items-center gap-10 md:h-[500px] w-full">
 						<span className="md:w-[50%] flex flex-col items-center gap-3">
 							<img src={test1} alt="ted-moralee" className="rounded-full" />
@@ -458,8 +458,7 @@ function homepage() {
 							<ReactSVG onClick={handlePrev} src={right} className="p-3 text-gray-100 bg-yellow-500 rounded-full hover:text-gray-50 hover:bg-yellow-600" />
 						</span>
 					</div>
-				</Carousel> */}
-				<FooterSlide />
+				</Carousel>
 			</section>
 
 			<footer className="flex flex-col items-center gap-5 bg-indigo-900 py-4 px-3 md:py-5">
