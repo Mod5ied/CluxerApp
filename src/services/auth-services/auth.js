@@ -59,9 +59,9 @@ export async function execSignIn(details) {
       localStorage.setItem("userRecord", JSON.stringify(databaseUserRecord));
       localStorage.setItem("userRecords", JSON.stringify(users));
       await fetchDeposits(databaseUserRecord.email);
-      await fetchApprovedDeposits(databaseUserRecord.email);
-      await fetchProfit(databaseUserRecord.userName);
-      await execFetchBonus(databaseUserRecord.userName);
+      await fetchProfit(databaseUserRecord.username);
+      await execFetchBonus(databaseUserRecord.username);
+      await fetchApprovedDeposits(databaseUserRecord.username);
       await fetchPendingWithdrawal(databaseUserRecord.username);
       await fetchApprovedWithdrawal(databaseUserRecord.username);
       return { admin: false };
@@ -125,7 +125,7 @@ export function execSignOut() {
   localStorage.removeItem("userBonus");
   localStorage.removeItem("entityCount");
   localStorage.removeItem("approvedWithdraw");
-  localStorage.removeItem("approvedDeposits");
+  localStorage.removeItem("approvedDeposit");
   localStorage.removeItem("pendingWithdraw");
 
   localStorage.removeItem("entityCount");
@@ -176,6 +176,23 @@ export async function fetchEntityCount() {
     return true;
   } catch (error) {
     console.error("Error fetching entity count: ", error);
+    throw error;
+  }
+}
+
+export async function execForgotPassword(email) {
+  try {
+    const q = query(collection(db, "users"), where("email", "==", email));
+    const querySnapshot = await getDocs(q);
+    const users = querySnapshot.docs.map((doc) => doc.data());
+
+    if (users.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error(`Forgot Password Error: ${error}`);
     throw error;
   }
 }

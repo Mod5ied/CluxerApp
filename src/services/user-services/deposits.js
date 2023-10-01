@@ -1,4 +1,4 @@
-import { getDocs, query, collection, addDoc, deleteDoc, updateDoc, doc, setDoc } from "firebase/firestore";
+import { getDocs, query, collection, addDoc, deleteDoc, updateDoc, doc, setDoc, where } from "firebase/firestore";
 import { db } from "../db_config";
 
 /** Used within the client's fund wallet section.  */
@@ -65,24 +65,33 @@ export async function fetchDeposits(email) {
   }
 }
 
-export async function fetchApprovedDeposits(email) {
+export async function fetchApprovedDeposits(username) {
   try {
-    const approvedDepositCollection = collection(db, "approvedDeposit");
-    const approvedDepositQuery = query(approvedDepositCollection);
-    const approvedDepositSnapshot = await getDocs(approvedDepositQuery);
+    const approvedDepoCollection = collection(db, "approvedDeposit");
+    let approvedDepoQuery;
 
-    const approvedDepositRecords = approvedDepositSnapshot.docs.map(doc => doc.data());
-    const filteredApprovedDepositRecords = approvedDepositRecords.filter(record => record.email === email);
-
-    if (filteredApprovedDepositRecords.length === 0) {
-      localStorage.setItem("approvedDeposits", JSON.stringify([])); // Set an empty array
+    if (username) {
+      approvedDepoQuery = query(
+        approvedDepoCollection,
+        where("username", "==", username)
+      );
     } else {
-      localStorage.setItem("approvedDeposits", JSON.stringify(filteredApprovedDepositRecords));
+      approvedDepoQuery = query(approvedDepoCollection);
     }
 
-    return JSON.parse(localStorage.getItem("approvedDeposits"));
+    const approvedDepoSnapshot = await getDocs(approvedDepoQuery);
+    const approvedDepoRecords = approvedDepoSnapshot.docs.map(
+      (doc) => doc.data()
+    );
+
+    localStorage.setItem(
+      "approvedDeposit",
+      JSON.stringify(approvedDepoRecords)
+    );
+
+    return true;
   } catch (error) {
-    console.error("Error fetching approved deposit records: ", error);
+    console.error("Error fetching approved deposit: ", error);
     throw error;
   }
 }

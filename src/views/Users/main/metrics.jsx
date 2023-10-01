@@ -26,7 +26,7 @@ function metrics({ userAccount, userBonus,userProfits, userWallet, width }) {
 				<div className="flex flex-col gap-5 md:flex-row">
 					<span className="dash_cards">
 						<h3>Wallet Balance</h3>
-						<p> $ {userWallet?.amount || 0} </p>
+						<p> $ {userWallet || 0} </p>
 					</span>
 					<span className="dash_cards">
 						<h3>Available Profit</h3>

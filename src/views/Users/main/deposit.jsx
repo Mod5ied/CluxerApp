@@ -1,4 +1,5 @@
 import { fundWallet, fetchDeposits } from "../../../services/user-services/deposits";
+import ConfirmDeposit from "../components/confirmDeposit";
 import React, { useState, useEffect } from "react";
 import { useSpring, animated } from "react-spring";
 import success from "../../../assets/success.svg";
@@ -9,7 +10,8 @@ function deposit() {
 	const [resp, setResp] = useState({});
 	const [amount, setAmount] = useState(null);
 	const [wallet, setWallet] = useState(null);
-	const [loading, setLoading] = useState(false);
+	const [submitted, setSubmitted] = useState(false);
+	const [approvedDepo, setApprovedDepo] = useState([]);
 	const [showSuccess, setShowSuccess] = useState(false);
 	const [depositRecords, setDepositRecords] = useState([]);
 	const currentUser = JSON.parse(localStorage.getItem("userRecord"));
@@ -27,13 +29,7 @@ function deposit() {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		setLoading(!loading);
-		try {
-			setResp(await fundWallet(amount, wallet));
-			setAmount(null);
-		} catch (error) {
-			console.error("Error depositing to wallet: ", error);
-		}
+		setSubmitted(!submitted);
 	};
 
 	const successMessageStyles = useSpring({
@@ -54,10 +50,14 @@ function deposit() {
 		}
 	};
 
+	const getApprovedDepo = () =>{
+		setApprovedDepo(JSON.parse(localStorage.getItem("approvedDeposit")));
+	}
+
 	useEffect(() => {
 		getDeposits();
+		getApprovedDepo();
 		if (resp?.saved) {
-			setLoading(!loading);
 			setShowSuccess(true);
 			setTimeout(() => {
 				setShowSuccess(false);
@@ -66,7 +66,7 @@ function deposit() {
 	}, [resp.saved]);
 
 	return (
-		<div className="flex flex-col items-center w-full gap-7 bg-red-400-100">
+		<div className="flex flex-col items-center w-full gap-7">
 			{showSuccess && resp?.saved && (
 				<animated.div
 					style={successMessageStyles}
@@ -77,30 +77,42 @@ function deposit() {
 					Deposit Registered and Pending!
 				</animated.div>
 			)}
-			<form id="deposit_form" onSubmit={handleSubmit}>
-				<h3 className="font-bold text-gray-50">Fund Wallet</h3>
-				<span>
-					<label htmlFor="amount">Enter Amount</label>
-					<input className="deposit_form_input" inputMode="numeric" type="number" id="amount" onChange={(e) => setAmount(e.target.value)} />
-				</span>
-				<span>
-					<label htmlFor="amount">Select Currency</label>
-					<select className="deposit_form_input" name="wallet" id="wallet-drop" onChange={(e) => handleSelect(e.target.value)}>
-						<option value="Bitcoin">Bitcoin</option>
-						<option value="Ethereum">Ethereum</option>
-						<option value="USDT">USDT</option>
-					</select>
-				</span>
-				<span className="w-1/2">
-					<button onClick={handleSubmit} id="btn" type="submit">
-						{loading ? <Progress /> : "Deposit"}
-					</button>
-				</span>
-			</form>
+
+			{!submitted && (
+				<form id="deposit_form" onSubmit={handleSubmit}>
+					<h3 className="font-bold text-gray-50">Fund Wallet</h3>
+					<span>
+						<label htmlFor="amount">Enter Amount</label>
+						<input
+							required={true}
+							className="deposit_form_input"
+							inputMode="numeric"
+							type="number"
+							id="amount"
+							onChange={(e) => setAmount(e.target.value)}
+						/>
+					</span>
+					<span>
+						<label htmlFor="wallet-drop">Select Currency</label>
+						<select className="deposit_form_input" name="wallet" id="wallet-drop" onChange={(e) => handleSelect(e.target.value)}>
+							<option value="Bitcoin">Bitcoin</option>
+							<option value="Ethereum">Ethereum</option>
+							<option value="USDT">USDT</option>
+						</select>
+					</span>
+					<span className="w-1/2">
+						<button onClick={handleSubmit} id="btn" type="submit">
+							Deposit
+						</button>
+					</span>
+				</form>
+			)}
+
+			{!!submitted && <ConfirmDeposit amount={amount} fundDeposit={fundWallet} setSubmitted={setSubmitted} type={wallet} />}
 
 			{/* FORM SECTION */}
 			<div className="h-[200px] w-full">
-				<DataTable requests={depositRecords} tableContext={`Deposit Transaction History`} />
+				<DataTable approved={approvedDepo} requests={depositRecords} tableContext={`Deposit Transaction History`} />
 			</div>
 		</div>
 	);

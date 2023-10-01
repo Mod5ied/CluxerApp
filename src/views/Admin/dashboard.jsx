@@ -36,7 +36,7 @@ function Dashboard() {
 			setUserRecord(JSON.parse(userRecord));
 			setUsers(JSON.parse(userRecords));
 			setApprovedWith(JSON.parse(localStorage.getItem("approvedWithdraw")));
-			setApprovedDepo(JSON.parse(localStorage.getItem("approvedDeposits")));
+			setApprovedDepo(JSON.parse(localStorage.getItem("approvedDeposit")));
 			setDepo(JSON.parse(localStorage.getItem("userDeposits")));
 		}
 	}, []);

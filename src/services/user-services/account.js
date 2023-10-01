@@ -88,7 +88,8 @@ export const fetchProfit = async (username) => {
             if (profitsDoc) {
                 const profitsData = profitsDoc.data();
                 localStorage.setItem("userProfits", JSON.stringify(profitsData));
-                return profitsData;
+                console.log("reached here");
+                return true
             } else {
                 return null;
             }

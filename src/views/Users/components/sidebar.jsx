@@ -12,7 +12,7 @@ import account from "../../../assets/account.svg";
 import compass from "../../../assets/compass.svg";
 import deposit from "../../../assets/deposit.svg";
 import lifeguard from "../../../assets/lifeguard.svg";
-import logo from "../../../assets/Cluxtercoin Logo3.png";
+import logo from "../../../assets/block-logo.png";
 import { usersState, useToggleState } from "../../../services/state/state";
 import { isMobile } from "react-device-detect";
 import { execSignOut } from "../../../services/auth-services/auth";
@@ -35,14 +35,14 @@ function sidebar({ handleShow, width }) {
 	return (
 		<section className="flex flex-col items-center h-full gap-10 py-5 overflow-hidden bg-transparent">
 			<div className="w-full h-[34px] flex flex-row-reverse justify-around items-center cursor-pointer">
-				<ReactSVG onClick={handleShow} src={bars} className="hidden text-gray-100 md:block " />
-				<ReactSVG onClick={handleShow} src={close} className="block text-gray-100 md:hidden " />
+				<ReactSVG onClick={handleShow} src={bars} className="hidden mr-3 text-gray-100 md:block" />
+				<ReactSVG onClick={handleShow} src={close} className="block mr-3 text-gray-100 md:hidden" />
 
 				{/* {isMobile || sideWidth == "16%" ? <img onClick={toAdmin} src={cluxter_logo} alt="cluxtercoin-logo" className="w-[38%] h-full" /> : null} */}
 				{isMobile || sideWidth == "16%" ? (
 					<div onClick={toAdmin} className="flex flex-row items-center gap-1 px-4 font-body">
 						<img src={logo} alt="blockvault" className="w-[20%] h-full" />
-						<p className="text-white text-lg font-bold">BLOCKVAULT</p>
+						<p className="text-white text-sm md:text-lg font-bold">BLOCKVAULT</p>
 					</div>
 				) : null}
 			</div>

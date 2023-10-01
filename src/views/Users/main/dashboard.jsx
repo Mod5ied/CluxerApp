@@ -28,6 +28,10 @@ function userDashboard() {
 	const [userProfits, setUserProfits] = useState({});
 	const [pendingWithdraw, setPendingWith] = useState({});
 
+	const [rawWallet, setRawWallet] = useState(null);
+	const [rawCollects, setRawCollects] = useState(null);
+	const [pureWallet, setPureWallet] = useState(null);
+
 	const handleMouseOver = () => {
 		if (!isClicked.current) {
 			// setWidth("16%");
@@ -62,7 +66,18 @@ function userDashboard() {
 			setUserWallet(JSON.parse(localStorage.getItem("userDeposits")));
 			setUserProfits(JSON.parse(localStorage.getItem("userProfits")));
 			setPendingWith(JSON.parse(localStorage.getItem("pendingWithdraw")));
+
+			const approvedDepo = JSON.parse(localStorage.getItem("approvedDeposit"));
+			const rawWalletSum = approvedDepo.reduce((total, doc) => total + (parseInt(doc.amount) || 0), 0);
+			setRawWallet(rawWalletSum);
 			// setUsers(parsedUserRecords);
+
+			const approvedWithdr = JSON.parse(localStorage.getItem("approvedWithdraw"))
+			const rawCollectSum = approvedWithdr.reduce((total, doc) => total + (parseInt(doc.amount) || 0), 0);
+			setRawCollects(rawCollectSum);
+
+			const pureWalletResult = rawWalletSum - rawCollectSum;
+			setPureWallet(pureWalletResult);
 		}
 		return () => {
 			sidebarElement.removeEventListener("mouseover", handleMouseOver);
@@ -94,14 +109,16 @@ function userDashboard() {
 					<ReactSVG onClick={handleClick} id="hamburger-icon" src={menu} />
 					<span className="flex items-center">
 						<Avatar />
-						<h3 className="text-sm font-bold text-gray-600 md:mr-10 md:text-xl"> ${userWallet?.amount || 0} </h3>
+						<h3 className="text-sm font-bold text-gray-600 md:mr-10 md:text-xl">
+							{pureWallet}
+						</h3>
 					</span>
 				</header>
 				<main className="relative w-full bg-gray-100 top-20 md:top-24">
 					{stateGuest.accountPage && <Account userAccount={userData} />}
-					{stateGuest.dashboard && <Metrics userAccount={userData} userBonus={userBonus} userProfits={userProfits} userWallet={userWallet} width={width} />}
+					{stateGuest.dashboard && <Metrics userAccount={userData} userBonus={userBonus} userProfits={userProfits} userWallet={pureWallet} width={width} />}
 					{stateGuest.referralsPage && <Referrals />}
-					{stateGuest.withdrawPage && <Withdraw pendingWithdraws={pendingWithdraw} />}
+					{stateGuest.withdrawPage && <Withdraw user={userData} wallet={pureWallet} pendingWithdraws={pendingWithdraw} />}
 					{stateGuest.securityPage && <Security userAccount={userData} />}
 					{stateGuest.depositPage && <Deposit />}
 					{stateGuest.supportPage && <Support />}

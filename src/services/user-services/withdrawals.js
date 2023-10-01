@@ -30,13 +30,15 @@ export async function requestWithdrawal(amount, wallet_type, wallet_name, wallet
       transact_id: generateTransactId(),
     };
 
-    // Save the withdrawal object to the "withdrawals" collection
-    const data = await addDoc(collection(db, "withdrawal"), withdrawal);
-    localStorage.setItem("pendingWithdraw", JSON.stringify(data));
-    return { message: "Withdrawal successfully saved!", saved: true };
-  } catch (error) {
-    console.error("Error adding document: ", error);
-    throw error;
+    // Save the withdrawal object to the "withdrawal" collection
+    await addDoc(collection(db, "withdrawal"), withdrawal);
+
+    // Fetch all docs that match 'username' from the collection and save to localstroage
+    await fetchPendingWithdrawal(user.username);
+
+    return true;
+  } catch (err) {
+    console.log('error requesting-withdrawal', err);
   }
 }
 
@@ -107,6 +109,7 @@ export async function fetchPendingWithdrawal(username) {
       const pendingWithdrawal = querySnapshot.docs.map((doc) => doc.data());
 
       localStorage.setItem("pendingWithdraw", JSON.stringify(pendingWithdrawal));
+      return pendingWithdrawal;
     }
   } catch (error) {
     console.error("Error fetching pending withdrawal: ", error);
