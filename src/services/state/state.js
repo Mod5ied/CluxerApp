@@ -13,6 +13,7 @@ export const adminState = atom({
         usersStaff: false,
         reduceFunds: false,
         addBonus: false,
+        addMethod:false,
         addProfit: false,
         addStaff: false,
         fundDeposit: false,

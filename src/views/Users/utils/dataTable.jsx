@@ -20,7 +20,7 @@ function dataTable({ approved, tableContext, requests }) {
 					</span>
 				</div>
 				{combined.length === 0 ? (
-					<p className="p-2 text-sm">No withdrawals found</p>
+					<p className="p-2 text-sm">No data was found</p>
 				) : (
 					combined.map((item, index) => (
 						<div id="data-loaded" className="flex flex-row py-6 text-gray-100" key={index}>
@@ -31,7 +31,6 @@ function dataTable({ approved, tableContext, requests }) {
 							<p className="text-xs bg-transparent font-bold text-center w-[45%] md:w-[15%]">
 								{item.pending && <button className="bg-red-600 px-3 py-1 text-stone-200 w-[70%] rounded"> PENDING </button> }
 								{!item?.pending && <button className="bg-green-600 px-3 py-1 text-stone-200 w-[70%] rounded"> APPROVED </button>}
-								
 							</p>
 							<p className="text-xs text-stone-200 text-center w-[40%] md:w-[15%]"> {item.created} </p>
 						</div>

@@ -4,6 +4,7 @@ import { fetchApprovedDeposits, fetchDeposits, getCurrentDate } from "../user-se
 
 import { db } from "../db_config";
 import { fetchApprovedWithdrawal, fetchPendingWithdrawal } from "../user-services/withdrawals";
+import { execFetchInvestments, fetchMethods } from "../user-services/invest";
 
 export async function isAuthenticated() {
   const userRecord = localStorage.getItem("userRecord");
@@ -61,6 +62,7 @@ export async function execSignIn(details) {
       await fetchDeposits(databaseUserRecord.email);
       await fetchProfit(databaseUserRecord.username);
       await execFetchBonus(databaseUserRecord.username);
+      await execFetchInvestments(databaseUserRecord.email);
       await fetchApprovedDeposits(databaseUserRecord.username);
       await fetchPendingWithdrawal(databaseUserRecord.username);
       await fetchApprovedWithdrawal(databaseUserRecord.username);
@@ -85,6 +87,7 @@ export async function execSignInStaff(details) {
     if (databaseUserRecord) {
       localStorage.setItem("userRecord", JSON.stringify(databaseUserRecord));
       localStorage.setItem("userRecords", JSON.stringify(users));
+      await fetchMethods();
       await fetchProfit();
       await execFetchBonus();
       await fetchDeposits();
@@ -131,6 +134,8 @@ export function execSignOut() {
   localStorage.removeItem("entityCount");
   localStorage.removeItem("pendingEstimate");
   localStorage.removeItem("approvedEstimate");
+  localStorage.removeItem("investment");
+  localStorage.removeItem("methods");
 
 }
 

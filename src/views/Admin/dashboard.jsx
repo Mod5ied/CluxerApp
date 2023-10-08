@@ -14,30 +14,38 @@ import PaymentMethod from "./utils/paymentMethod";
 import Client from "./main/users/client";
 import ApprovedWithdraw from "./main/withdrawn/approved";
 import ViewPayment from "./layouts/viewPayment";
+import AddMethod from "./utils/addMethod";
 import { adminState } from "../../services/state/state";
 import { useEffect, useState } from "react";
 import { deleteDeposit, updateDeposit } from "../../services/user-services/deposits";
 import { approveWithdrawal, deleteWithdrawal } from "../../services/user-services/withdrawals";
+import { fetchMethods } from "../../services/user-services/invest";
 
 function Dashboard() {
-	const [signal, setSignal] = useState(false);
 	const [stateAdmin, setStateAdmin] = useRecoilState(adminState);
-	const [users, setUsers] = useState([]);
-	const [userRecord, setUserRecord] = useState({});
 	const [approvedWithdraw, setApprovedWith] = useState([]);
 	const [approvedDeposits, setApprovedDepo] = useState([]);
+	const [userRecord, setUserRecord] = useState({});
+	const [signal, setSignal] = useState(false);
 	const [deposits, setDepo] = useState([]);
+	const [users, setUsers] = useState([]);
+	const [methods, setMethods] = useState([]);
 
+	const fetchAllMethods = async () => {
+		return await fetchMethods();
+	};
+	
 	useEffect(() => {
 		const userRecord = localStorage.getItem("userRecord");
 		const userRecords = localStorage.getItem("userRecords");
 
 		if (userRecord) {
-			setUserRecord(JSON.parse(userRecord));
 			setUsers(JSON.parse(userRecords));
+			setUserRecord(JSON.parse(userRecord));
+			setMethods(JSON.parse(localStorage.getItem("methods")))
+			setDepo(JSON.parse(localStorage.getItem("userDeposits")));
 			setApprovedWith(JSON.parse(localStorage.getItem("approvedWithdraw")));
 			setApprovedDepo(JSON.parse(localStorage.getItem("approvedDeposit")));
-			setDepo(JSON.parse(localStorage.getItem("userDeposits")));
 		}
 	}, []);
 
@@ -67,7 +75,8 @@ function Dashboard() {
 				{stateAdmin.fundDeposit && <FundDeposit />}
 				{stateAdmin.reduceFunds && <ReduceFunds />}
 				{stateAdmin.viewPayment && <ViewPayment />}
-				{stateAdmin.paymentMethod && <PaymentMethod />}
+				{stateAdmin.paymentMethod && <PaymentMethod methods={methods} />}
+				{stateAdmin.addMethod && <AddMethod  />}
 			</section>
 		</div>
 	);

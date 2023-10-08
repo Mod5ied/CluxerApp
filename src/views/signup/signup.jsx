@@ -6,6 +6,7 @@ import { useSpring, animated } from "react-spring";
 import { Link, useNavigate } from "react-router-dom";
 import { execSignUp } from "../../services/auth-services/auth";
 import { CountryDropdown } from "react-country-region-selector";
+import TawkTo from "../Tawkto"
 
 function signUp() {
 	const navigate = useNavigate();
@@ -158,6 +159,7 @@ function signUp() {
 					</div>
 				</section>
 			</form>
+			<TawkTo />
 		</div>
 	);
 }

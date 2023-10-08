@@ -14,6 +14,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { ReactSVG } from "react-svg";
 import { useRecoilState } from "recoil";
 import { isMobile } from "react-device-detect";
+import TawkTo from "../../Tawkto";
 
 function userDashboard() {
 	const [stateGuest, setStateGuest] = useRecoilState(usersState);
@@ -72,11 +73,20 @@ function userDashboard() {
 			setRawWallet(rawWalletSum);
 			// setUsers(parsedUserRecords);
 
-			const approvedWithdr = JSON.parse(localStorage.getItem("approvedWithdraw"))
+			const approvedWithdr = JSON.parse(localStorage.getItem("approvedWithdraw"));
 			const rawCollectSum = approvedWithdr.reduce((total, doc) => total + (parseInt(doc.amount) || 0), 0);
 			setRawCollects(rawCollectSum);
 
-			const pureWalletResult = rawWalletSum - rawCollectSum;
+			const investments = JSON.parse(localStorage.getItem("investments"));
+			const rawInvestmentsSum = investments?.reduce((total, doc) => total + (parseInt(doc.deposit) || 0), 0);
+
+			let pureWalletResult = rawWalletSum - rawCollectSum;
+
+			// Check if rawInvestmentsSum is a valid integer
+			if (Number.isInteger(rawInvestmentsSum) && rawInvestmentsSum > 0) {
+				pureWalletResult -= rawInvestmentsSum;
+			}
+
 			setPureWallet(pureWalletResult);
 		}
 		return () => {
@@ -109,9 +119,7 @@ function userDashboard() {
 					<ReactSVG onClick={handleClick} id="hamburger-icon" src={menu} />
 					<span className="flex items-center">
 						<Avatar />
-						<h3 className="text-sm font-bold text-gray-600 md:mr-10 md:text-xl">
-							{pureWallet}
-						</h3>
+						<h3 className="text-sm font-bold text-gray-600 md:mr-10 md:text-xl">{pureWallet}</h3>
 					</span>
 				</header>
 				<main className="relative w-full bg-gray-100 top-20 md:top-24">
@@ -122,9 +130,10 @@ function userDashboard() {
 					{stateGuest.securityPage && <Security userAccount={userData} />}
 					{stateGuest.depositPage && <Deposit />}
 					{stateGuest.supportPage && <Support />}
-					{stateGuest.investPage && <Invest />}
+					{stateGuest.investPage && <Invest wallet={pureWallet} setPureWallet={setPureWallet} />}
 				</main>
 			</section>
+			<TawkTo />
 		</div>
 	);
 }

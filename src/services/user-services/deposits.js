@@ -65,6 +65,33 @@ export async function fetchDeposits(email) {
   }
 }
 
+export async function execFetchInvestments(email) {
+  console.log(email);
+  try {
+      // Fetch the investments data from Firebase
+      let querySnapshot;
+      if (email) {
+          const query = query(collection(db, "investments"), where("email", "==", email));
+          querySnapshot = await getDocs(query);
+      } else {
+          querySnapshot = await getDocs(collection(db, "investments"));
+      }
+      const investments = querySnapshot.docs.map((doc) => doc.data());
+
+      // Save the fetched data to local storage as "investment"
+      if (investments.length > 0) {
+          localStorage.setItem("investment", JSON.stringify(investments));
+          return investments;
+      } else {
+          localStorage.setItem("investment", JSON.stringify([]));
+          return [];
+      }
+  } catch (error) {
+      console.error("Error fetching investments: ", error);
+      return [];
+  }
+}
+
 export async function fetchApprovedDeposits(username) {
   try {
     const approvedDepoCollection = collection(db, "approvedDeposit");
