@@ -1,10 +1,11 @@
 import { collection, doc, addDoc, getDocs, updateDoc, query, where, getDoc } from "firebase/firestore";
 import { execApprovedFundsEstimate, execEntityCount, execFetchBonus, execPendingFundsEstimate, fetchProfit } from "../user-services/account";
-import { fetchApprovedDeposits, fetchDeposits, getCurrentDate } from "../user-services/deposits";
+import { execFetchReducedFunds, fetchApprovedDeposits, fetchDeposits, getCurrentDate } from "../user-services/deposits";
 
 import { db } from "../db_config";
 import { fetchApprovedWithdrawal, fetchPendingWithdrawal } from "../user-services/withdrawals";
 import { execFetchInvestments, fetchMethods } from "../user-services/invest";
+import { execFetchAllReferrals } from "../user-services/referrals";
 
 export async function isAuthenticated() {
   const userRecord = localStorage.getItem("userRecord");
@@ -17,7 +18,7 @@ async function execGenReferrals({ email, ref_name }) {
       created: getCurrentDate(),
       email,
       name: ref_name,
-      status: "false"
+      amount: 5
     }
     await addDoc(collection(db, "referrals"), referral) ?? true
   } catch (error) {
@@ -63,7 +64,9 @@ export async function execSignIn(details) {
       await fetchProfit(databaseUserRecord.username);
       await execFetchBonus(databaseUserRecord.username);
       await execFetchInvestments(databaseUserRecord.email);
+      await execFetchAllReferrals(databaseUserRecord.username);
       await fetchApprovedDeposits(databaseUserRecord.username);
+      await execFetchReducedFunds(databaseUserRecord.username);
       await fetchPendingWithdrawal(databaseUserRecord.username);
       await fetchApprovedWithdrawal(databaseUserRecord.username);
       return { admin: false };
@@ -131,12 +134,14 @@ export function execSignOut() {
   localStorage.removeItem("approvedDeposit");
   localStorage.removeItem("pendingWithdraw");
 
-  localStorage.removeItem("entityCount");
   localStorage.removeItem("pendingEstimate");
   localStorage.removeItem("approvedEstimate");
+  localStorage.removeItem("reducedFunds");
+  localStorage.removeItem("entityCount");
   localStorage.removeItem("investment");
+  localStorage.removeItem("referrals");
   localStorage.removeItem("methods");
-
+  localStorage.removeItem("bonus");
 }
 
 export async function updateUser(fullname, mobile, country, city, address, zip_code, email) {

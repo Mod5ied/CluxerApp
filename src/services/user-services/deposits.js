@@ -68,27 +68,27 @@ export async function fetchDeposits(email) {
 export async function execFetchInvestments(email) {
   console.log(email);
   try {
-      // Fetch the investments data from Firebase
-      let querySnapshot;
-      if (email) {
-          const query = query(collection(db, "investments"), where("email", "==", email));
-          querySnapshot = await getDocs(query);
-      } else {
-          querySnapshot = await getDocs(collection(db, "investments"));
-      }
-      const investments = querySnapshot.docs.map((doc) => doc.data());
+    // Fetch the investments data from Firebase
+    let querySnapshot;
+    if (email) {
+      const query = query(collection(db, "investments"), where("email", "==", email));
+      querySnapshot = await getDocs(query);
+    } else {
+      querySnapshot = await getDocs(collection(db, "investments"));
+    }
+    const investments = querySnapshot.docs.map((doc) => doc.data());
 
-      // Save the fetched data to local storage as "investment"
-      if (investments.length > 0) {
-          localStorage.setItem("investment", JSON.stringify(investments));
-          return investments;
-      } else {
-          localStorage.setItem("investment", JSON.stringify([]));
-          return [];
-      }
-  } catch (error) {
-      console.error("Error fetching investments: ", error);
+    // Save the fetched data to local storage as "investment"
+    if (investments.length > 0) {
+      localStorage.setItem("investment", JSON.stringify(investments));
+      return investments;
+    } else {
+      localStorage.setItem("investment", JSON.stringify([]));
       return [];
+    }
+  } catch (error) {
+    console.error("Error fetching investments: ", error);
+    return [];
   }
 }
 
@@ -188,5 +188,20 @@ export async function execFundDeposit(username, amount) {
     }
   } catch (error) {
     console.error("fetchDeposit error: ", error);
+  }
+}
+
+export async function execFetchReducedFunds(username) {
+  try {
+    const querySnapshot = await getDocs(collection(db, 'funds'));
+    const reducedFundsDocs = querySnapshot.docs.filter(doc => doc.data().username === username);
+    if (reducedFundsDocs.length > 0) {
+      const reducedFundsData = reducedFundsDocs.map(doc => doc.data());
+      localStorage.setItem("reducedFunds", JSON.stringify(reducedFundsData));
+    } else {
+      localStorage.setItem("reducedFunds", JSON.stringify([]));
+    }
+  } catch (error) {
+    console.error("fetchReducedFunds error: ", error);
   }
 }

@@ -31,11 +31,11 @@ function addBonus() {
 	};
 
 	const successMessageStyles = useSpring({
-		from: { transform: "translateX(-100%)" },
+		from: { transform: "translateX(-20%)" },
 		to: async (next) => {
-			await next({ transform: "translateX(0)" });
+			await next({ transform: "translateX(-20)" });
 			// await delay(4000);
-			await next({ transform: "translateX(-100%)" });
+			await next({ transform: "translateX(-20%)" });
 		},
 	});
 
@@ -45,10 +45,10 @@ function addBonus() {
 				<animated.div
 					style={successMessageStyles}
 					id="success"
-					className="w-[330px] absolute flex flex-row gap-3 items-center bg-green-500 text-stone-50 px-5 py-3 ml-4 md:ml-8 rounded-md"
+					className="absolute flex flex-row items-center gap-3 px-5 py-3 ml-4 bg-green-500 rounded-md text-stone-50 md:ml-8"
 				>
-					<ReactSVG src={successSV} />
-					Bonus added successfully!
+					{/* <ReactSVG src={successSV} /> */}
+					Bonus added to customers account. It would reflect on their next login!
 				</animated.div>
 			)}
 			
@@ -74,7 +74,7 @@ function addBonus() {
 
 					<div id="input_section">
 						<span className="input_span">
-							<label htmlFor="username">Enter Subject</label>
+							<label htmlFor="username">Enter Amount</label>
 							<input className="input_span_input" type="number" placeholder="Amount" onChange={handleSubjectAmtChange} />
 						</span>
 					</div>
@@ -82,7 +82,7 @@ function addBonus() {
 
 				<span>
 					<button type="submit" className="reduce_submit_btn">
-						Add Subject
+						Add Bonus
 					</button>
 				</span>
 			</form>

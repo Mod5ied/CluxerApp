@@ -24,10 +24,12 @@ function userDashboard() {
 	const sidebarRef = useRef(null);
 	// const [users, setUsers] = useState([]);
 	const [userData, setUserData] = useState({});
-	const [userBonus, setUserBonus] = useState({});
+	const [userBonus, setUserBonus] = useState([]);
+	const [totalBonuss, setTotalBonus] = useState(0);
 	const [userWallet, setUserWallet] = useState({});
 	const [userProfits, setUserProfits] = useState({});
 	const [pendingWithdraw, setPendingWith] = useState({});
+	const [referrals, setReferrals] = useState(0);
 
 	const [rawWallet, setRawWallet] = useState(null);
 	const [rawCollects, setRawCollects] = useState(null);
@@ -63,7 +65,7 @@ function userDashboard() {
 
 		if (userRecord) {
 			setUserData(JSON.parse(userRecord));
-			setUserBonus(JSON.parse(localStorage.getItem("userBonus")));
+			setUserBonus(JSON.parse(localStorage.getItem("bonus")));
 			setUserWallet(JSON.parse(localStorage.getItem("userDeposits")));
 			setUserProfits(JSON.parse(localStorage.getItem("userProfits")));
 			setPendingWith(JSON.parse(localStorage.getItem("pendingWithdraw")));
@@ -71,7 +73,6 @@ function userDashboard() {
 			const approvedDepo = JSON.parse(localStorage.getItem("approvedDeposit"));
 			const rawWalletSum = approvedDepo.reduce((total, doc) => total + (parseInt(doc.amount) || 0), 0);
 			setRawWallet(rawWalletSum);
-			// setUsers(parsedUserRecords);
 
 			const approvedWithdr = JSON.parse(localStorage.getItem("approvedWithdraw"));
 			const rawCollectSum = approvedWithdr.reduce((total, doc) => total + (parseInt(doc.amount) || 0), 0);
@@ -80,14 +81,29 @@ function userDashboard() {
 			const investments = JSON.parse(localStorage.getItem("investments"));
 			const rawInvestmentsSum = investments?.reduce((total, doc) => total + (parseInt(doc.deposit) || 0), 0);
 
+			const reducedFunds = JSON.parse(localStorage.getItem("reducedFunds"));
+
+			const totalBonusDoc = JSON.parse(localStorage.getItem("bonus"));
+			const totalBonus = totalBonusDoc.reduce((total, doc) => total + (parseInt(doc.amount) || 0), 0);
+			setTotalBonus(totalBonus);
+
+			const referrals = JSON.parse(localStorage.getItem("referrals"));
+			const totalReferrals = referrals.reduce((total, doc) => total + (parseInt(doc.amount) || 0), 0);
+			setReferrals(totalReferrals);
+
+			// Filter the 'reducedFunds' array to only include documents with 'wallet_type' of 'deposits'
+			const depositDocs = reducedFunds.filter((doc) => doc?.wallet_type === "deposits");
+
+			// Use the 'reduce' method to sum the 'amount' property of the filtered documents
+			const reducedFundsSum = depositDocs.reduce((total, doc) => total + (parseInt(doc.amount) || 0), 0);
+
 			let pureWalletResult = rawWalletSum - rawCollectSum;
 
 			// Check if rawInvestmentsSum is a valid integer
 			if (Number.isInteger(rawInvestmentsSum) && rawInvestmentsSum > 0) {
 				pureWalletResult -= rawInvestmentsSum;
 			}
-
-			setPureWallet(pureWalletResult);
+			setPureWallet(pureWalletResult + totalBonus + totalReferrals - reducedFundsSum);
 		}
 		return () => {
 			sidebarElement.removeEventListener("mouseover", handleMouseOver);
@@ -124,8 +140,10 @@ function userDashboard() {
 				</header>
 				<main className="relative w-full bg-gray-100 top-20 md:top-24">
 					{stateGuest.accountPage && <Account userAccount={userData} />}
-					{stateGuest.dashboard && <Metrics userAccount={userData} userBonus={userBonus} userProfits={userProfits} userWallet={pureWallet} width={width} />}
-					{stateGuest.referralsPage && <Referrals />}
+					{stateGuest.dashboard && (
+						<Metrics referrals={referrals} userAccount={userData} userBonus={totalBonuss} userProfits={userProfits} userWallet={pureWallet} width={width} />
+					)}
+					{stateGuest.referralsPage && <Referrals referrals={referrals} />}
 					{stateGuest.withdrawPage && <Withdraw user={userData} wallet={pureWallet} pendingWithdraws={pendingWithdraw} />}
 					{stateGuest.securityPage && <Security userAccount={userData} />}
 					{stateGuest.depositPage && <Deposit />}

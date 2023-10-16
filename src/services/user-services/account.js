@@ -1,4 +1,4 @@
-import { getDocs, updateDoc, doc, setDoc, collection } from "firebase/firestore";
+import { getDocs, updateDoc, doc, setDoc, collection, getDoc, query, where } from "firebase/firestore";
 import { userData } from "../state/state";
 import { db } from "../db_config";
 
@@ -130,22 +130,11 @@ export const execAddProfit = async ({ username, amount }) => {
 
 export const execFetchBonus = async (username) => {
     try {
-        if (!username) {
-            const querySnapshot = await getDocs(collection(db, 'bonus'));
-            const bonusData = querySnapshot.docs.map((doc) => doc.data());
-            localStorage.setItem("userBonus", JSON.stringify(bonusData));
-            return bonusData;
-        } else {
-            const querySnapshot = await getDocs(collection(db, 'bonus'));
-            const bonusDoc = querySnapshot.docs.find((doc) => doc.data().username === username);
-            if (bonusDoc) {
-                const bonusData = bonusDoc.data();
-                localStorage.setItem("userBonus", JSON.stringify(bonusData));
-                return bonusData;
-            } else {
-                return null;
-            }
-        }
+        const querySnapshot = await getDocs(collection(db, 'bonus'));
+        const bonusDocs = querySnapshot.docs.filter((doc) => doc.data().username === username);
+        const bonusData = bonusDocs.map((doc) => doc.data());
+        localStorage.setItem("bonus", JSON.stringify(bonusData));
+        return bonusData;
     } catch (error) {
         console.error("fetchBonus error:", error);
         throw { message: 'fetch-bonus failed', saved: false, error };
@@ -154,25 +143,17 @@ export const execFetchBonus = async (username) => {
 
 export const execAddToBonus = async ({ username, amount }) => {
     try {
-        const querySnapshot = await getDocs(collection(db, 'bonus'));
-        const bonusDoc = querySnapshot.docs.find(doc => doc.data().username === username);
-        if (bonusDoc) {
-            const bonusRef = doc(db, 'bonus', bonusDoc.id);
-            const resp = await updateDoc(bonusRef, {
-                amount: amount
-            });
-            if (resp) {
-                return { message: 'add-bonus success', saved: true };
-            }
-        } else {
-            const newBonusRef = doc(collection(db, 'bonus'));
-            const resp = await setDoc(newBonusRef, {
-                username: username,
-                amount: amount
-            });
-            if (resp) {
-                return { message: 'add-bonus success', saved: true };
-            }
+        // Create a new document reference in the 'bonus' collection
+        const newBonusRef = doc(collection(db, 'bonus'));
+
+        // Set the data for the new document
+        const resp = await setDoc(newBonusRef, {
+            username: username,
+            amount: amount
+        });
+
+        if (resp) {
+            return { message: 'create success', saved: true };
         }
     } catch (error) {
         console.error("addBonus error:", error);
@@ -180,28 +161,34 @@ export const execAddToBonus = async ({ username, amount }) => {
     }
 }
 
-export const execReduceFund = async ({ username, fundtype, amount }) => {
+export const execReduceFund = async ({ username, wallet_type, amount }) => {
+    const approvedDepo = JSON.parse(localStorage.getItem("approvedDeposit"));
+    const rawWalletSum = approvedDepo.reduce((total, doc) => total + (parseInt(doc.amount) || 0), 0);
+
+    const approvedWithdr = JSON.parse(localStorage.getItem("approvedWithdraw"));
+    const rawCollectSum = approvedWithdr.reduce((total, doc) => total + (parseInt(doc.amount) || 0), 0);
+
+    const investments = JSON.parse(localStorage.getItem("investments"));
+    const rawInvestmentsSum = investments?.reduce((total, doc) => total + (parseInt(doc.deposit) || 0), 0);
+    const reducedFunds = JSON.parse(localStorage.getItem("reducedFunds"));
+
+    // Filter the 'reducedFunds' array to only include documents with 'wallet_type' of 'deposits'
+    const depositDocs = reducedFunds.filter((doc) => doc?.wallet_type === "deposits");
+
+    // Use the 'reduce' method to sum the 'amount' property of the filtered documents
+    const reducedFundsSum = depositDocs.reduce((total, doc) => total + (parseInt(doc.amount) || 0), 0);
+
+    let pureWalletResult = rawWalletSum - rawCollectSum;
+
+
     try {
-        const querySnapshot = await getDocs(collection(db, fundtype));
-        const fundDoc = querySnapshot.docs.find(doc => doc.data().username === username);
-        if (fundDoc) {
-            const fundRef = doc(db, fundtype, fundDoc.id);
-            const resp = await updateDoc(fundRef, {
-                amount: amount
-            });
-            if (resp) {
-                return { message: 'reduce-fund success', saved: true };
-            }
-        } else {
-            const newFundRef = doc(collection(db, fundtype));
-            const resp = await setDoc(newFundRef, {
-                username: username,
-                amount: amount
-            });
-            if (resp) {
-                return { message: 'reduce-fund success', saved: true };
-            }
-        }
+        const newFundRef = doc(collection(db, 'funds'));
+        const resp = await setDoc(newFundRef, {
+            username: username,
+            amount: amount,
+            wallet_type: wallet_type
+        });
+        if (resp) return true;
     } catch (error) {
         console.error("reduceFund error:", error);
         return { message: 'update failed', saved: false, error };

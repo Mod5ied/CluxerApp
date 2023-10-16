@@ -21,7 +21,8 @@ function reduceFunds() {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		const data = { username, fundtype: walletType, amount: subjectAmount };
+		const data = { username, wallet_type: walletType, amount: subjectAmount };
+		//todo: edit this function to check if amount is > or < the funds.amount;
 		await execReduceFund(data);
 
 		setTimeout(() => {
@@ -31,18 +32,18 @@ function reduceFunds() {
 		}, 500);
 		setTimeout(() => {
 			setShowAnimatedDiv(true);
-		}, 2000);
+		}, 1000);
 		setTimeout(() => {
 			setShowAnimatedDiv(false);
-		}, 3000);
+		}, 7000);
 	};
 
 	const successMessageStyles = useSpring({
-		from: { transform: "translateX(-100%)" },
+		from: { transform: "translateX(-20%)" },
 		to: async (next) => {
-			await next({ transform: "translateX(0)" });
+			await next({ transform: "translateX(-20)" });
 			// await delay(4000);
-			await next({ transform: "translateX(-100%)" });
+			await next({ transform: "translateX(-20%)" });
 		},
 	});
 
@@ -52,10 +53,10 @@ function reduceFunds() {
 				<animated.div
 					style={successMessageStyles}
 					id="success"
-					className="w-[330px] absolute flex flex-row gap-3 items-center bg-green-500 text-stone-50 px-5 py-3 ml-4 md:ml-8 rounded-md"
+					// className="w-[330px] absolute flex flex-row gap-3 items-center bg-green-500 text-stone-50 px-5 py-3 ml-4 md:ml-8 rounded-md"
+					className="absolute flex flex-row items-center gap-3 px-5 py-3 ml-4 bg-green-500 rounded-md text-stone-50 md:ml-8"
 				>
-					<ReactSVG src={successSV} />
-					Bonus added successfully!
+					Funds reduced from customers account. It would reflect on their next login!
 				</animated.div>
 			)}
 
@@ -93,7 +94,7 @@ function reduceFunds() {
 									<button className="reduce_Drop" onClick={() => handleWalletChange("bonus")}>
 										Referral bonus
 									</button>
-									<button className="reduce_Drop" onClick={() => handleWalletChange("profits")}>
+									<button className="reduce_Drop" onClick={() => handleWalletChange("profit")}>
 										Profit
 									</button>
 									<button className="reduce_Drop" onClick={() => handleWalletChange("deposits")}>
