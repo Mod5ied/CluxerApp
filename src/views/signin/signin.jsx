@@ -53,7 +53,7 @@ function signIn() {
 	};
 
 	return (
-		<div className="h-screen py-12 bg-gray-100 font-body">
+		<div className="py-12 bg-gray-100 font-body">
 			<form onSubmit={handleSignIn} id="signin_form_main">
 				<section className="w-full h-[20%]">
 					<h2 className="py-2 text-2xl font-semibold border-b border-slate-200">SIGN-IN</h2>
@@ -76,7 +76,7 @@ function signIn() {
 						<section className="flex justify-center p-2">
 							<button onClick={handleSignIn} className="signin_submit_btn">
 								{!!loading && <Progress />}
-								{!loading && "SignIn"}
+								{!loading && "Signin"}
 							</button>
 						</section>
 						<section className="p-2">
