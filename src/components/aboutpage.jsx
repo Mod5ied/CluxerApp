@@ -86,8 +86,8 @@ const AboutPage = () => {
 				</div>
 			</section>
 
-			<section id="welcome-section" className="w-full h-[550px] bg-white flex flex-row items-center justify-between py-20 px-20">
-				<div id="left" className="w-[45%] relative md:left-20 flex flex-col justify-center gap-8">
+			<section id="welcome-section" className="w-full h-[550px] bg-white flex flex-row items-center justify-between px-20">
+				<div id="left" className="w-[45%] relative md:left-20 flex flex-col justify-center pt-10 gap-8">
 					<h2 className="text-4xl font-bold">Welcome To Blockvault</h2>
 					<span className="flex flex-row justify-between ">
 						<p className="flex flex-row items-center gap-2 text-lg font-bold text-stone-800">
