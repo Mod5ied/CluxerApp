@@ -27,7 +27,7 @@ function userDashboard() {
 	const [userBonus, setUserBonus] = useState([]);
 	const [totalBonuss, setTotalBonus] = useState(0);
 	const [userWallet, setUserWallet] = useState({});
-	const [userProfits, setUserProfits] = useState({});
+	const [userProfits, setUserProfits] = useState([]);
 	const [pendingWithdraw, setPendingWith] = useState({});
 	const [referrals, setReferrals] = useState(0);
 
@@ -87,6 +87,11 @@ function userDashboard() {
 			const totalBonus = totalBonusDoc.reduce((total, doc) => total + (parseInt(doc.amount) || 0), 0);
 			setTotalBonus(totalBonus);
 
+			const profits = JSON.parse(localStorage.getItem("userProfits"));
+			const totalProfits = profits.reduce((total, profit) => total + (parseInt(profit.amount) || 0), 0);
+			console.log(totalProfits);
+			// sumTotalProfits(totalProfits);
+
 			const referrals = JSON.parse(localStorage.getItem("referrals"));
 			const totalReferrals = referrals.reduce((total, doc) => total + (parseInt(doc.amount) || 0), 0);
 			setReferrals(totalReferrals);
@@ -103,7 +108,7 @@ function userDashboard() {
 			if (Number.isInteger(rawInvestmentsSum) && rawInvestmentsSum > 0) {
 				pureWalletResult -= rawInvestmentsSum;
 			}
-			setPureWallet(pureWalletResult + totalBonus + totalReferrals - reducedFundsSum);
+			setPureWallet(pureWalletResult + totalProfits + totalBonus + totalReferrals - reducedFundsSum);
 		}
 		return () => {
 			sidebarElement.removeEventListener("mouseover", handleMouseOver);

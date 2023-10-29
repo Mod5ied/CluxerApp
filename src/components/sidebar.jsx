@@ -20,6 +20,7 @@ import { execSignOut } from "../services/auth-services/auth";
 
 function sidebar({ signal, setSignal }) {
 	const [dropDown, setDropdown] = useState(false);
+	const [sidebarWidth, setSidebarWidth] = useState("20%");
 
 	const [dropState, setDropState] = useState({ depoDrop: false, withdrawDrop: false, usersDrop: false });
 	const [isExpanded, setIsExpanded] = useState(true);

@@ -84,15 +84,11 @@ export const fetchProfit = async (username) => {
             return {};
         } else {
             const querySnapshot = await getDocs(collection(db, 'profits'));
-            const profitsDoc = querySnapshot.docs.find((doc) => doc.data().username === username);
-            if (profitsDoc) {
-                const profitsData = profitsDoc.data();
-                localStorage.setItem("userProfits", JSON.stringify(profitsData));
-                console.log("reached here");
-                return true
-            } else {
-                return null;
-            }
+            const profitsDocs = querySnapshot.docs.filter((doc) => doc.data().username === username);
+            const profitsData = profitsDocs.map((doc) => doc.data());
+            localStorage.setItem("userProfits", JSON.stringify(profitsData));
+            console.log("reached here");
+            return true;
         }
     } catch (error) {
         console.error("fetchProfit error: ", error);
@@ -102,25 +98,13 @@ export const fetchProfit = async (username) => {
 
 export const execAddProfit = async ({ username, amount }) => {
     try {
-        const querySnapshot = await getDocs(collection(db, 'profits'));
-        const profitDoc = querySnapshot.docs.find(doc => doc.data().username === username);
-        if (profitDoc) {
-            const profitRef = doc(db, 'profits', profitDoc.id);
-            const resp = await updateDoc(profitRef, {
-                amount: amount
-            });
-            if (resp) {
-                return { message: 'update success', saved: true };
-            }
-        } else {
-            const newProfitRef = doc(collection(db, 'profits'));
-            const resp = await setDoc(newProfitRef, {
-                username: username,
-                amount: amount
-            });
-            if (resp) {
-                return { message: 'create success', saved: true };
-            }
+        const newProfitRef = doc(collection(db, 'profits'));
+        const resp = await setDoc(newProfitRef, {
+            username: username,
+            amount: amount
+        });
+        if (resp) {
+            return { message: 'create success', saved: true };
         }
     } catch (error) {
         console.error("addProfit error:", error);
@@ -170,6 +154,7 @@ export const execReduceFund = async ({ username, wallet_type, amount }) => {
 
     const investments = JSON.parse(localStorage.getItem("investments"));
     const rawInvestmentsSum = investments?.reduce((total, doc) => total + (parseInt(doc.deposit) || 0), 0);
+
     const reducedFunds = JSON.parse(localStorage.getItem("reducedFunds"));
 
     // Filter the 'reducedFunds' array to only include documents with 'wallet_type' of 'deposits'
@@ -177,10 +162,17 @@ export const execReduceFund = async ({ username, wallet_type, amount }) => {
 
     // Use the 'reduce' method to sum the 'amount' property of the filtered documents
     const reducedFundsSum = depositDocs.reduce((total, doc) => total + (parseInt(doc.amount) || 0), 0);
+    let liabilities = rawCollectSum + reducedFundsSum;
+    let assets = rawWalletSum + rawInvestmentsSum
 
-    let pureWalletResult = rawWalletSum - rawCollectSum;
+    // let pureWalletResult = assets - liabilities;
 
-
+    // if (amount > pureWalletResult) {
+    //     console.log({liabilities});
+    //     console.log({assets});
+    //     console.log({pureWalletResult});
+    //     return false
+    // } else {
     try {
         const newFundRef = doc(collection(db, 'funds'));
         const resp = await setDoc(newFundRef, {
@@ -193,6 +185,8 @@ export const execReduceFund = async ({ username, wallet_type, amount }) => {
         console.error("reduceFund error:", error);
         return { message: 'update failed', saved: false, error };
     }
+    // }
+
 }
 
 /* Below are methods to fetch information for the dashboard metric cards. */

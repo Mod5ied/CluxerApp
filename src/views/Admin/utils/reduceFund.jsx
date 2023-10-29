@@ -5,7 +5,7 @@ import successSV from "../../../assets/success.svg";
 import arrowDown from "../../../assets/arrow-down.svg";
 import { execReduceFund } from "../../../services/user-services/account";
 
-function reduceFunds() {
+function reduceFunds({ deposits }) {
 	const [showDrop, setShowDrop] = useState(false);
 	const [username, setUsername] = useState("");
 	const [walletType, setWalletType] = useState("");

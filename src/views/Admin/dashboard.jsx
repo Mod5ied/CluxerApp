@@ -73,7 +73,7 @@ function Dashboard() {
 				{stateAdmin.addBonus && <AddBonus />}
 				{stateAdmin.addProfit && <AddProfit />}
 				{stateAdmin.fundDeposit && <FundDeposit />}
-				{stateAdmin.reduceFunds && <ReduceFunds />}
+				{stateAdmin.reduceFunds && <ReduceFunds deposits={deposits} />}
 				{stateAdmin.viewPayment && <ViewPayment />}
 				{stateAdmin.paymentMethod && <PaymentMethod methods={methods} />}
 				{stateAdmin.addMethod && <AddMethod  />}

@@ -3,7 +3,7 @@ import check from "../../../assets/check.svg";
 import copy from "../../../assets/copy.svg";
 import { ReactSVG } from "react-svg";
 
-function metrics({ referrals,userAccount, userBonus,userProfits, userWallet, width }) {
+function metrics({ referrals,userAccount, userBonus, userProfits, userWallet, width }) {
 	const [twoFactAuth, setTwoFActAuth] = useState(false);
 	const [sideWidth, setWidth] = useState(width);
 	const [copied, setCopied] = useState(false);
@@ -30,7 +30,7 @@ function metrics({ referrals,userAccount, userBonus,userProfits, userWallet, wid
 					</span>
 					<span className="dash_cards">
 						<h3>Available Profit</h3>
-						<p> $ {userProfits?.amount || 0} </p>
+						<p> $ {userProfits.reduce((total, profit) => total + parseInt(profit.amount), 0) || 0} </p>
 					</span>
 				</div>
 				<div className="flex flex-col gap-5 md:flex-row">
