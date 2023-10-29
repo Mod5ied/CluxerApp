@@ -89,8 +89,10 @@ function userDashboard() {
 
 			const profits = JSON.parse(localStorage.getItem("userProfits"));
 			const totalProfits = profits.reduce((total, profit) => total + (parseInt(profit.amount) || 0), 0);
-			console.log(totalProfits);
 			// sumTotalProfits(totalProfits);
+
+			const fundedDeposit = JSON.parse(localStorage.getItem("fundedDeposit"));
+			const sumFundedDeposit = fundedDeposit.reduce((total, profit) => total + (parseInt(profit.amount) || 0), 0);
 
 			const referrals = JSON.parse(localStorage.getItem("referrals"));
 			const totalReferrals = referrals.reduce((total, doc) => total + (parseInt(doc.amount) || 0), 0);
@@ -108,8 +110,8 @@ function userDashboard() {
 			if (Number.isInteger(rawInvestmentsSum) && rawInvestmentsSum > 0) {
 				pureWalletResult -= rawInvestmentsSum;
 			}
-			setPureWallet(pureWalletResult + totalProfits + totalBonus + totalReferrals - reducedFundsSum);
-		}
+			setPureWallet(pureWalletResult + sumFundedDeposit + totalProfits + totalBonus + totalReferrals - reducedFundsSum);
+		}	
 		return () => {
 			sidebarElement.removeEventListener("mouseover", handleMouseOver);
 			sidebarElement.removeEventListener("mouseout", handleMouseOut);

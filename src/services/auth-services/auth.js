@@ -1,6 +1,6 @@
 import { collection, doc, addDoc, getDocs, updateDoc, query, where, getDoc } from "firebase/firestore";
 import { execApprovedFundsEstimate, execEntityCount, execFetchBonus, execPendingFundsEstimate, fetchProfit } from "../user-services/account";
-import { execFetchReducedFunds, fetchApprovedDeposits, fetchDeposits, getCurrentDate } from "../user-services/deposits";
+import { execFetchReducedFunds, fetchApprovedDeposits, fetchDeposits, fetchFundedDeposits, getCurrentDate } from "../user-services/deposits";
 
 import { db } from "../db_config";
 import { fetchApprovedWithdrawal, fetchPendingWithdrawal } from "../user-services/withdrawals";
@@ -61,6 +61,7 @@ export async function execSignIn(details) {
       localStorage.setItem("userRecord", JSON.stringify(databaseUserRecord));
       localStorage.setItem("userRecords", JSON.stringify(users));
       await fetchDeposits(databaseUserRecord.email);
+      await fetchFundedDeposits(databaseUserRecord.username);
       await fetchProfit(databaseUserRecord.username);
       await execFetchBonus(databaseUserRecord.username);
       await execFetchInvestments(databaseUserRecord.email);
@@ -142,6 +143,7 @@ export function execSignOut() {
   localStorage.removeItem("referrals");
   localStorage.removeItem("methods");
   localStorage.removeItem("bonus");
+  localStorage.removeItem("fundedDeposit");
 }
 
 export async function updateUser(fullname, mobile, country, city, address, zip_code, email) {

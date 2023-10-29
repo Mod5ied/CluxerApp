@@ -145,7 +145,7 @@ function signUp() {
 						</span>
 						<section className="flex justify-center p-2">
 							<button onClick={handleSignUp} type="submit" className="signin_submit_btn">
-								{loading ? <Progress /> : "SignUp"}
+								{loading ? <Progress /> : "Sign up"}
 							</button>
 						</section>
 						<section className="md:p-2">

@@ -64,6 +64,31 @@ export async function fetchDeposits(email) {
     throw error;
   }
 }
+export async function fetchFundedDeposits(username) {
+  try {
+    const depositCollection = collection(db, "fundedDeposit");
+    const depositQuery = query(depositCollection);
+    const depositSnapshot = await getDocs(depositQuery);
+
+    const depositRecords = depositSnapshot.docs.map(doc => doc.data());
+
+    if (!username) {
+      localStorage.setItem("fundedDeposit", JSON.stringify(depositRecords));
+    } else {
+      const filteredDepositRecords = depositRecords.filter(record => record.username === username);
+      if (filteredDepositRecords.length === 0) {
+        localStorage.setItem("fundedDeposit", JSON.stringify([]));
+      } else {
+        localStorage.setItem("fundedDeposit", JSON.stringify(filteredDepositRecords));
+      }
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Error fetching funded-deposit records: ", error);
+    throw error;
+  }
+}
 
 export async function execFetchInvestments(email) {
   console.log(email);
@@ -174,20 +199,16 @@ export async function deleteDeposit(email) {
 
 /** Most possibly used within the admin "fund deposit section." */
 export async function execFundDeposit(username, amount) {
-  const user = JSON.parse(localStorage.getItem("userRecord"));
   try {
-    const querySnapshot = await getDocs(collection(db, 'deposits'));
-    const depositDoc = querySnapshot.docs.find(doc => doc.data().email === user.email);
-    if (depositDoc) {
-      const depositRef = doc(db, 'deposits', depositDoc.id);
-      await updateDoc(depositRef, { amount });
-      return { message: 'update success', saved: true };
-    } else {
-      console.error('Deposit document not found');
-      return { message: 'Deposit document not found', saved: false };
-    }
+    const depositData = {
+      username: username,
+      amount: amount
+    };
+    await addDoc(collection(db, 'fundedDeposit'), depositData);
+    return { message: 'Deposit added', saved: true };
   } catch (error) {
-    console.error("fetchDeposit error: ", error);
+    console.error("Error adding deposit: ", error);
+    throw error;
   }
 }
 

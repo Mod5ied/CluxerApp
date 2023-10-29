@@ -76,7 +76,7 @@ function signIn() {
 						<section className="flex justify-center p-2">
 							<button onClick={handleSignIn} className="signin_submit_btn">
 								{!!loading && <Progress />}
-								{!loading && "Signin"}
+								{!loading && "Sign in"}
 							</button>
 						</section>
 						<section className="p-2">
